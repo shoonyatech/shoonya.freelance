@@ -1,8 +1,7 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import React from 'react'
 
-import BaseLayout from '../components/common/BaseLayout'
-import UserNameTitle from '../components/profile/UserNameTitle'
+import Profile from '../components/profile/Profile'
 import ClientSideRendering from '../lib/client-side-rendering'
 
 export default function Me() {
@@ -10,10 +9,9 @@ export default function Me() {
 
   return (
     <ClientSideRendering>
-      <UserNameTitle />
+      <Profile />
     </ClientSideRendering>
   )
 }
 
-Me.Layout = BaseLayout
 export const getServerSideProps = withPageAuthRequired()
