@@ -4,8 +4,8 @@ import React from 'react'
 
 export default function Footer() {
   return (
-    <footer className="bg-primary">
-      <div className="pl-5 pr-5 pt-2 pb-2 flex justify-between bg-secondary">
+    <footer className="bg-secondary">
+      <div className="pl-5 pr-5 pt-2 pb-2 flex justify-between ">
         <span className="mt-auto mb-auto flex flex-col text-primary">
           <Link href="/terms">
             <a target="_blank">Terms</a>

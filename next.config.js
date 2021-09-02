@@ -5,4 +5,7 @@ module.exports = {
       'https://wallora.com/api/stats/total-planned-amount-workitemwise',
     WALLORA_BACKEND_TOTAL_PLANNED_EXPENSES_MONTHWISE: 'https://wallora.com/api/stats/total-planned-amount-monthwise',
   },
+  images: {
+    domains: ['s.gravatar.com'],
+  },
 }

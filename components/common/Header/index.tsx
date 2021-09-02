@@ -8,7 +8,7 @@ const Header = () => (
     <div className="bg-secondary pl-10 p-2 flex justify-between">
       <Link href="/" passHref>
         <a>
-          <h1>Shoonya</h1>
+          <h1 className="text-primary">Shoonya</h1>
         </a>
       </Link>
       <div className="m-2">

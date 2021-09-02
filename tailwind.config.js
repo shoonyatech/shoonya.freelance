@@ -14,8 +14,8 @@ module.exports = {
       },
       // compiled the css with the below primary and secondary colors and linked with _app.tsx.
       colors: {
-        primary: '#C54582',
-        secondary: '#F4DCF4',
+        primary: '#FFF',
+        secondary: '#282828',
         'app-background': '#fff',
         orange: '#ff5a42',
         workItem: '#f5f5dc',

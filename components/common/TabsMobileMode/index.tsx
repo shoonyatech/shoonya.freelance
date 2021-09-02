@@ -31,7 +31,7 @@ export default function ScrollableTabsButtonForce() {
   }
 
   return (
-    <AppBar position="sticky" className={clsx(classes.root)} color="secondary">
+    <AppBar position="sticky" className={clsx(classes.root)} color="primary">
       <Tabs
         value={value}
         onChange={handleChange}
@@ -41,7 +41,7 @@ export default function ScrollableTabsButtonForce() {
         textColor="primary"
         aria-label="scrollable force tabs example"
       >
-        <Link href="/" passHref>
+        <Link href="/me" passHref>
           <Tab icon={<HomeIcon />} {...a11yProps(0)} label="" />
         </Link>
         <Link href="/settings" passHref>
