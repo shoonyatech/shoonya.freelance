@@ -1,34 +1,108 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# wallora.com
 
-## Getting Started
+Wallora webapp recreated using React
 
-First, run the development server:
+# Contributors
 
-```bash
-npm run dev
-# or
-yarn dev
+- Souvik Basu (@souvikbasu)
+- Victor Rajkumar (@vctc)
+- Priyanka Jayaswal (@priyankajayaswal1)
+- Aryaman Todkar (@aryamantodkar)
+- Mohammed Hussam Khatib (@hussamkhatib)
+- Kit So (@Kit486759)
+
+# Getting Started
+
+## To fork the repo
+
+- Go to https://github.com/shoonyatech/wallora.com
+- Click on Fork button in top right
+- This will fork the repo into your profile in GitHub
+
+## To get the code in your localhost
+
+- Go to the forked repo in your profile
+- Click Code button and copy the git url from your repo. You may use SSH if you have SSH keys added to settings or use HTTPS
+- If you have not added SSH keys to your GitHub settings, please follow [this article](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+- Open command prompt and run the following to fetch the code into your local box
+
+```
+git clone <your git url>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Create a reference to the upstream repo to be able to create Pull Requests
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```
+git remote add upstream git@github.com:shoonyatech/wallora.com.git
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## To run the project
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- For the first time install npm packages
 
-## Learn More
+```
+cd wallora.com
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+- Run the dev server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Run the storybook's explorer
 
-## Deploy on Vercel
+```
+npm run storybook
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### To use Auth0
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Use `wallora.test@gmail.com` to login to auth0 [website](https://auth0.auth0.com/u/login/) using google.
+- Copy `.env.local.sample` to `.env.local` and populate the fields from the app you see in auth0 post login.
+- After this when you run the dev server and try to login you should be able to see the auth0 login flow.
+
+Reference: https://auth0.com/docs/quickstart/webapp/nextjs
+
+### To use Google Analytics
+
+- Use `wallora.test@gmail.com` to login to google analytics [website](https://analytics.google.com/) using google.
+- Download two extensions [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger/jnkmfdileelhofjcijamephohjechhna) and [Tag Assistant companion](https://chrome.google.com/webstore/detail/tag-assistant-companion/jmekfmbnaedfebfnmakmokmlfpblbfdm/related)
+- Populate `.env.local` `NEXT_PUBLIC_GOOGLE_ANALYTICS` variable with `Measurement Id` poperty which can be found on GA portal [here](https://analytics.google.com/analytics/web/?authuser=3#/a196586595p271760400/admin/streams/table/2605551675) (accessible post login to GA).
+- After this run the dev server and enable the Google Analytics Debugger extension, then you should be able to see your activity flowing to GA homepage.
+
+References:
+
+- https://mariestarck.com/add-google-analytics-to-your-next-js-application-in-5-easy-steps/
+
+## To create a commit and raise a Pull Request (PR)
+
+- Save your changes and create a local commit
+- [commitizen](https://github.com/commitizen/cz-cli) is enabled to mantain a consistent commit format
+
+```
+doc|feat|fix|build(<page name>): <one liner of what is done in present tense>
+```
+
+e.g.
+
+```
+feat(home): add Header component
+```
+
+- Pull latest from upstream and rebase
+
+```
+git pull upstream main --rebase
+```
+
+- Resolve any merge conflicts
+- Force push changes to your repo
+
+```
+git push origin main -f
+```
+
+- Go to your GitHub repo page and click on Create Pull Request button. This will create a PR from your repo to upstream repo
+- One of the project moderators will review and approve your PR. They will ask for any changes if needed
