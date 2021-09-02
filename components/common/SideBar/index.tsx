@@ -1,10 +1,7 @@
 import { Divider, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
-import EqualizerIcon from '@material-ui/icons/Equalizer'
 import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp'
-import GroupIcon from '@material-ui/icons/Group'
 import HomeIcon from '@material-ui/icons/Home'
 import MenuIcon from '@material-ui/icons/Menu'
 import SettingsIcon from '@material-ui/icons/Settings'
@@ -70,46 +67,19 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Link href="/" passHref>
-            <img src="./images/wallora-logo-170x53.jpeg" alt="Wallora logo" className="block cursor-pointer" />
+            Shoonya
           </Link>
         </div>
 
         <Divider />
 
         <List>
-          <Link href="/dashboard" passHref>
-            <ListItem button key="Dashboard">
+          <Link href="/" passHref>
+            <ListItem button key="">
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItem>
-          </Link>
-
-          <Link href="/finance/actuals" passHref>
-            <ListItem button key="Finance">
-              <ListItemIcon>
-                <AttachMoneyIcon />
-              </ListItemIcon>
-              <ListItemText primary="Finance" />
-            </ListItem>
-          </Link>
-
-          <Link href="/contacts" passHref>
-            <ListItem button key="Contacts">
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <ListItemText primary="Contacts" />
-            </ListItem>
-          </Link>
-
-          <Link href="/analysis" passHref>
-            <ListItem button key="Analysis">
-              <ListItemIcon>
-                <EqualizerIcon />
-              </ListItemIcon>
-              <ListItemText primary="Analysis" />
+              <ListItemText primary="" />
             </ListItem>
           </Link>
         </List>
