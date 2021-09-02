@@ -2,10 +2,7 @@
 
 import { AppBar, Tab, Tabs } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
-import EqualizerIcon from '@material-ui/icons/Equalizer'
 import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp'
-import GroupIcon from '@material-ui/icons/Group'
 import HomeIcon from '@material-ui/icons/Home'
 import SettingsIcon from '@material-ui/icons/Settings'
 import clsx from 'clsx'
@@ -44,17 +41,8 @@ export default function ScrollableTabsButtonForce() {
         textColor="primary"
         aria-label="scrollable force tabs example"
       >
-        <Link href="/dashboard" passHref>
-          <Tab icon={<HomeIcon />} {...a11yProps(0)} label="Dashboard" />
-        </Link>
-        <Link href="/finance/actuals" passHref>
-          <Tab icon={<AttachMoneyIcon />} {...a11yProps(0)} label="Finance" />
-        </Link>
-        <Link href="/contacts" passHref>
-          <Tab icon={<GroupIcon />} {...a11yProps(1)} label="Contacts" />
-        </Link>
-        <Link href="/analysis" passHref>
-          <Tab icon={<EqualizerIcon />} {...a11yProps(2)} label="Analysis" />
+        <Link href="/" passHref>
+          <Tab icon={<HomeIcon />} {...a11yProps(0)} label="" />
         </Link>
         <Link href="/settings" passHref>
           <Tab icon={<SettingsIcon />} {...a11yProps(3)} label="Settings" />
