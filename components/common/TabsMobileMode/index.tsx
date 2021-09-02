@@ -31,7 +31,7 @@ export default function ScrollableTabsButtonForce() {
   }
 
   return (
-    <AppBar position="sticky" className={clsx(classes.root)} color="primary">
+    <AppBar position="sticky" className={clsx(classes.root)} color="secondary">
       <Tabs
         value={value}
         onChange={handleChange}

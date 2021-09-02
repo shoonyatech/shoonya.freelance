@@ -60,7 +60,7 @@ module.exports = {
         2: '2',
       },
       gridTemplateColumns: {
-        financeHeader: '24rem 1fr',
+        profile: '24rem 1fr',
       },
     },
   },

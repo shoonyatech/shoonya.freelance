@@ -6,7 +6,7 @@ import Bottom from '../Bottom'
 import Loader from '../Loader'
 import Top from '../Top'
 
-function BaseLayout({ children }: any): React.ReactElement {
+function Layout({ children }: any): React.ReactElement {
   const { user, isLoading, error } = useUser()
 
   if (isLoading || error)
@@ -19,7 +19,7 @@ function BaseLayout({ children }: any): React.ReactElement {
   return (
     <div className="container min-w-full grid-cols-1 grid-rows-3 overflow-x-hidden">
       <Head>
-        <title>Wallora</title>
+        <title>Shoonya</title>
         <link rel="icon" href="assets/favicon.ico" />
         <link rel="manifest" href="assets/site.webmanifest" />
         <link rel="mask-icon" href="assets/safari-pinned-tab.svg" color="#5bbad5" />
@@ -34,10 +34,10 @@ function BaseLayout({ children }: any): React.ReactElement {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       </Head>
       <Top user={user} />
-      <main className="pl-16 min-h-screen"> {children} </main>
+      <main className="sm:ml-[57px] min-h-screen"> {children} </main>
       <Bottom user={user} />
     </div>
   )
 }
 
-export default BaseLayout
+export default Layout

@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 
 import GetApolloClient from '../apis/apollo.client'
-import BaseLayout from '../components/common/BaseLayout'
+import Layout from '../components/common/Layout'
 import * as ga from '../lib/ga'
 import MaterialUiTheme from '../styles/material.ui.theme.provider'
 
@@ -43,9 +43,9 @@ export default function WalloraApp({ Component, pageProps }: AppProps) {
     <ApolloProvider client={GetApolloClient()}>
       <ThemeProvider theme={MaterialUiTheme}>
         <UserProvider>
-          <BaseLayout>
+          <Layout>
             <Component {...pageProps} />
-          </BaseLayout>
+          </Layout>
         </UserProvider>
       </ThemeProvider>
     </ApolloProvider>
