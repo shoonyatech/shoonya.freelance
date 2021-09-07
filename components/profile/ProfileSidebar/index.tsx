@@ -1,5 +1,11 @@
 import React from 'react'
 
-const ProfileSidebar = () => <div className="bg-blue-400 text-white">Contacts, skills and others</div>
+import Contacts from '../Contacts'
+
+const ProfileSidebar = () => (
+  <div className="bg-resume py-4">
+    <Contacts />
+  </div>
+)
 
 export default ProfileSidebar

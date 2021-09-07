@@ -1,6 +1,6 @@
 module.exports = {
   mode: 'jit',
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  purge: ['./pages/**/*.tsx', './components/**/*.tsx'],
   darkMode: false,
   theme: {
     extend: {
@@ -25,6 +25,7 @@ module.exports = {
         summaryItemTitle: 'rgb(209,213,219)',
         summaryModalBackground: 'rgb(255,255,255)',
         summaryBackground: 'rgb(0,0,0,0.5)',
+        resume: '#dfe5cb',
       },
       fontFamily: {
         sans: [
@@ -60,7 +61,7 @@ module.exports = {
         2: '2',
       },
       gridTemplateColumns: {
-        profile: '24rem 1fr',
+        profile: '18rem 1fr',
       },
     },
   },
