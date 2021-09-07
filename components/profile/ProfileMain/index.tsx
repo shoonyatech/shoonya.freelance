@@ -1,5 +1,11 @@
 import React from 'react'
 
-const ProfileMain = () => <div>Bio , experience goes here</div>
+import Bio from '../Bio'
+
+const ProfileMain = () => (
+  <div>
+    <Bio />
+  </div>
+)
 
 export default ProfileMain
