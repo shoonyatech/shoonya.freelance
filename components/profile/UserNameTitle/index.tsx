@@ -1,42 +1,98 @@
 /* eslint-disable react/button-has-type */
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+
+interface UserObj {
+  name: string
+  title: string
+}
 
 const GET_USER = gql`
-{
-	user(_id: "613890d00e9d3a2bfc8dd2f7"){ 
-    name
-    title
+  {
+    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+      name
+      title
+    }
   }
-}`
+`
+const UPDATE_USER = gql`
+  mutation UpdateUserNameTitle($_id: ID!, $name: String, $title: String) {
+    updateUserNameTitle(_id: $_id, name: $name, title: $title) {
+      name
+      title
+    }
+  }
+`
 
 const UserNameTitle = () => {
   const [edit, setEdit] = useState<boolean>(false)
-  const { loading, error, data } = useQuery(GET_USER);
-  const toggleEdit = () => {
-    setEdit(!edit)
+  const { loading, data } = useQuery(GET_USER)
+  const [updateUserNameTitle, { error }] = useMutation(UPDATE_USER)
+
+  const [nameTitle, setNameTitle] = useState<UserObj>({
+    name: '',
+    title: '',
+  })
+
+  useEffect(() => {
+    if (data) {
+      setNameTitle({
+        name: data.user.name,
+        title: data.user.title,
+      })
+    }
+  }, [data])
+
+  if (loading) return <div>Loading...</div>
+
+  if (error) return <div>Error! ${error.message}</div>
+
+  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setNameTitle({
+      ...nameTitle,
+      [evt.target.name]: evt.target.value,
+    })
   }
 
-  if (loading) return <div>Loading...</div>;
-
-  if (error) return <div>Error! ${error.message}</div>;
-  const { user } = data
+  const updateUser = () => {
+    setEdit(!edit)
+    updateUserNameTitle({
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', name: nameTitle.name, title: nameTitle.title },
+      refetchQueries: [{ query: GET_USER }],
+    })
+  }
 
   return (
     <div className="bg-resume flex flex-col justify-center p-6">
       {edit ? (
         <>
           <div className="flex flex-col ">
-            <TextField label="Name" defaultValue={user.name} color="secondary" margin="dense" variant="outlined" />
-            <TextField label="Title" defaultValue={user.title} color="secondary" margin="dense" variant="outlined" />
-            <div className='self-end'>
-              <Button onClick={()=>toggleEdit()} variant="contained" color="secondary">
+            <TextField
+              name="name"
+              label="Name"
+              onChange={handleChange}
+              value={nameTitle.name}
+              color="secondary"
+              margin="dense"
+              variant="outlined"
+            />
+            <TextField
+              name="title"
+              label="Title"
+              onChange={handleChange}
+              value={nameTitle.title}
+              color="secondary"
+              margin="dense"
+              variant="outlined"
+            />
+            <div className="self-end">
+              <Button onClick={() => setEdit(!edit)} variant="contained" color="secondary">
                 Cancel
               </Button>
-              <Button onClick={()=>toggleEdit()} variant="contained" color="primary">
+              <Button onClick={() => updateUser()} variant="contained" color="primary">
                 Save
               </Button>
             </div>
@@ -45,12 +101,12 @@ const UserNameTitle = () => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            <button className="self-start" onClick={() => toggleEdit()}>
+            <button className="self-start" onClick={() => setEdit(!edit)}>
               <EditIcon />
             </button>
 
-            <h1 className="text-black text-5xl">{user.name}</h1>
-            <h3 className="">{user.title} </h3>
+            <h1 className="text-black text-5xl">{data.user.name}</h1>
+            <h3 className="">{data.user.title} </h3>
           </div>
         </>
       )}
