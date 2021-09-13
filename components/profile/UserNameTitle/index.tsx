@@ -57,11 +57,19 @@ const UserNameTitle = () => {
     })
   }
 
-  const updateUser = () => {
-    setEdit(!edit)
-    updateUserNameTitle({
+  const updateUser = async () => {
+    await updateUserNameTitle({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', name: nameTitle.name, title: nameTitle.title },
       refetchQueries: [{ query: GET_USER }],
+    })
+    setEdit(!edit)
+  }
+
+  const cancelUpdateUser = () => {
+    setEdit(false)
+    setNameTitle({
+      name: data.user.name,
+      title: data.user.title,
     })
   }
 
@@ -89,10 +97,10 @@ const UserNameTitle = () => {
               variant="outlined"
             />
             <div className="self-end">
-              <Button onClick={() => setEdit(!edit)} variant="contained" color="secondary">
+              <Button className="ml-1" onClick={() => cancelUpdateUser()} variant="contained" color="secondary">
                 Cancel
               </Button>
-              <Button onClick={() => updateUser()} variant="contained" color="primary">
+              <Button className="ml-1" onClick={() => updateUser()} variant="contained" color="primary">
                 Save
               </Button>
             </div>
