@@ -39,7 +39,7 @@ function Sidebar() {
   return (
     <AppBar position="static">
       <Toolbar variant="dense">
-        <div>
+        <div style={{ display: 'flex' }}>
           <IconButton aria-label="menu" onClick={handleOpen}>
             <MenuIcon style={{ display: 'flex' }} />
           </IconButton>
