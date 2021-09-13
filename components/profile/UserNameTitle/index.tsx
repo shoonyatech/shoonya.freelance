@@ -32,18 +32,20 @@ const UserNameTitle = () => {
   const { loading, data } = useQuery(GET_USER)
   const [updateUserNameTitle, { error }] = useMutation(UPDATE_USER)
 
-  const [nameTitle, setNameTitle] = useState<UserObj>({
+  const initialVal = {
     name: '',
     title: '',
-  })
+  }
+
+  const [nameTitle, setNameTitle] = useState<UserObj>(initialVal)
 
   useEffect(() => {
-    if (data) {
+    if (data?.user) {
       setNameTitle({
         name: data.user.name,
         title: data.user.title,
       })
-    }
+    } else setEdit(true)
   }, [data])
 
   if (loading) return <div>Loading...</div>
@@ -66,12 +68,16 @@ const UserNameTitle = () => {
   }
 
   const cancelUpdateUser = () => {
-    setEdit(false)
-    setNameTitle({
-      name: data.user.name,
-      title: data.user.title,
-    })
+    if (data?.user) {
+      setNameTitle({
+        name: data.user.name,
+        title: data.user.title,
+      })
+      setEdit(false)
+    } else setNameTitle(initialVal)
   }
+
+  const { name, title } = data?.user
 
   return (
     <div className="bg-resume flex flex-col justify-center p-6">
@@ -86,6 +92,7 @@ const UserNameTitle = () => {
               color="secondary"
               margin="dense"
               variant="outlined"
+              required
             />
             <TextField
               name="title"
@@ -113,8 +120,8 @@ const UserNameTitle = () => {
               <EditIcon />
             </button>
 
-            <h1 className="text-black text-5xl">{data.user.name}</h1>
-            <h3 className="">{data.user.title} </h3>
+            <h1 className="text-black text-5xl">{name}</h1>
+            <h3>{title} </h3>
           </div>
         </>
       )}

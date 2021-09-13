@@ -28,9 +28,9 @@ const Bio = () => {
   const [bio, setBio] = useState<null | String>('')
 
   useEffect(() => {
-    if (data) {
+    if (data?.user?.bio) {
       setBio(data.user.bio)
-    }
+    } else setEdit(true)
   }, [data])
   if (loading) return <div>Loading...</div>
 
@@ -48,8 +48,10 @@ const Bio = () => {
   }
 
   const cancelUpdateUser = () => {
-    setEdit(false)
-    setBio(data.user.bio)
+    if (data?.user?.bio) {
+      setBio(data.user.bio)
+      setEdit(false)
+    } else setBio('')
   }
 
   return (
@@ -66,6 +68,7 @@ const Bio = () => {
             rows={4}
             variant="outlined"
             color="secondary"
+            required
             fullWidth
           />
           <div className="self-end pt-2">
@@ -82,7 +85,7 @@ const Bio = () => {
           <button className="self-start" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
-          <div>{data.user.bio}</div>
+          <div>{data?.user?.bio}</div>
         </div>
       )}
     </div>
