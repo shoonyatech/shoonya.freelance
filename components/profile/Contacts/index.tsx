@@ -54,14 +54,16 @@ const Contacts = () => {
   const { loading, data } = useQuery(GET_USER)
   const [updateUserContact, { error }] = useMutation(UPDATE_USER)
 
-  const [contact, setContact] = useState<ContactObj>({
+  const initialVal = {
     location: '',
     phone: '',
     mail: '',
     linkedin: '',
     github: '',
     twitter: '',
-  })
+  }
+
+  const [contact, setContact] = useState<ContactObj>(initialVal)
 
   useEffect(() => {
     if (data?.user?.contact)
@@ -96,7 +98,7 @@ const Contacts = () => {
   }
 
   const cancelUpdateUser = () => {
-    if (data.user.contact) {
+    if (data?.user?.contact) {
       setContact({
         location: data.user.contact.location,
         phone: data.user.contact.phone,
@@ -106,15 +108,7 @@ const Contacts = () => {
         twitter: data.user.contact.twitter,
       })
       setEdit(false)
-    } else
-      setContact({
-        location: '',
-        phone: '',
-        mail: '',
-        linkedin: '',
-        github: '',
-        twitter: '',
-      })
+    } else setContact(initialVal)
   }
 
   const { location, phone, mail, linkedin, github, twitter } = data?.user?.contact
@@ -136,7 +130,16 @@ const Contacts = () => {
             margin="dense"
             variant="outlined"
           />
-          <TextField className="self-start" label="phone" color="secondary" margin="dense" variant="outlined" />
+          <TextField
+            className="self-start"
+            label="phone"
+            name="phone"
+            onChange={handleChange}
+            value={contact.phone}
+            color="secondary"
+            margin="dense"
+            variant="outlined"
+          />
           <TextField
             className="self-start"
             label="mail"
@@ -197,35 +200,35 @@ const Contacts = () => {
             {location ? (
               <li className="pb-1">
                 <RoomIcon />
-                <span>{location}</span>
+                <span className="break-all">{location}</span>
               </li>
             ) : null}
             {phone ? (
               <li className="pb-1">
-                <PhoneIcon /> <span>{phone}</span>
+                <PhoneIcon /> <span className="break-all">{phone}</span>
               </li>
             ) : null}
             {mail ? (
               <li className="pb-1">
-                <MailIcon /> <span>{mail}</span>
+                <MailIcon /> <span className="break-all">{mail}</span>
               </li>
             ) : null}
 
             {linkedin ? (
               <li className="pb-1">
-                <LinkedInIcon /> <span>{linkedin}</span>
+                <LinkedInIcon /> <span className="break-all">{linkedin}</span>
               </li>
             ) : null}
 
             {github ? (
               <li className="pb-1">
-                <GitHubIcon /> <span>{github}</span>
+                <GitHubIcon /> <span className="break-all">{github}</span>
               </li>
             ) : null}
 
             {twitter ? (
               <li className="pb-1">
-                <TwitterIcon /> <span>{twitter}</span>
+                <TwitterIcon /> <span className="break-all">{twitter}</span>
               </li>
             ) : null}
           </ul>

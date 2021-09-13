@@ -24,7 +24,7 @@ const UPDATE_USER = gql`
 `
 
 const Avatar = () => {
-  const [edit, setEdit] = useState<boolean>(true)
+  const [edit, setEdit] = useState<boolean>(false)
   const [picture, setPicture] = useState<URL | null>(null)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserPicture, { error }] = useMutation(UPDATE_USER)
@@ -50,13 +50,12 @@ const Avatar = () => {
     })
     setEdit(true)
   }
+
   useEffect(() => {
-    if (data) {
-      if (data.user.picture) {
-        setPicture(data.user.picture)
-        setEdit(false)
-      }
-    }
+    if (data?.user?.picture) {
+      setPicture(data.user.picture)
+      setEdit(false)
+    } else setEdit(true)
   }, [data])
   if (loading) return <div>Loadixng...</div>
 
