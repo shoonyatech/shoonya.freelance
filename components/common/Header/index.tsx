@@ -3,7 +3,7 @@ import { AppBar, Button } from '@material-ui/core'
 // import Link from 'next/link'
 import React from 'react'
 
-import Sidebars from '../Drawer'
+import Sidebar from '../Drawer'
 
 const Header = () => (
   <AppBar position="static">
@@ -14,7 +14,7 @@ const Header = () => (
         </a>
       </Link> */}
       <div className="block cursor-pointer">
-        <Sidebars />
+        <Sidebar />
       </div>
       <div className="m-2">
         <Button variant="contained" color="primary" className="block" href="/api/auth/login">
