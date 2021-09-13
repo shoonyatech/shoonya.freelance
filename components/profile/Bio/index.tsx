@@ -39,37 +39,44 @@ const Bio = () => {
     setBio(evt.target.value)
   }
 
-  const updateUser = () => {
-    setEdit(!edit)
-    updateUserBio({
+  const updateUser = async () => {
+    await updateUserBio({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', bio },
       refetchQueries: [{ query: GET_USER }],
     })
+    setEdit(!edit)
+  }
+
+  const cancelUpdateUser = () => {
+    setEdit(false)
+    setBio(data.user.bio)
   }
 
   return (
     <div className="p-6">
+      <h3 className="text-xl md:text-2xl">Bio</h3>
       {edit ? (
-          <div className="flex flex-col ">
-            <TextField
-              id="outlined-multiline-static"
-              label="Bio"
-              multiline
-              onChange={handleChange}
-              rows={4}
-              variant="outlined"
-              color="secondary"
-              fullWidth
-            />
-            <div className="self-end m-2">
-              <Button className="mx-1" onClick={() => setEdit(!edit)} variant="contained" color="secondary">
-                Cancel
-              </Button>
-              <Button className="mx-1" onClick={() => updateUser()} variant="contained" color="primary">
-                Save
-              </Button>
-            </div>
+        <div className="flex flex-col ">
+          <TextField
+            id="outlined-multiline-static"
+            label="Bio"
+            value={bio}
+            multiline
+            onChange={handleChange}
+            rows={4}
+            variant="outlined"
+            color="secondary"
+            fullWidth
+          />
+          <div className="self-end pt-2">
+            <Button className="ml-1" onClick={() => cancelUpdateUser()} variant="contained" color="secondary">
+              Cancel
+            </Button>
+            <Button className="ml-1" onClick={() => updateUser()} variant="contained" color="primary">
+              Save
+            </Button>
           </div>
+        </div>
       ) : (
         <div>
           <button className="self-start" onClick={() => setEdit(true)}>

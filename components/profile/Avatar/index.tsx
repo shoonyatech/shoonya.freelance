@@ -28,11 +28,12 @@ const Avatar = () => {
   const [picture, setPicture] = useState<URL | null>(null)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserPicture, { error }] = useMutation(UPDATE_USER)
-  const uploadImage = (files: any) => {
+
+  const uploadImage = async (files: any) => {
     const formData = new FormData()
     formData.append('file', files[0])
     formData.append('upload_preset', 'shoonya')
-    Axios.post('https://api.cloudinary.com/v1_1/dbbunxz2o/upload', formData).then((response) => {
+    await Axios.post('https://api.cloudinary.com/v1_1/dbbunxz2o/upload', formData).then((response) => {
       updateUserPicture({
         variables: { _id: '613890d00e9d3a2bfc8dd2f7', picture: response.data.secure_url },
         refetchQueries: [{ query: GET_USER }],
@@ -42,8 +43,8 @@ const Avatar = () => {
     })
   }
 
-  const removeImage = () => {
-    updateUserPicture({
+  const removeImage = async () => {
+    await updateUserPicture({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', picture: null },
       refetchQueries: [{ query: GET_USER }],
     })
