@@ -1,11 +1,11 @@
 import { Meta } from '@storybook/react'
 import React from 'react'
 
-import Header from '.'
+import NavBar from '.'
 
 export default {
   title: 'Header',
-  component: Header,
+  component: NavBar,
 } as Meta
 
-export const LogIn: React.VFC<{}> = () => <Header />
+export const LogIn: React.VFC<{}> = () => <NavBar />

@@ -1,5 +1,4 @@
 module.exports = {
-  mode: 'jit',
   purge: ['./pages/**/*.tsx', './components/**/*.tsx'],
   darkMode: false,
   theme: {
@@ -14,18 +13,10 @@ module.exports = {
       },
       // compiled the css with the below primary and secondary colors and linked with _app.tsx.
       colors: {
-        primary: '#FFF',
-        secondary: '#282828',
-        'app-background': '#fff',
         orange: '#ff5a42',
-        workItem: '#f5f5dc',
-        workItemActive: '#81816d',
-        plannedIncome: 'rgba(97,255,42,.43)',
-        plannedExpense: 'rgba(255,114,114,.49)',
-        summaryItemTitle: 'rgb(209,213,219)',
-        summaryModalBackground: 'rgb(255,255,255)',
-        summaryBackground: 'rgb(0,0,0,0.5)',
         resume: '#dfe5cb',
+        primary: '#282828',
+        secondary: '#FFF',
       },
       fontFamily: {
         sans: [

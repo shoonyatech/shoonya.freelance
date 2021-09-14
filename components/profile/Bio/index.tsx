@@ -30,6 +30,7 @@ const Bio = () => {
   useEffect(() => {
     if (data?.user?.bio) {
       setBio(data.user.bio)
+      setEdit(false)
     } else setEdit(true)
   }, [data])
   if (loading) return <div>Loading...</div>
@@ -56,7 +57,12 @@ const Bio = () => {
 
   return (
     <div className="p-6">
-      <h3 className="text-xl md:text-2xl">Bio</h3>
+      {!edit ? (
+        <button className="float-right" onClick={() => setEdit(true)}>
+          <EditIcon />
+        </button>
+      ) : null}
+      <h3 className="text-xl md:text-2xl uppercase pb-3">bio</h3>
       {edit ? (
         <div className="flex flex-col ">
           <TextField
@@ -82,9 +88,6 @@ const Bio = () => {
         </div>
       ) : (
         <div>
-          <button className="self-start" onClick={() => setEdit(true)}>
-            <EditIcon />
-          </button>
           <div>{data?.user?.bio}</div>
         </div>
       )}

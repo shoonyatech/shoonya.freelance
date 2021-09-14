@@ -34,7 +34,7 @@ function Layout({ children }: any): React.ReactElement {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       </Head>
       <Top user={user} />
-      <main className="sm:ml-[57px] min-h-screen"> {children} </main>
+      <main> {children} </main>
       <Bottom user={user} />
     </div>
   )
