@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       '@media (max-width:639px)': { display: 'none' },
     },
     drawerOpen: {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
       width: drawerWidth,
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
     },
     drawerClose: {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -69,12 +69,14 @@ export default function MiniDrawer() {
           }),
         }}
       >
-        <div className="pl-0 pr-0 flex">
-          <IconButton onClick={toggleIsOn} color="primary" aria-label="open drawer" className="w-14 h-14">
-            <MenuIcon color="primary" />
+        <div className="pl-0 pr-0 flex items-center">
+          <IconButton onClick={toggleIsOn} color="secondary" aria-label="open drawer" className="w-14 h-14">
+            <MenuIcon color="secondary" />
           </IconButton>
           <Link href="/" passHref>
-            <a className="text-white">Shoonya</a>
+            <a>
+              <h1 className="font-bold text-white text-xl md:text-2xl">Shoonya</h1>
+            </a>
           </Link>
         </div>
 
@@ -84,7 +86,7 @@ export default function MiniDrawer() {
           <Link href="/" passHref>
             <ListItem button className={classes.list} key="home">
               <ListItemIcon>
-                <HomeIcon color="primary" />
+                <HomeIcon color="secondary" />
               </ListItemIcon>
               <ListItemText primary="home" />
             </ListItem>
@@ -93,10 +95,10 @@ export default function MiniDrawer() {
         <List style={{ marginTop: `auto` }}>
           <Divider />
           <List>
-            <Link href="/" passHref>
+            <Link href="/me" passHref>
               <ListItem button className={classes.list} key="profile">
                 <ListItemIcon>
-                  <Image src={user?.picture} alt="avatar" height="28" width="28" />
+                  <Image className='rounded-full' src={user?.picture}  alt="avatar" height="28" width="28" />
                 </ListItemIcon>
                 <ListItemText primary="profile" />
               </ListItem>
@@ -106,7 +108,7 @@ export default function MiniDrawer() {
           <Link href="/settings" passHref>
             <ListItem button className={classes.list} key="Settings">
               <ListItemIcon>
-                <SettingsIcon color="primary" />
+                <SettingsIcon color="secondary" />
               </ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItem>
@@ -114,7 +116,7 @@ export default function MiniDrawer() {
           <Link href="/api/auth/logout" passHref>
             <ListItem button className={classes.list} key="Sign out">
               <ListItemIcon>
-                <ExitToAppSharpIcon color="primary" />
+                <ExitToAppSharpIcon color="secondary" />
               </ListItemIcon>
               <ListItemText primary="Sign out" />
             </ListItem>

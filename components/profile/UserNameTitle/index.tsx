@@ -45,6 +45,7 @@ const UserNameTitle = () => {
         name: data.user.name,
         title: data.user.title,
       })
+      setEdit(false)
     } else setEdit(true)
   }, [data])
 

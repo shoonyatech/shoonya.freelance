@@ -66,7 +66,7 @@ const Contacts = () => {
   const [contact, setContact] = useState<ContactObj>(initialVal)
 
   useEffect(() => {
-    if (data?.user?.contact)
+    if (data?.user?.contact) {
       setContact({
         location: data.user.contact.location,
         phone: data.user.contact.phone,
@@ -75,7 +75,8 @@ const Contacts = () => {
         github: data.user.contact.github,
         twitter: data.user.contact.twitter,
       })
-    else setEdit(true)
+      setEdit(false)
+    } else setEdit(true)
   }, [data])
 
   if (loading) return <div>Loading...</div>
@@ -115,7 +116,12 @@ const Contacts = () => {
 
   return (
     <div className="px-6">
-      <div>CONTACTS</div>
+      {!edit ? (
+        <button className="float-right" onClick={() => setEdit(true)}>
+          <EditIcon />
+        </button>
+      ) : null}
+      <h3 className="text-xl md:text-2xl  uppercase pb-3">contacts</h3>
 
       {edit ? (
         <div className="flex flex-col w-max">
@@ -193,9 +199,6 @@ const Contacts = () => {
         </div>
       ) : (
         <>
-          <button className="self-start pb-3" onClick={() => setEdit(true)}>
-            <EditIcon />
-          </button>
           <ul className="list-none">
             {location ? (
               <li className="pb-1">
