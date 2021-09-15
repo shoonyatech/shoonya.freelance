@@ -92,7 +92,7 @@ const Contacts = () => {
 
   const updateUser = async () => {
     await updateUserContact({
-      variables: { _id: '6134b89dc6afe90180393569', contact },
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', contact },
       refetchQueries: [{ query: GET_USER }],
     })
     setEdit(!edit)
