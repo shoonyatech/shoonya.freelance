@@ -1,17 +1,27 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/button-has-type */
+import 'react-datepicker/dist/react-datepicker.css'
+
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import DatePicker from 'react-datepicker'
 
 interface professionalExperienceObj {
   company: string
-  jobtitle: string
+  jobTitle: string
   date: string
   location: string
+  startYear: number
+  endYear: number | null
+  currentJob: boolean
 }
 
 const GET_USER = gql`
@@ -20,8 +30,10 @@ const GET_USER = gql`
       professionalExperience {
         company
         location
-        date
-        jobtitle
+        jobTitle
+        currentJob
+        startYear
+        endYear
       }
     }
   }
@@ -32,9 +44,11 @@ const UPDATE_USER = gql`
     updateUserProfessionalExperience(_id: $_id, professionalExperience: $professionalExperience) {
       professionalExperience {
         company
-        jobtitle
-        date
         location
+        jobTitle
+        currentJob
+        startYear
+        endYear
       }
     }
   }
@@ -67,10 +81,19 @@ const ProfessionalExperience = () => {
 
   if (error) return <div>Error! ${error.message}</div>
 
-  const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (index: number, type: any) => (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = type === 'checkbox' ? evt.target.checked : evt.target.value
     setProfessionalExp([
       ...professionalExp.slice(0, index),
-      { ...professionalExp[index], [evt.target.name]: evt.target.value },
+      { ...professionalExp[index], [evt.target.name]: value },
+      ...professionalExp.slice(index + 1),
+    ])
+  }
+
+  const handleTimeChange = (date: Date, index: number, startOrEnd: string) => {
+    setProfessionalExp([
+      ...professionalExp.slice(0, index),
+      { ...professionalExp[index], [startOrEnd]: date.getFullYear() },
       ...professionalExp.slice(index + 1),
     ])
   }
@@ -97,9 +120,12 @@ const ProfessionalExperience = () => {
       ...professionalExp,
       {
         company: '',
-        jobtitle: '',
+        jobTitle: '',
         date: '',
         location: '',
+        startYear: new Date().getFullYear(),
+        endYear: new Date().getFullYear(),
+        currentJob: false,
       },
     ])
   }
@@ -115,7 +141,7 @@ const ProfessionalExperience = () => {
         ) : null}
       </div>
       {edit ? (
-        <form className='flex flex-col' onSubmit={updateUser}>
+        <form className="flex flex-col" onSubmit={updateUser}>
           <div>
             {professionalExp.map((details, i: number) => (
               <div key={i} className="flex flex-col pb-10">
@@ -123,26 +149,27 @@ const ProfessionalExperience = () => {
                   id="outlined-m  ultiline-static"
                   label="Job Title"
                   margin="dense"
-                  value={details.jobtitle}
-                  name="jobtitle"
-                  onChange={handleChange(i)}
+                  value={details.jobTitle}
+                  name="jobTitle"
+                  onChange={handleChange(i, 'Job title')}
                   rows={4}
                   variant="outlined"
                   color="primary"
                   required
                   fullWidth
                 />
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2 gap-x-4">
                   <TextField
                     id="outlined-multiline-static"
                     label="Company"
                     name="company"
                     margin="dense"
                     value={details.company}
-                    onChange={handleChange(i)}
+                    onChange={handleChange(i, 'Company')}
                     rows={4}
                     variant="outlined"
                     color="primary"
+                    fullWidth
                     required
                   />
                   <TextField
@@ -151,23 +178,46 @@ const ProfessionalExperience = () => {
                     name="location"
                     margin="dense"
                     value={details.location}
-                    onChange={handleChange(i)}
+                    onChange={handleChange(i, 'location')}
                     rows={4}
                     variant="outlined"
                     color="primary"
+                    fullWidth
                     required
                   />
-                  <TextField
-                    id="outlined-multiline-static"
-                    name="date"
-                    label="Date"
-                    value={details.date}
-                    onChange={handleChange(i)}
-                    rows={4}
-                    margin="dense"
-                    variant="outlined"
-                    color="primary"
-                    required
+                </div>
+                <div className="flex">
+                  <div>
+                    <label>Start Year</label>
+                    <DatePicker
+                      selected={new Date(`${details?.startYear}`)}
+                      onChange={(date: Date) => handleTimeChange(date, i, 'startYear')}
+                      showYearPicker
+                      dateFormat="yyyy"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="endYear" className="text-gray-400">
+                      End Year
+                    </label>
+                    <DatePicker
+                      disabled={details.currentJob}
+                      selected={details?.endYear && !details.currentJob ? new Date(`${details?.endYear}`) : null}
+                      onChange={(date: Date) => handleTimeChange(date, i, 'endYear')}
+                      showYearPicker
+                      dateFormat="yyyy"
+                    />
+                  </div>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={details.currentJob}
+                        onChange={handleChange(i, 'checkbox')}
+                        name="currentJob"
+                        color="primary"
+                      />
+                    }
+                    label="currentJob"
                   />
                 </div>
               </div>
@@ -177,7 +227,7 @@ const ProfessionalExperience = () => {
             <AddIcon />
           </Button>
           <div className="self-end pt-2">
-            <Button type='submit' variant="contained" color="primary">
+            <Button type="submit" variant="contained" color="primary">
               Save
             </Button>
             <Button onClick={() => cancelUpdateUser()} variant="contained" color="secondary">
@@ -189,9 +239,10 @@ const ProfessionalExperience = () => {
         <div>
           {data.user.professionalExperience.map((details, i): any => (
             <div className="pb-10" key={i}>
-              <div className="font-bold">{details.jobtitle}</div>
+              <div className="font-bold">{details.jobTitle}</div>
               <div>
-                <span className="uppercase">{details.company} </span>| {details.location} | {details.date}
+                <span className="uppercase">{details.company} </span>| {details.location} | {details.startYear} -{' '}
+                {details.currentJob ? 'PRESENT' : details.endYear}
               </div>
             </div>
           ))}
