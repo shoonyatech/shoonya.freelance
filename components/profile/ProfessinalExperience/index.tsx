@@ -10,9 +10,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import AddIcon from '@material-ui/icons/Add'
+import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
+
+import TextEditor from '../TextEditor'
+import TextEditorReadOnly from '../TextEditorReadOnly'
 
 interface professionalExperienceObj {
   company: string
@@ -22,6 +26,7 @@ interface professionalExperienceObj {
   startYear: number
   endYear: number | null
   currentJob: boolean
+  description: string
 }
 
 const GET_USER = gql`
@@ -34,6 +39,7 @@ const GET_USER = gql`
         currentJob
         startYear
         endYear
+        description
       }
     }
   }
@@ -49,6 +55,7 @@ const UPDATE_USER = gql`
         currentJob
         startYear
         endYear
+        description
       }
     }
   }
@@ -90,6 +97,14 @@ const ProfessionalExperience = () => {
     ])
   }
 
+  const handleEditorChange = (index: number) => (evt: any) => {
+    setProfessionalExp([
+      ...professionalExp.slice(0, index),
+      { ...professionalExp[index], description: evt },
+      ...professionalExp.slice(index + 1),
+    ])
+  }
+
   const handleTimeChange = (date: Date, index: number, startOrEnd: string) => {
     setProfessionalExp([
       ...professionalExp.slice(0, index),
@@ -126,8 +141,17 @@ const ProfessionalExperience = () => {
         startYear: new Date().getFullYear(),
         endYear: new Date().getFullYear(),
         currentJob: false,
+        description: '',
       },
     ])
+  }
+
+  const handleDelete = async (i: number) => {
+    setProfessionalExp(professionalExp.splice(i, 1))
+    await updateUserProfessionalExperience({
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', professionalExperience: professionalExp },
+      refetchQueries: [{ query: GET_USER }],
+    })
   }
 
   return (
@@ -144,7 +168,10 @@ const ProfessionalExperience = () => {
         <form className="flex flex-col" onSubmit={updateUser}>
           <div>
             {professionalExp.map((details, i: number) => (
-              <div key={i} className="flex flex-col pb-10">
+              <div key={i} className="flex flex-col pb-28">
+                <Button onClick={() => handleDelete(i)} className={classes.btn}>
+                  <DeleteIcon color="error" />
+                </Button>
                 <TextField
                   id="outlined-m  ultiline-static"
                   label="Job Title"
@@ -220,6 +247,10 @@ const ProfessionalExperience = () => {
                     label="currentJob"
                   />
                 </div>
+                <div className="pt-6">
+                  <div className="text-xl md:text-2xl">Description</div>
+                  <TextEditor handleEditorChange={handleEditorChange(i)} defaultValue={details.description} />
+                </div>
               </div>
             ))}
           </div>
@@ -244,6 +275,7 @@ const ProfessionalExperience = () => {
                 <span className="uppercase">{details.company} </span>| {details.location} | {details.startYear} -{' '}
                 {details.currentJob ? 'PRESENT' : details.endYear}
               </div>
+              <TextEditorReadOnly defaultValue={details.description} />
             </div>
           ))}
         </div>
