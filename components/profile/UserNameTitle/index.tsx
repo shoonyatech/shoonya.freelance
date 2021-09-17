@@ -1,6 +1,7 @@
 /* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, useEffect, useState } from 'react'
@@ -27,8 +28,21 @@ const UPDATE_USER = gql`
   }
 `
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    btn: {
+      alignSelf: 'flex-end',
+      borderRadius: '999px',
+    },
+    savecancelbtn: {
+      marginRight: '.5rem',
+    },
+  })
+)
+
 const UserNameTitle = () => {
   const [edit, setEdit] = useState<boolean>(false)
+  const classes = useStyles()
   const { loading, data } = useQuery(GET_USER)
   const [updateUserNameTitle, { error }] = useMutation(UPDATE_USER)
 
@@ -78,8 +92,6 @@ const UserNameTitle = () => {
     } else setNameTitle(initialVal)
   }
 
-  const { name, title } = data?.user
-
   return (
     <div className="bg-resume flex flex-col justify-center p-6">
       {edit ? (
@@ -90,7 +102,7 @@ const UserNameTitle = () => {
               label="Name"
               onChange={handleChange}
               value={nameTitle.name}
-              color="secondary"
+              color="primary"
               margin="dense"
               variant="outlined"
               required
@@ -100,16 +112,26 @@ const UserNameTitle = () => {
               label="Title"
               onChange={handleChange}
               value={nameTitle.title}
-              color="secondary"
+              color="primary"
               margin="dense"
               variant="outlined"
             />
-            <div className="self-end">
-              <Button className="ml-1" onClick={() => cancelUpdateUser()} variant="contained" color="secondary">
-                Cancel
-              </Button>
-              <Button className="ml-1" onClick={() => updateUser()} variant="contained" color="primary">
+            <div className="pt-1 self-end">
+              <Button
+                className={classes.savecancelbtn}
+                onClick={() => updateUser()}
+                variant="contained"
+                color="primary"
+              >
                 Save
+              </Button>
+              <Button
+                className={classes.savecancelbtn}
+                onClick={() => cancelUpdateUser()}
+                variant="contained"
+                color="secondary"
+              >
+                Cancel
               </Button>
             </div>
           </div>
@@ -121,8 +143,8 @@ const UserNameTitle = () => {
               <EditIcon />
             </button>
 
-            <h1 className="text-black text-5xl">{name}</h1>
-            <h3>{title} </h3>
+            <h1 className="text-black text-5xl">{data.user.name}</h1>
+            <h3>{data.user.title} </h3>
           </div>
         </>
       )}
