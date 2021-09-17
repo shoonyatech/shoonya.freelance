@@ -9,7 +9,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
@@ -21,7 +20,6 @@ import TextEditorReadOnly from '../TextEditorReadOnly'
 interface professionalExperienceObj {
   company: string
   jobTitle: string
-  date: string
   location: string
   startYear: number
   endYear: number | null
@@ -66,6 +64,9 @@ const useStyles = makeStyles(() =>
     btn: {
       alignSelf: 'flex-end',
       borderRadius: '999px',
+    },
+    savecancelbtn: {
+      marginRight: '.5rem',
     },
   })
 )
@@ -136,7 +137,6 @@ const ProfessionalExperience = () => {
       {
         company: '',
         jobTitle: '',
-        date: '',
         location: '',
         startYear: new Date().getFullYear(),
         endYear: new Date().getFullYear(),
@@ -255,13 +255,18 @@ const ProfessionalExperience = () => {
             ))}
           </div>
           <Button className={classes.btn} onClick={() => addProfessionalExperience()}>
-            <AddIcon />
+            Add Professional Experience
           </Button>
           <div className="self-end pt-2">
-            <Button type="submit" variant="contained" color="primary">
+            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>
-            <Button onClick={() => cancelUpdateUser()} variant="contained" color="secondary">
+            <Button
+              className={classes.savecancelbtn}
+              onClick={() => cancelUpdateUser()}
+              variant="contained"
+              color="secondary"
+            >
               Cancel
             </Button>
           </div>

@@ -2,6 +2,7 @@
 
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, useEffect, useState } from 'react'
@@ -21,7 +22,20 @@ const UPDATE_USER = gql`
   }
 `
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    btn: {
+      alignSelf: 'flex-end',
+      borderRadius: '999px',
+    },
+    savecancelbtn: {
+      marginRight: '.5rem',
+    },
+  })
+)
+
 const Bio = () => {
+  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(false)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserBio, { error }] = useMutation(UPDATE_USER)
@@ -73,16 +87,21 @@ const Bio = () => {
             onChange={handleChange}
             rows={4}
             variant="outlined"
-            color="secondary"
+            color="primary"
             required
             fullWidth
           />
           <div className="self-end pt-2">
-            <Button className="ml-1" onClick={() => cancelUpdateUser()} variant="contained" color="secondary">
-              Cancel
-            </Button>
-            <Button className="ml-1" onClick={() => updateUser()} variant="contained" color="primary">
+            <Button className={classes.savecancelbtn} onClick={() => updateUser()} variant="contained" color="primary">
               Save
+            </Button>
+            <Button
+              className={classes.savecancelbtn}
+              onClick={() => cancelUpdateUser()}
+              variant="contained"
+              color="secondary"
+            >
+              Cancel
             </Button>
           </div>
         </div>

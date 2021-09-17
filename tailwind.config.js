@@ -15,6 +15,8 @@ module.exports = {
       colors: {
         orange: '#ff5a42',
         resume: '#dfe5cb',
+        skillbarfilled: '#A7BB80',
+        skillbarempty: '#CADDA5',
         primary: '#282828',
         secondary: '#FFF',
       },

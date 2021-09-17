@@ -1,6 +1,7 @@
 /* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
 import GitHubIcon from '@material-ui/icons/GitHub'
@@ -49,7 +50,20 @@ const UPDATE_USER = gql`
   }
 `
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    btn: {
+      alignSelf: 'flex-end',
+      borderRadius: '999px',
+    },
+    savecancelbtn: {
+      marginRight: '.5rem',
+    },
+  })
+)
+
 const Contacts = () => {
+  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(false)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserContact, { error }] = useMutation(UPDATE_USER)
@@ -112,8 +126,6 @@ const Contacts = () => {
     } else setContact(initialVal)
   }
 
-  const { location, phone, mail, linkedin, github, twitter } = data?.user?.contact
-
   return (
     <div className="px-6">
       {!edit ? (
@@ -132,7 +144,7 @@ const Contacts = () => {
             onChange={handleChange}
             value={contact.location}
             size="small"
-            color="secondary"
+            color="primary"
             margin="dense"
             variant="outlined"
           />
@@ -142,7 +154,7 @@ const Contacts = () => {
             name="phone"
             onChange={handleChange}
             value={contact.phone}
-            color="secondary"
+            color="primary"
             margin="dense"
             variant="outlined"
           />
@@ -153,7 +165,7 @@ const Contacts = () => {
             onChange={handleChange}
             value={contact.mail}
             size="medium"
-            color="secondary"
+            color="primary"
             margin="dense"
             variant="outlined"
           />
@@ -163,7 +175,7 @@ const Contacts = () => {
             name="linkedin"
             onChange={handleChange}
             value={contact.linkedin}
-            color="secondary"
+            color="primary"
             margin="dense"
             variant="outlined"
           />
@@ -174,7 +186,7 @@ const Contacts = () => {
             name="github"
             onChange={handleChange}
             value={contact.github}
-            color="secondary"
+            color="primary"
             margin="dense"
             variant="outlined"
           />
@@ -184,54 +196,59 @@ const Contacts = () => {
             name="twitter"
             onChange={handleChange}
             value={contact.twitter}
-            color="secondary"
+            color="primary"
             margin="dense"
             variant="outlined"
           />
-          <div className="self-end">
-            <Button className="ml-1" onClick={() => cancelUpdateUser()} variant="contained" color="secondary">
-              Cancel
-            </Button>
-            <Button className="ml-1" onClick={() => updateUser()} variant="contained" color="primary">
+          <div className="pt-1 self-end">
+            <Button className={classes.savecancelbtn} onClick={() => updateUser()} variant="contained" color="primary">
               Save
+            </Button>
+            <Button
+              className={classes.savecancelbtn}
+              onClick={() => cancelUpdateUser()}
+              variant="contained"
+              color="secondary"
+            >
+              Cancel
             </Button>
           </div>
         </div>
       ) : (
         <>
           <ul className="list-none">
-            {location ? (
+            {data?.user?.contact.location ? (
               <li className="pb-1">
                 <RoomIcon />
-                <span className="break-all">{location}</span>
+                <span className="break-all">{data?.user?.contact.location}</span>
               </li>
             ) : null}
-            {phone ? (
+            {data?.user?.contact.phone ? (
               <li className="pb-1">
-                <PhoneIcon /> <span className="break-all">{phone}</span>
+                <PhoneIcon /> <span className="break-all">{data?.user?.contact.phone}</span>
               </li>
             ) : null}
-            {mail ? (
+            {data?.user?.contact.mail ? (
               <li className="pb-1">
-                <MailIcon /> <span className="break-all">{mail}</span>
-              </li>
-            ) : null}
-
-            {linkedin ? (
-              <li className="pb-1">
-                <LinkedInIcon /> <span className="break-all">{linkedin}</span>
+                <MailIcon /> <span className="break-all">{data?.user?.contact.mail}</span>
               </li>
             ) : null}
 
-            {github ? (
+            {data?.user?.contact.linkedin ? (
               <li className="pb-1">
-                <GitHubIcon /> <span className="break-all">{github}</span>
+                <LinkedInIcon /> <span className="break-all">{data?.user?.contact.linkedin}</span>
               </li>
             ) : null}
 
-            {twitter ? (
+            {data?.user?.contact.github ? (
               <li className="pb-1">
-                <TwitterIcon /> <span className="break-all">{twitter}</span>
+                <GitHubIcon /> <span className="break-all">{data?.user?.contact.github}</span>
+              </li>
+            ) : null}
+
+            {data?.user?.contact.twitter ? (
+              <li className="pb-1">
+                <TwitterIcon /> <span className="break-all">{data?.user?.contact.twitter}</span>
               </li>
             ) : null}
           </ul>
