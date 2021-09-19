@@ -85,7 +85,7 @@ const Skills = () => {
 
   const cancelUpdateUser = () => {
     if (data?.user?.skills) {
-      const filterTypename = data.user.professionalExperience.map(({ __typename, ...rest }) => rest)
+      const filterTypename = data.user.skills.map(({ __typename, ...rest }) => rest)
       setSkills(filterTypename)
       setEdit(false)
     } else setSkills([])
