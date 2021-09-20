@@ -90,9 +90,9 @@ const DeveloperCommunityInvolement = () => {
     ])
   }
   const handleDelete = async (i: number) => {
-    const filterDelete = developerCommunityInvolement.filter((_, index) => index !== i)
+    const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== i)
     await updateUserDeveloperCommunityInvolement({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', developerCommunityInvolement: filterDelete },
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', developerCommunityInvolement: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
   }

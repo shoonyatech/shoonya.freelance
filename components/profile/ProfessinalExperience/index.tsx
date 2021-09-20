@@ -147,15 +147,15 @@ const ProfessionalExperience = () => {
   }
 
   const handleDelete = async (i: number) => {
-    setProfessionalExp(professionalExp.splice(i, 1))
+    const filterDeletedItem = professionalExp.filter((_, index) => index !== i)
     await updateUserProfessionalExperience({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', professionalExperience: professionalExp },
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', professionalExperience: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
   }
 
   return (
-    <div className="flex flex-col p-6">
+    <div className="flex flex-col p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">professional experience</h3>
         {!edit ? (

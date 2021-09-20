@@ -109,9 +109,9 @@ const Education = () => {
   }
 
   const handleDelete = async (i: number) => {
-    setEducation(education.splice(i, 1))
+    const filterDeletedItem = education.filter((_, index) => index !== i)
     await updateUserEducation({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', education },
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', education: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
   }
@@ -150,7 +150,7 @@ const Education = () => {
                   label="Degree"
                   margin="dense"
                   value={edu.degree}
-                  name="jobTitle"
+                  name="degree"
                   onChange={handleChange(i, 'degree')}
                   variant="outlined"
                   color="primary"

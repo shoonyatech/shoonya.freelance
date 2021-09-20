@@ -93,7 +93,7 @@ const UserNameTitle = () => {
   }
 
   return (
-    <div className="bg-resume flex flex-col justify-center p-6">
+    <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       {edit ? (
         <>
           <div className="flex flex-col ">
