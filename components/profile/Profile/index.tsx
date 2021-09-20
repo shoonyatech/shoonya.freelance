@@ -12,8 +12,13 @@ const Profile = () => (
     <Heading />
 
     <div className="flex flex-col-reverse lg:grid lg:grid-cols-profile   lg:min-h-screen ">
-      <ProfileSidebar />
-      <ProfileMain />
+      <ProfileSidebar page={1} />
+      <ProfileMain page={1} />
+    </div>
+
+    <div className="my-10 flex flex-col-reverse lg:grid lg:grid-cols-profile   lg:min-h-screen ">
+      <ProfileSidebar page={2} />
+      <ProfileMain page={2} />
     </div>
   </div>
 )
