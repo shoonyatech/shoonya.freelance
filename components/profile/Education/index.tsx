@@ -129,7 +129,7 @@ const Education = () => {
   }
 
   return (
-    <div className="flex flex-col p-6">
+    <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">education</h3>
         {!edit ? (
