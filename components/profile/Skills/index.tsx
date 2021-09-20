@@ -101,7 +101,7 @@ const Skills = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="px-6">
       {!edit ? (
         <button className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
