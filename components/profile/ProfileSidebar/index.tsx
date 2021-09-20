@@ -1,8 +1,12 @@
 import React from 'react'
 
 import Contacts from '../Contacts'
+import CountriesICanWork from '../ContriesICanWork'
 import Education from '../Education'
+import Hobbies from '../Hobbies'
+import Languages from '../Languages'
 import Skills from '../Skills'
+import Sport from '../Sport'
 
 const ProfileSidebar = ({ page }: { page: 1 | 2 }) => (
   <div className="bg-resume py-4">
@@ -14,7 +18,14 @@ const ProfileSidebar = ({ page }: { page: 1 | 2 }) => (
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
         <Skills />
       </>
-    ) : null}
+    ) : (
+      <>
+        <Languages />
+        <Hobbies />
+        <Sport />
+        <CountriesICanWork />
+      </>
+    )}
   </div>
 )
 
