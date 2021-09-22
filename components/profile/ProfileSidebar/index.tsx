@@ -22,7 +22,6 @@ const ProfileSidebar = ({ page }: { page: 1 | 2 }) => (
       <>
         <Languages />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-
         <Hobbies />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
         <Sport />
