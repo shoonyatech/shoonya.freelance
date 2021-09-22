@@ -95,58 +95,50 @@ const UserNameTitle = () => {
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       {edit ? (
-        <>
-          <div className="flex flex-col ">
-            <TextField
-              name="name"
-              label="Name"
-              onChange={handleChange}
-              value={nameTitle.name}
-              color="primary"
-              margin="dense"
-              variant="outlined"
-              required
-            />
-            <TextField
-              name="title"
-              label="Title"
-              onChange={handleChange}
-              value={nameTitle.title}
-              color="primary"
-              margin="dense"
-              variant="outlined"
-            />
-            <div className="pt-1 self-end">
-              <Button
-                className={classes.savecancelbtn}
-                onClick={() => updateUser()}
-                variant="contained"
-                color="primary"
-              >
-                Save
-              </Button>
-              <Button
-                className={classes.savecancelbtn}
-                onClick={() => cancelUpdateUser()}
-                variant="contained"
-                color="secondary"
-              >
-                Cancel
-              </Button>
-            </div>
+        <form className="flex flex-col" onSubmit={updateUser}>
+          <TextField
+            name="name"
+            label="Name"
+            onChange={handleChange}
+            value={nameTitle.name}
+            color="primary"
+            margin="dense"
+            variant="outlined"
+            required
+          />
+          <TextField
+            name="title"
+            label="Title"
+            onChange={handleChange}
+            value={nameTitle.title}
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
+          <div className="pt-1 self-end">
+            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
+              Save
+            </Button>
+            <Button
+              className={classes.savecancelbtn}
+              onClick={() => cancelUpdateUser()}
+              variant="contained"
+              color="secondary"
+            >
+              Cancel
+            </Button>
           </div>
-        </>
+        </form>
       ) : (
-        <>
-          <div className="flex flex-col whitespace-nowrap">
-            <button className="self-start" onClick={() => setEdit(!edit)}>
+        <div className="flex flex-col whitespace-nowrap">
+          <div className="flex justify-between">
+            <h1 className="text-black text-5xl">{data.user.name}</h1>
+            <button onClick={() => setEdit(!edit)}>
               <EditIcon />
             </button>
-
-            <h1 className="text-black text-5xl">{data.user.name}</h1>
-            <h3>{data.user.title} </h3>
           </div>
-        </>
+          <h3>{data.user.title} </h3>
+        </div>
       )}
     </div>
   )

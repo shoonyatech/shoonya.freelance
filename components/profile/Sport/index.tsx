@@ -72,8 +72,16 @@ const Sport = () => {
 
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
+      <div className="flex justify-between pb-3">
+        <h3 className="text-xl md:text-2xl uppercase">Sports</h3>
+        {!edit ? (
+          <button onClick={() => setEdit(true)}>
+            <EditIcon />
+          </button>
+        ) : null}
+      </div>
       {edit ? (
-        <div>
+        <form className="flex flex-col" onSubmit={updateUser}>
           <TextField
             name="name"
             label="Name"
@@ -98,14 +106,10 @@ const Sport = () => {
               Cancel
             </Button>
           </div>
-        </div>
+        </form>
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            <button className="self-start" onClick={() => setEdit(!edit)}>
-              <EditIcon />
-            </button>
-            <div className="font-bold uppercase">Sports</div>
             <div className="uppercase">{data.user.sports} </div>
             <hr className="h-px border-0 bg-black w-4/5 mx-auto my-10" />
           </div>
