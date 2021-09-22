@@ -72,8 +72,16 @@ const Languages = () => {
 
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
+      <div className="flex justify-between pb-3">
+        <h3 className="text-xl md:text-2xl uppercase">Language</h3>
+        {!edit ? (
+          <button onClick={() => setEdit(true)}>
+            <EditIcon />
+          </button>
+        ) : null}
+      </div>
       {edit ? (
-        <div>
+        <form className="flex flex-col" onSubmit={updateUser}>
           <TextField
             name="name"
             label="Name"
@@ -86,7 +94,7 @@ const Languages = () => {
           />
 
           <div className="pt-1 self-end">
-            <Button className={classes.savecancelbtn} onClick={() => updateUser()} variant="contained" color="primary">
+            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>
             <Button
@@ -98,14 +106,10 @@ const Languages = () => {
               Cancel
             </Button>
           </div>
-        </div>
+        </form>
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            <button className="self-start" onClick={() => setEdit(!edit)}>
-              <EditIcon />
-            </button>
-            <div className="font-bold uppercase">Language</div>
             <div className="uppercase">{data.user.language} </div>
             <hr className="h-px border-0 bg-black w-4/5 mx-auto my-10" />
           </div>
