@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 const GET_USER = gql`
   {
@@ -55,7 +55,8 @@ const Languages = () => {
     setLanguage(evt.target.value)
   }
 
-  const updateUser = async () => {
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     await updateUserLanguage({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', language },
       refetchQueries: [{ query: GET_USER }],
@@ -111,7 +112,6 @@ const Languages = () => {
         <>
           <div className="flex flex-col whitespace-nowrap">
             <div className="uppercase">{data.user.language} </div>
-            <hr className="h-px border-0 bg-black w-4/5 mx-auto my-10" />
           </div>
         </>
       )}

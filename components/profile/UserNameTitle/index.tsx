@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 interface UserObj {
   name: string
@@ -74,7 +74,8 @@ const UserNameTitle = () => {
     })
   }
 
-  const updateUser = async () => {
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     await updateUserNameTitle({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', name: nameTitle.name, title: nameTitle.title },
       refetchQueries: [{ query: GET_USER }],
