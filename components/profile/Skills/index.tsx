@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
@@ -120,7 +121,7 @@ const Skills = () => {
       {edit ? (
         <form onSubmit={updateUser} className="flex flex-col ">
           {skills.map((skill, i): any => (
-            <div className="flex flex-col">
+            <div key={i} className="flex flex-col">
               <Button onClick={() => handleDelete(i)} className={classes.btn}>
                 <DeleteIcon color="error" />
               </Button>
@@ -166,8 +167,8 @@ const Skills = () => {
         </form>
       ) : (
         <div>
-          {data.user.skills.map((skill): any => (
-            <div>
+          {data.user.skills.map((skill, i): any => (
+            <div key={i}>
               <div>{skill.name}</div>
               <div className="h-2 bg-skillbarempty">
                 <div className={`bg-skillbarfilled ${skill.scale < 5 ? `w-${skill.scale}/5` : 'w-full'} h-full`} />

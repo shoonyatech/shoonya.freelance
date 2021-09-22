@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
@@ -14,7 +15,7 @@ const GET_USER = gql`
   }
 `
 const UPDATE_USER = gql`
-  mutation UpdateUserLanguage($_id: ID!, $language: String) {
+  mutation UpdateUserLanguage($_id: ID!, $language: [String]) {
     updateUserLanguage(_id: $_id, language: $language) {
       language
     }
@@ -38,7 +39,7 @@ const Languages = () => {
   const { loading, data } = useQuery(GET_USER)
   const [updateUserLanguage, { error }] = useMutation(UPDATE_USER)
 
-  const [language, setLanguage] = useState<String>('')
+  const [language, setLanguage] = useState<string[]>([])
 
   useEffect(() => {
     if (data?.user?.language) {
@@ -51,8 +52,8 @@ const Languages = () => {
 
   if (error) return <div>Error! ${error.message}</div>
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setLanguage(evt.target.value)
+  const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
+    setLanguage([...language.slice(0, index), evt.target.value, ...language.slice(index + 1)])
   }
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
@@ -68,9 +69,12 @@ const Languages = () => {
     if (data?.user?.language) {
       setLanguage(data.user.language)
       setEdit(false)
-    } else setLanguage('')
+    } else setLanguage([])
   }
 
+  const addLanguage = () => {
+    setLanguage([...language, ''])
+  }
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
@@ -83,17 +87,23 @@ const Languages = () => {
       </div>
       {edit ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          <TextField
-            name="name"
-            label="Name"
-            onChange={handleChange}
-            value={language}
-            color="primary"
-            margin="dense"
-            variant="outlined"
-            required
-          />
-
+          {language.map((lang, i): any => (
+            <div key={i}>
+              <TextField
+                name="name"
+                label="Language"
+                onChange={handleChange(i)}
+                value={lang}
+                color="primary"
+                margin="dense"
+                variant="outlined"
+                required
+              />
+            </div>
+          ))}
+          <Button className={classes.btn} onClick={() => addLanguage()}>
+            Add Language
+          </Button>
           <div className="pt-1 self-end">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
@@ -109,11 +119,7 @@ const Languages = () => {
           </div>
         </form>
       ) : (
-        <>
-          <div className="flex flex-col whitespace-nowrap">
-            <div className="uppercase">{data.user.language} </div>
-          </div>
-        </>
+        <div className="uppercase">{data.user.language.join(' | ')}</div>
       )}
     </div>
   )
