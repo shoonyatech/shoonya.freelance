@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Slider from '@material-ui/core/Slider'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
@@ -100,6 +101,14 @@ const Skills = () => {
     setEdit(!edit)
   }
 
+  const handleDelete = async (i: number) => {
+    const filterDeletedItem = skills.filter((_, index) => index !== i)
+    await updateUserSkills({
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', skills: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER }],
+    })
+  }
+
   return (
     <div className="px-6">
       {!edit ? (
@@ -112,6 +121,9 @@ const Skills = () => {
         <form onSubmit={updateUser} className="flex flex-col ">
           {skills.map((skill, i): any => (
             <div className="flex flex-col">
+              <Button onClick={() => handleDelete(i)} className={classes.btn}>
+                <DeleteIcon color="error" />
+              </Button>
               <TextField
                 label="skill"
                 name="skill"
