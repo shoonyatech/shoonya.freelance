@@ -10,7 +10,7 @@ import MailIcon from '@material-ui/icons/Mail'
 import PhoneIcon from '@material-ui/icons/Phone'
 import RoomIcon from '@material-ui/icons/Room'
 import TwitterIcon from '@material-ui/icons/Twitter'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 interface ContactObj {
   location: string
@@ -23,7 +23,7 @@ interface ContactObj {
 
 const GET_USER = gql`
   {
-    user(_id: "6134b89dc6afe90180393569") {
+    user(_id: "613890d00e9d3a2bfc8dd2f7") {
       contact {
         location
         phone
@@ -104,7 +104,8 @@ const Contacts = () => {
     })
   }
 
-  const updateUser = async () => {
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     await updateUserContact({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', contact },
       refetchQueries: [{ query: GET_USER }],
@@ -136,7 +137,7 @@ const Contacts = () => {
       <h3 className="text-xl md:text-2xl  uppercase pb-3">contacts</h3>
 
       {edit ? (
-        <div className="flex flex-col w-max">
+        <form onSubmit={updateUser} className="flex flex-col w-max">
           <TextField
             className="self-start"
             label="Location"
@@ -201,7 +202,7 @@ const Contacts = () => {
             variant="outlined"
           />
           <div className="pt-1 self-end">
-            <Button className={classes.savecancelbtn} onClick={() => updateUser()} variant="contained" color="primary">
+            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>
             <Button
@@ -213,7 +214,7 @@ const Contacts = () => {
               Cancel
             </Button>
           </div>
-        </div>
+        </form>
       ) : (
         <>
           <ul className="list-none">

@@ -277,7 +277,7 @@ const ProfessionalExperience = () => {
             <div className="pb-10" key={i}>
               <div className="font-bold">{details.jobTitle}</div>
               <div>
-                <span className="uppercase">{details.company} </span>| {details.location} | {details.startYear} -{' '}
+                <span className="uppercase">{details.company} </span>| {details.location} | {details.startYear} -
                 {details.currentJob ? 'PRESENT' : details.endYear}
               </div>
               <TextEditorReadOnly defaultValue={details.description} />

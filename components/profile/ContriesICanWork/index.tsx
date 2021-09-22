@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 const GET_USER = gql`
   {
@@ -55,7 +55,8 @@ const CountriesICanWork = () => {
     setCountriesICanWork(evt.target.value)
   }
 
-  const updateUser = async () => {
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     await updateUserCountriesICanWork({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', countriesICanWork },
       refetchQueries: [{ query: GET_USER }],
@@ -94,7 +95,7 @@ const CountriesICanWork = () => {
           />
 
           <div className="pt-1 self-end">
-            <Button className={classes.savecancelbtn} onClick={() => updateUser()} variant="contained" color="primary">
+            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>
             <Button
@@ -111,7 +112,6 @@ const CountriesICanWork = () => {
         <>
           <div className="flex flex-col whitespace-nowrap">
             <div className="uppercase">{data.user.countriesICanWork} </div>
-            <hr className="h-px border-0 bg-black w-4/5 mx-auto my-10" />
           </div>
         </>
       )}
