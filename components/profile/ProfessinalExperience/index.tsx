@@ -1,6 +1,5 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/button-has-type */
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -14,6 +13,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
+import DeleteAlert from '../DeleteAlert'
 import TextEditor from '../TextEditor'
 import TextEditorReadOnly from '../TextEditorReadOnly'
 
@@ -73,6 +73,7 @@ const useStyles = makeStyles(() =>
 
 const ProfessionalExperience = () => {
   const classes = useStyles()
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(false)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserProfessionalExperience, { error }] = useMutation(UPDATE_USER)
@@ -146,12 +147,20 @@ const ProfessionalExperience = () => {
     ])
   }
 
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+
   const handleDelete = async (i: number) => {
     const filterDeletedItem = professionalExp.filter((_, index) => index !== i)
     await updateUserProfessionalExperience({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', professionalExperience: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
+    closePopUp()
   }
 
   return (
@@ -159,7 +168,7 @@ const ProfessionalExperience = () => {
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">professional experience</h3>
         {!edit ? (
-          <button onClick={() => setEdit(true)}>
+          <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
@@ -169,7 +178,7 @@ const ProfessionalExperience = () => {
           <div>
             {professionalExp.map((details, i: number) => (
               <div key={i} className="flex flex-col pb-28">
-                <Button onClick={() => handleDelete(i)} className={classes.btn}>
+                <Button onClick={() => openPopup(i)} className={classes.btn}>
                   <DeleteIcon color="error" />
                 </Button>
                 <TextField
@@ -253,6 +262,9 @@ const ProfessionalExperience = () => {
                 </div>
               </div>
             ))}
+            {popUp.show ? (
+              <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
+            ) : null}
           </div>
           <Button className={classes.btn} onClick={() => addProfessionalExperience()}>
             Add Professional Experience

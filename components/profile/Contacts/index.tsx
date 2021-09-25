@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -130,7 +129,7 @@ const Contacts = () => {
   return (
     <div className="px-6">
       {!edit ? (
-        <button className="float-right" onClick={() => setEdit(true)}>
+        <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}

@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -134,7 +133,7 @@ const UserNameTitle = () => {
         <div className="flex flex-col whitespace-nowrap">
           <div className="flex justify-between">
             <h1 className="text-black text-5xl">{data.user.name}</h1>
-            <button onClick={() => setEdit(!edit)}>
+            <button type="button" onClick={() => setEdit(!edit)}>
               <EditIcon />
             </button>
           </div>
