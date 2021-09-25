@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -8,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
+import DeleteAlert from '../DeleteAlert'
 import TextEditor from '../TextEditor'
 import TextEditorReadOnly from '../TextEditorReadOnly'
 
@@ -55,6 +55,7 @@ const useStyles = makeStyles(() =>
 
 const DeveloperCommunityInvolement = () => {
   const classes = useStyles()
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserDeveloperCommunityInvolement, { error }] = useMutation(UPDATE_USER)
@@ -89,12 +90,21 @@ const DeveloperCommunityInvolement = () => {
       ...developerCommunityInvolement.slice(index + 1),
     ])
   }
+
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+
   const handleDelete = async (i: number) => {
     const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== i)
     await updateUserDeveloperCommunityInvolement({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', developerCommunityInvolement: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
+    closePopUp()
   }
 
   const cancelUpdateUser = () => {
@@ -127,7 +137,7 @@ const DeveloperCommunityInvolement = () => {
   return (
     <div className="p-4 md:p-6">
       {!edit ? (
-        <button className="float-right" onClick={() => setEdit(true)}>
+        <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
@@ -137,7 +147,7 @@ const DeveloperCommunityInvolement = () => {
           <div>
             {developerCommunityInvolement.map((dev, i: number) => (
               <div key={i} className="flex flex-col pb-28">
-                <Button onClick={() => handleDelete(i)} className={classes.btn}>
+                <Button onClick={() => openPopup(i)} className={classes.btn}>
                   <DeleteIcon color="error" />
                 </Button>
                 <TextField
@@ -155,6 +165,9 @@ const DeveloperCommunityInvolement = () => {
                 <TextEditor handleEditorChange={handleEditorChange(i)} defaultValue={dev.description} />
               </div>
             ))}
+            {popUp.show ? (
+              <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
+            ) : null}
           </div>
           <Button className={classes.btn} onClick={() => addDeveloperCommunityInvolement()}>
             Add Developer Community Involvement

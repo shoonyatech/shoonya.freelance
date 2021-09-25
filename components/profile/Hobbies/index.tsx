@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -76,7 +75,7 @@ const Hobbies = () => {
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Hobbies</h3>
         {!edit ? (
-          <button onClick={() => setEdit(true)}>
+          <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}

@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import Slider from '@material-ui/core/Slider'
@@ -8,6 +7,8 @@ import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+
+import DeleteAlert from '../DeleteAlert'
 
 interface SkillsObj {
   name: string
@@ -50,7 +51,7 @@ const useStyles = makeStyles(() =>
 
 const Skills = () => {
   const classes = useStyles()
-
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserSkills, { error }] = useMutation(UPDATE_USER)
@@ -102,27 +103,34 @@ const Skills = () => {
     setEdit(!edit)
   }
 
-  const handleDelete = async (i: number) => {
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+
+  const handleDelete = async (i: number | null) => {
     const filterDeletedItem = skills.filter((_, index) => index !== i)
     await updateUserSkills({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', skills: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
+    closePopUp()
   }
-
   return (
     <div className="px-6">
       {!edit ? (
-        <button className="float-right" onClick={() => setEdit(true)}>
+        <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
-      <h3 className="text-xl md:text-2xl  uppercase pb-3">skills</h3>
+      <h3 className="text-xl md:text-2xl uppercase pb-3">skills</h3>
       {edit ? (
         <form onSubmit={updateUser} className="flex flex-col ">
           {skills.map((skill, i): any => (
             <div key={i} className="flex flex-col">
-              <Button onClick={() => handleDelete(i)} className={classes.btn}>
+              <Button onClick={() => openPopup(i)} className={classes.btn}>
                 <DeleteIcon color="error" />
               </Button>
               <TextField
@@ -148,6 +156,9 @@ const Skills = () => {
               />
             </div>
           ))}
+          {popUp.show ? (
+            <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
+          ) : null}
           <Button className={classes.btn} onClick={() => addSkills()}>
             Add Skills
           </Button>

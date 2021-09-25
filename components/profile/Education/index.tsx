@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/button-has-type */
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -11,6 +10,8 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
+
+import DeleteAlert from '../DeleteAlert'
 
 interface educationObj {
   degree: string
@@ -58,6 +59,7 @@ const useStyles = makeStyles(() =>
 
 const Education = () => {
   const classes = useStyles()
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
   const [education, setEducation] = useState<educationObj[]>([])
   const { loading, data } = useQuery(GET_USER)
@@ -108,12 +110,20 @@ const Education = () => {
     ])
   }
 
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+
   const handleDelete = async (i: number) => {
     const filterDeletedItem = education.filter((_, index) => index !== i)
     await updateUserEducation({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', education: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
+    closePopUp()
   }
 
   const addEducation = () => {
@@ -133,7 +143,7 @@ const Education = () => {
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">education</h3>
         {!edit ? (
-          <button onClick={() => setEdit(true)}>
+          <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
@@ -143,7 +153,7 @@ const Education = () => {
           <div className="self-end pt-2">
             {education.map((edu, i: number) => (
               <div className="flex flex-col" key={i}>
-                <Button onClick={() => handleDelete(i)} className={classes.btn}>
+                <Button onClick={() => openPopup(i)} className={classes.btn}>
                   <DeleteIcon color="error" />
                 </Button>
                 <TextField
@@ -176,9 +186,7 @@ const Education = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="endYear" className="text-gray-400">
-                    End Year
-                  </label>
+                  <label htmlFor="endYear">End Year</label>
                   <DatePicker
                     selected={new Date(`${edu?.endYear}`)}
                     onChange={(date: Date) => handleTimeChange(date, i, 'endYear')}
@@ -188,6 +196,10 @@ const Education = () => {
                 </div>
               </div>
             ))}
+            {popUp.show ? (
+              <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
+            ) : null}
+
             <Button className={classes.btn} onClick={() => addEducation()}>
               Add New Education
             </Button>

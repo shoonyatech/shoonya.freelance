@@ -6,6 +6,8 @@ import Axios from 'axios'
 import { Image } from 'cloudinary-react'
 import React, { useEffect, useState } from 'react'
 
+import DeleteAlert from '../DeleteAlert'
+
 const GET_USER = gql`
   {
     user(_id: "613890d00e9d3a2bfc8dd2f7") {
@@ -25,6 +27,7 @@ const UPDATE_USER = gql`
 
 const Avatar = () => {
   const [edit, setEdit] = useState<boolean>(false)
+  const [popUp, setPopup] = useState<boolean>(false)
   const [picture, setPicture] = useState<URL | null>(null)
   const { loading, data } = useQuery(GET_USER)
   const [updateUserPicture, { error }] = useMutation(UPDATE_USER)
@@ -43,12 +46,20 @@ const Avatar = () => {
     })
   }
 
-  const removeImage = async () => {
+  const openPopup = () => {
+    setPopup(true)
+  }
+  const closePopUp = () => {
+    setPopup(false)
+  }
+
+  const handleDelete = async () => {
     await updateUserPicture({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', picture: null },
       refetchQueries: [{ query: GET_USER }],
     })
     setEdit(true)
+    closePopUp()
   }
 
   useEffect(() => {
@@ -79,7 +90,8 @@ const Avatar = () => {
       ) : (
         <div className="text-gray-700 dark:text-gray-200 relative w-40 h-40 rounded-full flex flex-col items-center justify-center bg-white dark:bg-brand-grey-800 dark:border-brand-grey-800  shadow tracking-wide uppercase border cursor-pointer ">
           <Image cloudName="dbbunxz2o" className="rounded-full" publicId={picture} />
-          <DeleteIcon onClick={() => removeImage()} color="error" className="absolute z-10 top-0 right-0 " />
+          <DeleteIcon onClick={() => openPopup()} color="error" className="absolute z-10 top-0 right-0 " />
+          {popUp ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={null} /> : null}
         </div>
       )}
     </div>
