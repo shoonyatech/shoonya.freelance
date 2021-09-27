@@ -64,8 +64,8 @@ const Sport = () => {
   }
 
   const cancelUpdateUser = () => {
-    if (data?.user?.language) {
-      setSports(data.user.language)
+    if (data?.user?.sports) {
+      setSports(data.user.sports)
       setEdit(false)
     } else setSports('')
   }
