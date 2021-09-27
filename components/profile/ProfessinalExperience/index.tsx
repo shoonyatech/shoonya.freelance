@@ -8,12 +8,14 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
 import DeleteAlert from '../DeleteAlert'
+import TechStackIcons from '../TechStackIcons'
 import TextEditor from '../TextEditor'
 import TextEditorReadOnly from '../TextEditorReadOnly'
 
@@ -73,6 +75,8 @@ const useStyles = makeStyles(() =>
 
 const ProfessionalExperience = () => {
   const classes = useStyles()
+  const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<number | null>(null)
+
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(false)
   const { loading, data } = useQuery(GET_USER)
@@ -163,6 +167,14 @@ const ProfessionalExperience = () => {
     closePopUp()
   }
 
+  const openTechStackPickor = (i: number) => {
+    setShowTechStackIconPickor(i)
+  }
+
+  const closeTechStackPickor = () => {
+    setShowTechStackIconPickor(null)
+  }
+
   return (
     <div className="flex flex-col p-4 md:p-6">
       <div className="flex justify-between pb-3">
@@ -194,6 +206,20 @@ const ProfessionalExperience = () => {
                   required
                   fullWidth
                 />
+
+                <div className="pb-4 relative h-10">
+                  <div className="flex items-center">
+                    <p className="flex items-center">
+                      <span>Tech stack : </span>
+                    </p>
+                    <Button onClick={() => openTechStackPickor(i)}>
+                      <AddIcon />
+                    </Button>
+                    {(showTechStackIconPickor || showTechStackIconPickor === 0) && showTechStackIconPickor === i ? (
+                      <TechStackIcons closeTechStackPickor={closeTechStackPickor} />
+                    ) : null}
+                  </div>
+                </div>
                 <div className="grid grid-cols-2 gap-x-4">
                   <TextField
                     id="outlined-multiline-static"
