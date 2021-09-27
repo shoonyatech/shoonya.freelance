@@ -1,19 +1,28 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { InputLabel } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
+import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 
-const GET_USER = gql`
+import DeleteAlert from '../DeleteAlert'
+
+const GET_USER_AND_COUNTRY = gql`
   {
     user(_id: "613890d00e9d3a2bfc8dd2f7") {
       countriesICanWork
     }
+    countries {
+      name
+    }
   }
 `
 const UPDATE_USER = gql`
-  mutation UpdateUserCountriesICanWork($_id: ID!, $countriesICanWork: String) {
+  mutation UpdateUserCountriesICanWork($_id: ID!, $countriesICanWork: [String]) {
     updateUserCountriesICanWork(_id: $_id, countriesICanWork: $countriesICanWork) {
       countriesICanWork
     }
@@ -33,11 +42,12 @@ const useStyles = makeStyles(() =>
 
 const CountriesICanWork = () => {
   const [edit, setEdit] = useState<boolean>(false)
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
-  const { loading, data } = useQuery(GET_USER)
+  const { loading, data } = useQuery(GET_USER_AND_COUNTRY)
   const [updateUserCountriesICanWork, { error }] = useMutation(UPDATE_USER)
 
-  const [countriesICanWork, setCountriesICanWork] = useState<String>('')
+  const [countriesICanWork, setCountriesICanWork] = useState<any[]>([])
 
   useEffect(() => {
     if (data?.user?.countriesICanWork) {
@@ -50,15 +60,19 @@ const CountriesICanWork = () => {
 
   if (error) return <div>Error! ${error.message}</div>
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setCountriesICanWork(evt.target.value)
+  const handleChange = (index: number) => (evt: any) => {
+    setCountriesICanWork([
+      ...countriesICanWork.slice(0, index),
+      evt.target.value,
+      ...countriesICanWork.slice(index + 1),
+    ])
   }
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserCountriesICanWork({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', countriesICanWork },
-      refetchQueries: [{ query: GET_USER }],
+      refetchQueries: [{ query: GET_USER_AND_COUNTRY }],
     })
     setEdit(!edit)
   }
@@ -67,7 +81,26 @@ const CountriesICanWork = () => {
     if (data?.user?.countriesICanWork) {
       setCountriesICanWork(data.user.countriesICanWork)
       setEdit(false)
-    } else setCountriesICanWork('')
+    } else setCountriesICanWork([])
+  }
+
+  const addCountry = () => {
+    setCountriesICanWork([...countriesICanWork, ''])
+  }
+
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+  const handleDelete = async (i: number | null) => {
+    const filterDeletedItem = countriesICanWork.filter((_, index) => index !== i)
+    await updateUserCountriesICanWork({
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', countriesICanWork: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER_AND_COUNTRY }],
+    })
+    closePopUp()
   }
 
   return (
@@ -82,17 +115,34 @@ const CountriesICanWork = () => {
       </div>
       {edit ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          <TextField
-            name="name"
-            label="Name"
-            onChange={handleChange}
-            value={countriesICanWork}
-            color="primary"
-            margin="dense"
-            variant="outlined"
-            required
-          />
-
+          {countriesICanWork.map((countryName, i): any => (
+            <>
+              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <DeleteIcon color="error" />
+              </IconButton>
+              <InputLabel key={countryName} id="demo-simple-select-label">
+                Country
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={countryName}
+                onChange={handleChange(i)}
+              >
+                {data.countries.map((country) => (
+                  <MenuItem key={country.name} value={country.name}>
+                    {country.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </>
+          ))}
+          {popUp.show ? (
+            <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
+          ) : null}
+          <Button className={classes.btn} onClick={() => addCountry()}>
+            Add Country
+          </Button>
           <div className="pt-1 self-end">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
@@ -109,8 +159,12 @@ const CountriesICanWork = () => {
         </form>
       ) : (
         <>
-          <div className="flex flex-col whitespace-nowrap">
-            <div className="uppercase">{data.user.countriesICanWork} </div>
+          <div className="flex flex-col">
+            {data.user.countriesICanWork.map((country): any => (
+              <div key={country}>
+                <div className="uppercase">{country} </div>
+              </div>
+            ))}
           </div>
         </>
       )}
