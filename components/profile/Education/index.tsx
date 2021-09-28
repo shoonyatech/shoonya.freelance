@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -117,8 +118,8 @@ const Education = () => {
     setPopup({ show: false, index: null })
   }
 
-  const handleDelete = async (i: number) => {
-    const filterDeletedItem = education.filter((_, index) => index !== i)
+  const handleDelete = async () => {
+    const filterDeletedItem = education.filter((_, index) => index !== popUp.index)
     await updateUserEducation({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', education: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
@@ -153,9 +154,9 @@ const Education = () => {
           <div className="self-end pt-2">
             {education.map((edu, i: number) => (
               <div className="flex flex-col" key={i}>
-                <Button onClick={() => openPopup(i)} className={classes.btn}>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
                   <DeleteIcon color="error" />
-                </Button>
+                </IconButton>
                 <TextField
                   label="Degree"
                   margin="dense"
@@ -196,9 +197,7 @@ const Education = () => {
                 </div>
               </div>
             ))}
-            {popUp.show ? (
-              <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
-            ) : null}
+            {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
 
             <Button className={classes.btn} onClick={() => addEducation()}>
               Add New Education

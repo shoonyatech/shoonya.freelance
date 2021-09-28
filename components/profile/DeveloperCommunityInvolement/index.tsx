@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -98,8 +99,8 @@ const DeveloperCommunityInvolement = () => {
     setPopup({ show: false, index: null })
   }
 
-  const handleDelete = async (i: number) => {
-    const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== i)
+  const handleDelete = async () => {
+    const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== popUp.index)
     await updateUserDeveloperCommunityInvolement({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', developerCommunityInvolement: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
@@ -147,9 +148,9 @@ const DeveloperCommunityInvolement = () => {
           <div>
             {developerCommunityInvolement.map((dev, i: number) => (
               <div key={i} className="flex flex-col pb-28">
-                <Button onClick={() => openPopup(i)} className={classes.btn}>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
                   <DeleteIcon color="error" />
-                </Button>
+                </IconButton>
                 <TextField
                   label="Title"
                   margin="dense"
@@ -165,9 +166,7 @@ const DeveloperCommunityInvolement = () => {
                 <TextEditor handleEditorChange={handleEditorChange(i)} defaultValue={dev.description} />
               </div>
             ))}
-            {popUp.show ? (
-              <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
-            ) : null}
+            {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           </div>
           <Button className={classes.btn} onClick={() => addDeveloperCommunityInvolement()}>
             Add Developer Community Involvement
