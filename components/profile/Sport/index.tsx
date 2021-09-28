@@ -1,9 +1,14 @@
+/* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+
+import DeleteAlert from '../DeleteAlert'
 
 const GET_USER = gql`
   {
@@ -13,7 +18,7 @@ const GET_USER = gql`
   }
 `
 const UPDATE_USER = gql`
-  mutation UpdateUserSports($_id: ID!, $sports: String) {
+  mutation UpdateUserSports($_id: ID!, $sports: [String]) {
     updateUserSports(_id: $_id, sports: $sports) {
       sports
     }
@@ -33,11 +38,12 @@ const useStyles = makeStyles(() =>
 
 const Sport = () => {
   const [edit, setEdit] = useState<boolean>(false)
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
   const { loading, data } = useQuery(GET_USER)
   const [updateUserSports, { error }] = useMutation(UPDATE_USER)
 
-  const [sports, setSports] = useState<String>('')
+  const [sports, setSports] = useState<String[]>([])
 
   useEffect(() => {
     if (data?.user?.sports) {
@@ -50,8 +56,8 @@ const Sport = () => {
 
   if (error) return <div>Error! ${error.message}</div>
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setSports(evt.target.value)
+  const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
+    setSports([...sports.slice(0, index), evt.target.value, ...sports.slice(index + 1)])
   }
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
@@ -67,7 +73,27 @@ const Sport = () => {
     if (data?.user?.sports) {
       setSports(data.user.sports)
       setEdit(false)
-    } else setSports('')
+    } else setSports([])
+  }
+
+  const addSport = () => {
+    setSports([...sports, ''])
+  }
+
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+
+  const handleDelete = async () => {
+    const filterDeletedItem = sports.filter((_, index) => index !== popUp.index)
+    await updateUserSports({
+      variables: { _id: '613890d00e9d3a2bfc8dd2f7', sports: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER }],
+    })
+    closePopUp()
   }
 
   return (
@@ -82,16 +108,27 @@ const Sport = () => {
       </div>
       {edit ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          <TextField
-            name="name"
-            label="Name"
-            onChange={handleChange}
-            value={sports}
-            color="primary"
-            margin="dense"
-            variant="outlined"
-            required
-          />
+          {sports.map((sport, i): any => (
+            <React.Fragment key={i}>
+              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <DeleteIcon color="error" />
+              </IconButton>
+              <TextField
+                name="name"
+                label="Name"
+                onChange={handleChange(i)}
+                value={sport}
+                color="primary"
+                margin="dense"
+                variant="outlined"
+                required
+              />
+            </React.Fragment>
+          ))}
+          {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
+          <Button className={classes.btn} onClick={() => addSport()}>
+            Add Sport
+          </Button>
 
           <div className="pt-1 self-end">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
@@ -110,7 +147,11 @@ const Sport = () => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            <div className="uppercase">{data.user.sports} </div>
+            {data.user.sports.map((sport) => (
+              <div key={sport} className="uppercase">
+                {sport}
+              </div>
+            ))}
           </div>
         </>
       )}
