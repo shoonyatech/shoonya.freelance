@@ -6,6 +6,7 @@ import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import AddIcon from '@material-ui/icons/Add'
@@ -158,8 +159,8 @@ const ProfessionalExperience = () => {
     setPopup({ show: false, index: null })
   }
 
-  const handleDelete = async (i: number) => {
-    const filterDeletedItem = professionalExp.filter((_, index) => index !== i)
+  const handleDelete = async () => {
+    const filterDeletedItem = professionalExp.filter((_, index) => index !== popUp.index)
     await updateUserProfessionalExperience({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', professionalExperience: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
@@ -190,9 +191,9 @@ const ProfessionalExperience = () => {
           <div>
             {professionalExp.map((details, i: number) => (
               <div key={i} className="flex flex-col pb-28">
-                <Button onClick={() => openPopup(i)} className={classes.btn}>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
                   <DeleteIcon color="error" />
-                </Button>
+                </IconButton>
                 <TextField
                   id="outlined-m  ultiline-static"
                   label="Job Title"
@@ -288,9 +289,7 @@ const ProfessionalExperience = () => {
                 </div>
               </div>
             ))}
-            {popUp.show ? (
-              <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
-            ) : null}
+            {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           </div>
           <Button className={classes.btn} onClick={() => addProfessionalExperience()}>
             Add Professional Experience

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import Slider from '@material-ui/core/Slider'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -110,12 +111,13 @@ const Skills = () => {
     setPopup({ show: false, index: null })
   }
 
-  const handleDelete = async (i: number | null) => {
-    const filterDeletedItem = skills.filter((_, index) => index !== i)
+  const handleDelete = async () => {
+    const filterDeletedItem = skills.filter((_, index) => index !== popUp.index)
     await updateUserSkills({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', skills: filterDeletedItem },
       refetchQueries: [{ query: GET_USER }],
     })
+    setEdit(false)
     closePopUp()
   }
   return (
@@ -130,9 +132,9 @@ const Skills = () => {
         <form onSubmit={updateUser} className="flex flex-col ">
           {skills.map((skill, i): any => (
             <div key={i} className="flex flex-col">
-              <Button onClick={() => openPopup(i)} className={classes.btn}>
+              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
                 <DeleteIcon color="error" />
-              </Button>
+              </IconButton>
               <TextField
                 label="skill"
                 name="skill"
@@ -156,9 +158,7 @@ const Skills = () => {
               />
             </div>
           ))}
-          {popUp.show ? (
-            <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
-          ) : null}
+          {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           <Button className={classes.btn} onClick={() => addSkills()}>
             Add Skills
           </Button>

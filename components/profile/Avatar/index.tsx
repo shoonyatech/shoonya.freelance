@@ -1,12 +1,26 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // import Axios from 'axios'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import IconButton from '@material-ui/core/IconButton'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Axios from 'axios'
 import { Image } from 'cloudinary-react'
 import React, { useEffect, useState } from 'react'
 
 import DeleteAlert from '../DeleteAlert'
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    deletebtn: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      zIndex: 10,
+      padding: 0,
+    },
+  })
+)
 
 const GET_USER = gql`
   {
@@ -26,6 +40,7 @@ const UPDATE_USER = gql`
 `
 
 const Avatar = () => {
+  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(false)
   const [popUp, setPopup] = useState<boolean>(false)
   const [picture, setPicture] = useState<URL | null>(null)
@@ -90,8 +105,10 @@ const Avatar = () => {
       ) : (
         <div className="text-gray-700 dark:text-gray-200 relative w-40 h-40 rounded-full flex flex-col items-center justify-center bg-white dark:bg-brand-grey-800 dark:border-brand-grey-800  shadow tracking-wide uppercase border cursor-pointer ">
           <Image cloudName="dbbunxz2o" className="rounded-full" publicId={picture} />
-          <DeleteIcon onClick={() => openPopup()} color="error" className="absolute z-10 top-0 right-0 " />
-          {popUp ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={null} /> : null}
+          <IconButton className={classes.deletebtn} onClick={() => openPopup()}>
+            <DeleteIcon color="error" />
+          </IconButton>
+          {popUp ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
         </div>
       )}
     </div>
