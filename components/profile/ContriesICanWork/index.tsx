@@ -94,8 +94,8 @@ const CountriesICanWork = () => {
   const closePopUp = () => {
     setPopup({ show: false, index: null })
   }
-  const handleDelete = async (i: number | null) => {
-    const filterDeletedItem = countriesICanWork.filter((_, index) => index !== i)
+  const handleDelete = async () => {
+    const filterDeletedItem = countriesICanWork.filter((_, index) => index !== popUp.index)
     await updateUserCountriesICanWork({
       variables: { _id: '613890d00e9d3a2bfc8dd2f7', countriesICanWork: filterDeletedItem },
       refetchQueries: [{ query: GET_USER_AND_COUNTRY }],
@@ -137,9 +137,7 @@ const CountriesICanWork = () => {
               </Select>
             </>
           ))}
-          {popUp.show ? (
-            <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} deleteIndex={popUp.index} />
-          ) : null}
+          {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           <Button className={classes.btn} onClick={() => addCountry()}>
             Add Country
           </Button>
