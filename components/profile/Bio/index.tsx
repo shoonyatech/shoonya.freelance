@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -6,8 +7,8 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       bio
     }
   }
@@ -35,7 +36,11 @@ const useStyles = makeStyles(() =>
 const Bio = () => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(false)
-  const { loading, data } = useQuery(GET_USER)
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserBio, { error }] = useMutation(UPDATE_USER)
   const [bio, setBio] = useState<null | String>('')
 
@@ -54,8 +59,8 @@ const Bio = () => {
 
   const updateUser = async () => {
     await updateUserBio({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', bio },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, bio },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }

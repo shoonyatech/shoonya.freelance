@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -21,8 +22,8 @@ interface ContactObj {
 }
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       contact {
         location
         phone
@@ -63,8 +64,12 @@ const useStyles = makeStyles(() =>
 
 const Contacts = () => {
   const classes = useStyles()
+  const { user } = useUser()
   const [edit, setEdit] = useState<boolean>(false)
-  const { loading, data } = useQuery(GET_USER)
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserContact, { error }] = useMutation(UPDATE_USER)
 
   const initialVal = {
@@ -106,8 +111,8 @@ const Contacts = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserContact({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', contact },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, contact },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }
@@ -217,10 +222,10 @@ const Contacts = () => {
       ) : (
         <>
           <ul className="list-none">
-            {data?.user?.contact.location ? (
+            {data?.user?.contact?.location ? (
               <li className="pb-1">
                 <RoomIcon />
-                <span className="break-all">{data?.user?.contact.location}</span>
+                <span className="break-all">{data.user.contact.location}</span>
               </li>
             ) : null}
             {data?.user?.contact.phone ? (

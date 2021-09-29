@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -11,8 +12,8 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DeleteAlert from '../DeleteAlert'
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       sports
     }
   }
@@ -40,7 +41,11 @@ const Sport = () => {
   const [edit, setEdit] = useState<boolean>(false)
   const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
-  const { loading, data } = useQuery(GET_USER)
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserSports, { error }] = useMutation(UPDATE_USER)
 
   const [sports, setSports] = useState<String[]>([])
@@ -63,8 +68,8 @@ const Sport = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserSports({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', sports },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, sports },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }
@@ -90,8 +95,8 @@ const Sport = () => {
   const handleDelete = async () => {
     const filterDeletedItem = sports.filter((_, index) => index !== popUp.index)
     await updateUserSports({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', sports: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, sports: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     closePopUp()
   }

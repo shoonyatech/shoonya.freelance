@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import { InputLabel } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -12,8 +13,8 @@ import React, { FormEvent, useEffect, useState } from 'react'
 import DeleteAlert from '../DeleteAlert'
 
 const GET_USER_AND_COUNTRY = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       countriesICanWork
     }
     countries {
@@ -44,7 +45,11 @@ const CountriesICanWork = () => {
   const [edit, setEdit] = useState<boolean>(false)
   const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
-  const { loading, data } = useQuery(GET_USER_AND_COUNTRY)
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER_AND_COUNTRY, {
+    variables: { _id: userId },
+  })
   const [updateUserCountriesICanWork, { error }] = useMutation(UPDATE_USER)
 
   const [countriesICanWork, setCountriesICanWork] = useState<any[]>([])
@@ -71,8 +76,8 @@ const CountriesICanWork = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserCountriesICanWork({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', countriesICanWork },
-      refetchQueries: [{ query: GET_USER_AND_COUNTRY }],
+      variables: { _id: userId, countriesICanWork },
+      refetchQueries: [{ query: GET_USER_AND_COUNTRY, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }
@@ -97,8 +102,8 @@ const CountriesICanWork = () => {
   const handleDelete = async () => {
     const filterDeletedItem = countriesICanWork.filter((_, index) => index !== popUp.index)
     await updateUserCountriesICanWork({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', countriesICanWork: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER_AND_COUNTRY }],
+      variables: { _id: userId, countriesICanWork: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER_AND_COUNTRY, variables: { _id: userId } }],
     })
     closePopUp()
   }

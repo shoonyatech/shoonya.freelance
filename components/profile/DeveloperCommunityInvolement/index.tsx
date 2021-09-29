@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -18,8 +19,8 @@ interface developerCommunityInvolementObj {
 }
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       developerCommunityInvolement {
         title
         description
@@ -58,7 +59,11 @@ const DeveloperCommunityInvolement = () => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
-  const { loading, data } = useQuery(GET_USER)
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserDeveloperCommunityInvolement, { error }] = useMutation(UPDATE_USER)
   const [developerCommunityInvolement, setDeveloperCommunityInvolement] = useState<developerCommunityInvolementObj[]>(
     []
@@ -102,8 +107,8 @@ const DeveloperCommunityInvolement = () => {
   const handleDelete = async () => {
     const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== popUp.index)
     await updateUserDeveloperCommunityInvolement({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', developerCommunityInvolement: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, developerCommunityInvolement: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     closePopUp()
   }
@@ -119,8 +124,8 @@ const DeveloperCommunityInvolement = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserDeveloperCommunityInvolement({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', developerCommunityInvolement },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, developerCommunityInvolement },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }
