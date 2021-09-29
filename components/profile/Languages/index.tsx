@@ -3,10 +3,14 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+
+import DeleteAlert from '../DeleteAlert'
 
 const GET_USER = gql`
   query User($_id: ID!) {
@@ -37,6 +41,7 @@ const useStyles = makeStyles(() =>
 const Language = () => {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const { user } = useUser()
   const userId = user?.sub?.split('|')[1]
   const { loading, data } = useQuery(GET_USER, {
@@ -80,6 +85,23 @@ const Language = () => {
   const addLanguage = () => {
     setLanguages([...languages, ''])
   }
+
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+
+  const handleDelete = async () => {
+    const filterDeletedItem = languages.filter((_, index) => index !== popUp.index)
+    await updateUserLanguage({
+      variables: { _id: userId, languages: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
+    })
+    closePopUp()
+  }
+
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
@@ -93,7 +115,10 @@ const Language = () => {
       {edit ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           {languages.map((lang, i): any => (
-            <div key={i}>
+            <React.Fragment key={i}>
+              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <DeleteIcon color="error" />
+              </IconButton>
               <TextField
                 name="name"
                 label="Language"
@@ -104,8 +129,10 @@ const Language = () => {
                 variant="outlined"
                 required
               />
-            </div>
+            </React.Fragment>
           ))}
+          {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
+
           <Button className={classes.btn} onClick={() => addLanguage()}>
             Add Language
           </Button>
