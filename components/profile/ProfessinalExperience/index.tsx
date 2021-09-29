@@ -15,6 +15,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
+import { icons } from '../../../lib/icon'
 import DeleteAlert from '../DeleteAlert'
 import TechStackIcons from '../TechStackIcons'
 import TextEditor from '../TextEditor'
@@ -28,6 +29,7 @@ interface professionalExperienceObj {
   endYear: number | null
   currentJob: boolean
   description: string
+  techStack: Array<[]>
 }
 
 const GET_USER = gql`
@@ -41,6 +43,7 @@ const GET_USER = gql`
         startYear
         endYear
         description
+        techStack
       }
     }
   }
@@ -57,6 +60,7 @@ const UPDATE_USER = gql`
         startYear
         endYear
         description
+        techStack
       }
     }
   }
@@ -120,6 +124,19 @@ const ProfessionalExperience = () => {
     ])
   }
 
+  const handleIconChange = (icon, index: number) => {
+    const spreadTechStack = professionalExp[index].techStack
+    const newTechStack = spreadTechStack.includes(icon)
+      ? spreadTechStack.filter((b) => b !== icon)
+      : [...spreadTechStack, icon]
+
+    setProfessionalExp([
+      ...professionalExp.slice(0, index),
+      { ...professionalExp[index], techStack: newTechStack },
+      ...professionalExp.slice(index + 1),
+    ])
+  }
+
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserProfessionalExperience({
@@ -148,6 +165,7 @@ const ProfessionalExperience = () => {
         endYear: new Date().getFullYear(),
         currentJob: false,
         description: '',
+        techStack: [],
       },
     ])
   }
@@ -211,13 +229,21 @@ const ProfessionalExperience = () => {
                 <div className="pb-4 relative h-10">
                   <div className="flex items-center">
                     <p className="flex items-center">
-                      <span>Tech stack : </span>
+                      <span className="mr-2">Tech stack : </span>
+                      {details.techStack.map((icon) => (
+                        <span className="px-px">{icons[`${icon}`]}</span>
+                      ))}
                     </p>
                     <Button onClick={() => openTechStackPickor(i)}>
                       <AddIcon />
                     </Button>
                     {(showTechStackIconPickor || showTechStackIconPickor === 0) && showTechStackIconPickor === i ? (
-                      <TechStackIcons closeTechStackPickor={closeTechStackPickor} />
+                      <TechStackIcons
+                        closeTechStackPickor={closeTechStackPickor}
+                        techStack={details.techStack}
+                        handleIconChange={handleIconChange}
+                        index={i}
+                      />
                     ) : null}
                   </div>
                 </div>
@@ -312,7 +338,13 @@ const ProfessionalExperience = () => {
         <div>
           {data.user.professionalExperience.map((details, i): any => (
             <div className="pb-10" key={i}>
-              <div className="font-bold">{details.jobTitle}</div>
+              <div className="flex items-center">
+                <div className="font-bold mr-2">{details.jobTitle}</div>
+                {details.techStack.map((icon) => (
+                  <span className="px-px">{icons[`${icon}`]}</span>
+                ))}
+              </div>
+
               <div>
                 <span className="uppercase">{details.company} </span>| {details.location} | {details.startYear} -
                 {details.currentJob ? 'PRESENT' : details.endYear}
