@@ -1,20 +1,25 @@
+/* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
+import DeleteAlert from '../DeleteAlert'
+
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       hobbies
     }
   }
 `
 const UPDATE_USER = gql`
-  mutation UpdateUserHobbies($_id: ID!, $hobbies: String) {
+  mutation UpdateUserHobbies($_id: ID!, $hobbies: [String]) {
     updateUserHobbies(_id: $_id, hobbies: $hobbies) {
       hobbies
     }
@@ -34,6 +39,7 @@ const useStyles = makeStyles(() =>
 
 const Hobbies = () => {
   const [edit, setEdit] = useState<boolean>(false)
+  const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
   const { user } = useUser()
   const userId = user?.sub?.split('|')[1]
@@ -42,7 +48,7 @@ const Hobbies = () => {
   })
   const [updateUserHobbies, { error }] = useMutation(UPDATE_USER)
 
-  const [hobbies, setHobbies] = useState<String>('')
+  const [hobbies, setHobbies] = useState<String[]>([])
 
   useEffect(() => {
     if (data?.user?.hobbies) {
@@ -55,8 +61,8 @@ const Hobbies = () => {
 
   if (error) return <div>Error! ${error.message}</div>
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setHobbies(evt.target.value)
+  const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
+    setHobbies([...hobbies.slice(0, index), evt.target.value, ...hobbies.slice(index + 1)])
   }
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
@@ -72,7 +78,27 @@ const Hobbies = () => {
     if (data?.user?.hobbies) {
       setHobbies(data.user.hobbies)
       setEdit(false)
-    } else setHobbies('')
+    } else setHobbies([])
+  }
+
+  const addHobby = () => {
+    setHobbies([...hobbies, ''])
+  }
+
+  const openPopup = (i) => {
+    setPopup({ show: true, index: i })
+  }
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+
+  const handleDelete = async () => {
+    const filterDeletedItem = hobbies.filter((_, index) => index !== popUp.index)
+    await updateUserHobbies({
+      variables: { _id: userId, hobbies: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
+    })
+    closePopUp()
   }
 
   return (
@@ -87,16 +113,27 @@ const Hobbies = () => {
       </div>
       {edit ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          <TextField
-            name="name"
-            label="Name"
-            onChange={handleChange}
-            value={hobbies}
-            color="primary"
-            margin="dense"
-            variant="outlined"
-            required
-          />
+          {hobbies.map((hobby, i): any => (
+            <React.Fragment key={i}>
+              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <DeleteIcon color="error" />
+              </IconButton>
+              <TextField
+                name="name"
+                label="Name"
+                onChange={handleChange(i)}
+                value={hobby}
+                color="primary"
+                margin="dense"
+                variant="outlined"
+                required
+              />
+            </React.Fragment>
+          ))}
+          {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
+          <Button className={classes.btn} onClick={() => addHobby()}>
+            Add Hobby
+          </Button>
 
           <div className="pt-1 self-end">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
@@ -115,7 +152,11 @@ const Hobbies = () => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            <div className="uppercase">{data.user.hobbies} </div>
+            {data.user.hobbies.map((hobby) => (
+              <div key={hobby} className="uppercase">
+                {hobby}
+              </div>
+            ))}
           </div>
         </>
       )}
