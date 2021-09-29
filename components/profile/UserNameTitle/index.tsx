@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -11,9 +12,9 @@ interface UserObj {
 }
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
-      name
+  query User($_id: ID!){
+    user(_id: $_id ){
+      name 
       title
     }
   }
@@ -42,8 +43,13 @@ const useStyles = makeStyles(() =>
 const UserNameTitle = () => {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
-  const { loading, data } = useQuery(GET_USER)
+  const { user, isLoading, error : userError} = useUser()
+  const userId = user?.sub?.split("|")[1]
+  const { loading, data } = useQuery(GET_USER,{
+    variables: { _id : userId },
+  })
   const [updateUserNameTitle, { error }] = useMutation(UPDATE_USER)
+ 
 
   const initialVal = {
     name: '',
@@ -53,7 +59,7 @@ const UserNameTitle = () => {
   const [nameTitle, setNameTitle] = useState<UserObj>(initialVal)
 
   useEffect(() => {
-    if (data?.user) {
+    if (data?.user?.name) {
       setNameTitle({
         name: data.user.name,
         title: data.user.title,
@@ -76,8 +82,9 @@ const UserNameTitle = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserNameTitle({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', name: nameTitle.name, title: nameTitle.title },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, name: nameTitle.name, title: nameTitle.title },
+      refetchQueries: [ {query:  GET_USER,
+                        variables: { _id: userId }} ],
     })
     setEdit(!edit)
   }
