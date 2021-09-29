@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -8,8 +9,8 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       languages
     }
   }
@@ -36,7 +37,11 @@ const useStyles = makeStyles(() =>
 const Language = () => {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
-  const { loading, data } = useQuery(GET_USER)
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserLanguage, { error }] = useMutation(UPDATE_USER)
 
   const [languages, setLanguages] = useState<string[]>([])
@@ -59,8 +64,8 @@ const Language = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserLanguage({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', languages },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, languages },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }

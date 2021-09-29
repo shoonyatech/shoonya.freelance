@@ -3,6 +3,7 @@
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -33,8 +34,8 @@ interface professionalExperienceObj {
 }
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       professionalExperience {
         company
         location
@@ -84,7 +85,11 @@ const ProfessionalExperience = () => {
 
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(false)
-  const { loading, data } = useQuery(GET_USER)
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserProfessionalExperience, { error }] = useMutation(UPDATE_USER)
   const [professionalExp, setProfessionalExp] = useState<professionalExperienceObj[]>([])
 
@@ -140,8 +145,8 @@ const ProfessionalExperience = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserProfessionalExperience({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', professionalExperience: professionalExp },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, professionalExperience: professionalExp },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }
@@ -180,8 +185,8 @@ const ProfessionalExperience = () => {
   const handleDelete = async () => {
     const filterDeletedItem = professionalExp.filter((_, index) => index !== popUp.index)
     await updateUserProfessionalExperience({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', professionalExperience: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, professionalExperience: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     closePopUp()
   }

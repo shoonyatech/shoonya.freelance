@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // import Axios from 'axios'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -23,8 +24,8 @@ const useStyles = makeStyles(() =>
 )
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       picture
     }
   }
@@ -44,7 +45,11 @@ const Avatar = () => {
   const [edit, setEdit] = useState<boolean>(false)
   const [popUp, setPopup] = useState<boolean>(false)
   const [picture, setPicture] = useState<URL | null>(null)
-  const { loading, data } = useQuery(GET_USER)
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserPicture, { error }] = useMutation(UPDATE_USER)
 
   const uploadImage = async (files: any) => {
@@ -53,8 +58,8 @@ const Avatar = () => {
     formData.append('upload_preset', 'shoonya')
     await Axios.post('https://api.cloudinary.com/v1_1/dbbunxz2o/upload', formData).then((response) => {
       updateUserPicture({
-        variables: { _id: '613890d00e9d3a2bfc8dd2f7', picture: response.data.secure_url },
-        refetchQueries: [{ query: GET_USER }],
+        variables: { _id: userId, picture: response.data.secure_url },
+        refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
       })
       setPicture(response.data.secure_url)
       setEdit(false)
@@ -70,8 +75,8 @@ const Avatar = () => {
 
   const handleDelete = async () => {
     await updateUserPicture({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', picture: null },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, picture: null },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(true)
     closePopUp()

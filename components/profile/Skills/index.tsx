@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Slider from '@material-ui/core/Slider'
@@ -17,8 +18,8 @@ interface SkillsObj {
 }
 
 const GET_USER = gql`
-  {
-    user(_id: "613890d00e9d3a2bfc8dd2f7") {
+  query User($_id: ID!) {
+    user(_id: $_id) {
       skills {
         name
         scale
@@ -53,8 +54,12 @@ const useStyles = makeStyles(() =>
 const Skills = () => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
   const [edit, setEdit] = useState<boolean>(false)
-  const { loading, data } = useQuery(GET_USER)
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
+  })
   const [updateUserSkills, { error }] = useMutation(UPDATE_USER)
   const [skills, setSkills] = useState<SkillsObj[]>([])
 
@@ -98,8 +103,8 @@ const Skills = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserSkills({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', skills },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, skills },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }
@@ -114,12 +119,13 @@ const Skills = () => {
   const handleDelete = async () => {
     const filterDeletedItem = skills.filter((_, index) => index !== popUp.index)
     await updateUserSkills({
-      variables: { _id: '613890d00e9d3a2bfc8dd2f7', skills: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER }],
+      variables: { _id: userId, skills: filterDeletedItem },
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(false)
     closePopUp()
   }
+
   return (
     <div className="px-6">
       {!edit ? (

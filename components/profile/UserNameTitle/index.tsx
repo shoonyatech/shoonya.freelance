@@ -12,9 +12,9 @@ interface UserObj {
 }
 
 const GET_USER = gql`
-  query User($_id: ID!){
-    user(_id: $_id ){
-      name 
+  query User($_id: ID!) {
+    user(_id: $_id) {
+      name
       title
     }
   }
@@ -43,13 +43,12 @@ const useStyles = makeStyles(() =>
 const UserNameTitle = () => {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
-  const { user, isLoading, error : userError} = useUser()
-  const userId = user?.sub?.split("|")[1]
-  const { loading, data } = useQuery(GET_USER,{
-    variables: { _id : userId },
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { _id: userId },
   })
   const [updateUserNameTitle, { error }] = useMutation(UPDATE_USER)
- 
 
   const initialVal = {
     name: '',
@@ -83,8 +82,7 @@ const UserNameTitle = () => {
     e.preventDefault()
     await updateUserNameTitle({
       variables: { _id: userId, name: nameTitle.name, title: nameTitle.title },
-      refetchQueries: [ {query:  GET_USER,
-                        variables: { _id: userId }} ],
+      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     setEdit(!edit)
   }
