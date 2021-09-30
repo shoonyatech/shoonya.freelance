@@ -83,12 +83,12 @@ export default function MiniDrawer() {
         <Divider />
 
         <List>
-          <Link href="/" passHref>
-            <ListItem button className={classes.list} key="home">
+          <Link href="/dashboard" passHref>
+            <ListItem button className={classes.list} key="dashboard">
               <ListItemIcon>
                 <HomeIcon color="secondary" />
               </ListItemIcon>
-              <ListItemText primary="home" />
+              <ListItemText primary="dashboard" />
             </ListItem>
           </Link>
         </List>
