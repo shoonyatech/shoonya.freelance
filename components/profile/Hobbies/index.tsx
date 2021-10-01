@@ -2,14 +2,12 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 import DeleteAlert from '../DeleteAlert'
+import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 
 const GET_USER = gql`
   query User($_id: ID!) {
@@ -115,21 +113,14 @@ const Hobbies = () => {
         <form className="flex flex-col" onSubmit={updateUser}>
           {hobbies
             ? hobbies.map((hobby, i): any => (
-                <React.Fragment key={i}>
-                  <IconButton onClick={() => openPopup(i)} className={classes.btn}>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                  <TextField
-                    name="name"
-                    label="Name"
-                    onChange={handleChange(i)}
-                    value={hobby}
-                    color="primary"
-                    margin="dense"
-                    variant="outlined"
-                    required
-                  />
-                </React.Fragment>
+                <TextFieldAndDeleteBtn
+                  key={i}
+                  handleChange={handleChange}
+                  index={i}
+                  label="language"
+                  value={hobby}
+                  openPopup={openPopup}
+                />
               ))
             : null}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}

@@ -137,19 +137,21 @@ const Skills = () => {
         <form onSubmit={updateUser} className="flex flex-col ">
           {skills.map((skill, i): any => (
             <div key={i} className="flex flex-col">
-              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
-                <DeleteIcon color="error" />
-              </IconButton>
-              <TextField
-                label="skill"
-                name="skill"
-                onChange={handleNameChange(i)}
-                value={skill.name}
-                size="small"
-                color="primary"
-                margin="dense"
-                variant="outlined"
-              />
+              <div className="flex">
+                <TextField
+                  label="skill"
+                  name="skill"
+                  onChange={handleNameChange(i)}
+                  value={skill.name}
+                  size="small"
+                  color="primary"
+                  margin="dense"
+                  variant="outlined"
+                />
+                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </div>
               <Slider
                 value={skill.scale}
                 onChange={handleScaleChange(i)}

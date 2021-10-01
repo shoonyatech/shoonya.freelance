@@ -122,24 +122,29 @@ const CountriesICanWork = () => {
         <form className="flex flex-col" onSubmit={updateUser}>
           {countriesICanWork.map((countryName, i): any => (
             <>
-              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
-                <DeleteIcon color="error" />
-              </IconButton>
-              <InputLabel key={countryName} id="demo-simple-select-label">
-                Country
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={countryName}
-                onChange={handleChange(i)}
-              >
-                {data.countries.map((country) => (
-                  <MenuItem key={country.name} value={country.name}>
-                    {country.name}
-                  </MenuItem>
-                ))}
-              </Select>
+              <div className="flex">
+                <div className="flex-1">
+                  <InputLabel key={countryName} id="demo-simple-select-label">
+                    Country
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={countryName}
+                    onChange={handleChange(i)}
+                    fullWidth
+                  >
+                    {data.countries.map((country) => (
+                      <MenuItem key={country.name} value={country.name}>
+                        {country.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </div>
             </>
           ))}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
