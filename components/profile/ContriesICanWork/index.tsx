@@ -55,7 +55,7 @@ const CountriesICanWork = () => {
   const [countriesICanWork, setCountriesICanWork] = useState<any[]>([])
 
   useEffect(() => {
-    if (data?.user?.countriesICanWork) {
+    if (data?.user?.countriesICanWork && data?.user?.countriesICanWork.length !== 0) {
       setCountriesICanWork(data.user.countriesICanWork)
       setEdit(false)
     } else setEdit(true)
@@ -85,8 +85,8 @@ const CountriesICanWork = () => {
   const cancelUpdateUser = () => {
     if (data?.user?.countriesICanWork) {
       setCountriesICanWork(data.user.countriesICanWork)
-      setEdit(false)
     } else setCountriesICanWork([])
+    setEdit(false)
   }
 
   const addCountry = () => {

@@ -77,8 +77,8 @@ const Hobbies = () => {
   const cancelUpdateUser = () => {
     if (data?.user?.hobbies) {
       setHobbies(data.user.hobbies)
-      setEdit(false)
     } else setHobbies([])
+    setEdit(false)
   }
 
   const addHobby = () => {
@@ -113,23 +113,25 @@ const Hobbies = () => {
       </div>
       {edit ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          {hobbies.map((hobby, i): any => (
-            <React.Fragment key={i}>
-              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
-                <DeleteIcon color="error" />
-              </IconButton>
-              <TextField
-                name="name"
-                label="Name"
-                onChange={handleChange(i)}
-                value={hobby}
-                color="primary"
-                margin="dense"
-                variant="outlined"
-                required
-              />
-            </React.Fragment>
-          ))}
+          {hobbies
+            ? hobbies.map((hobby, i): any => (
+                <React.Fragment key={i}>
+                  <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                  <TextField
+                    name="name"
+                    label="Name"
+                    onChange={handleChange(i)}
+                    value={hobby}
+                    color="primary"
+                    margin="dense"
+                    variant="outlined"
+                    required
+                  />
+                </React.Fragment>
+              ))
+            : null}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           <Button className={classes.btn} onClick={() => addHobby()}>
             Add Hobby
@@ -152,11 +154,13 @@ const Hobbies = () => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            {data.user.hobbies.map((hobby) => (
-              <div key={hobby} className="uppercase">
-                {hobby}
-              </div>
-            ))}
+            {data?.user?.hobbies
+              ? data.user.hobbies.map((hobby) => (
+                  <div key={hobby} className="uppercase">
+                    {hobby}
+                  </div>
+                ))
+              : null}
           </div>
         </>
       )}

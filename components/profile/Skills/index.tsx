@@ -64,7 +64,7 @@ const Skills = () => {
   const [skills, setSkills] = useState<SkillsObj[]>([])
 
   useEffect(() => {
-    if (data?.user?.skills) {
+    if (data?.user?.skills && data?.user?.skills.length !== 0) {
       const filterTypename = data.user.skills.map(({ __typename, ...rest }) => rest)
       setSkills(filterTypename)
       setEdit(false)
@@ -73,7 +73,6 @@ const Skills = () => {
   if (loading) return <div>Loading...</div>
 
   if (error) return <div>Error! ${error.message}</div>
-
   const handleScaleChange = (index: number) => (_, newValue) => {
     setSkills([...skills.slice(0, index), { ...skills[index], scale: newValue }, ...skills.slice(index + 1)])
   }
@@ -96,8 +95,8 @@ const Skills = () => {
     if (data?.user?.skills) {
       const filterTypename = data.user.skills.map(({ __typename, ...rest }) => rest)
       setSkills(filterTypename)
-      setEdit(false)
     } else setSkills([])
+    setEdit(false)
   }
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
