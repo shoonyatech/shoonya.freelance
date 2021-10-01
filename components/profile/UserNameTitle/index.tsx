@@ -93,8 +93,8 @@ const UserNameTitle = () => {
         name: data.user.name,
         title: data.user.title,
       })
-      setEdit(false)
     } else setNameTitle(initialVal)
+    setEdit(false)
   }
 
   return (

@@ -68,8 +68,8 @@ const Bio = () => {
   const cancelUpdateUser = () => {
     if (data?.user?.bio) {
       setBio(data.user.bio)
-      setEdit(false)
     } else setBio('')
+    setEdit(false)
   }
 
   return (

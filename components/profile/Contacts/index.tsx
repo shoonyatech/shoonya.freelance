@@ -127,8 +127,8 @@ const Contacts = () => {
         github: data.user.contact.github,
         twitter: data.user.contact.twitter,
       })
-      setEdit(false)
     } else setContact(initialVal)
+    setEdit(false)
   }
 
   return (
@@ -228,30 +228,30 @@ const Contacts = () => {
                 <span className="break-all">{data.user.contact.location}</span>
               </li>
             ) : null}
-            {data?.user?.contact.phone ? (
+            {data?.user?.contact?.phone ? (
               <li className="pb-1">
                 <PhoneIcon /> <span className="break-all">{data?.user?.contact.phone}</span>
               </li>
             ) : null}
-            {data?.user?.contact.mail ? (
+            {data?.user?.contact?.mail ? (
               <li className="pb-1">
                 <MailIcon /> <span className="break-all">{data?.user?.contact.mail}</span>
               </li>
             ) : null}
 
-            {data?.user?.contact.linkedin ? (
+            {data?.user?.contact?.linkedin ? (
               <li className="pb-1">
                 <LinkedInIcon /> <span className="break-all">{data?.user?.contact.linkedin}</span>
               </li>
             ) : null}
 
-            {data?.user?.contact.github ? (
+            {data?.user?.contact?.github ? (
               <li className="pb-1">
                 <GitHubIcon /> <span className="break-all">{data?.user?.contact.github}</span>
               </li>
             ) : null}
 
-            {data?.user?.contact.twitter ? (
+            {data?.user?.contact?.twitter ? (
               <li className="pb-1">
                 <TwitterIcon /> <span className="break-all">{data?.user?.contact.twitter}</span>
               </li>

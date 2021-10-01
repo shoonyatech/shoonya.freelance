@@ -72,7 +72,7 @@ const Education = () => {
   const [updateUserEducation, { error }] = useMutation(UPDATE_USER)
 
   useEffect(() => {
-    if (data?.user?.education) {
+    if (data?.user?.education && data?.user?.education.length !== 0) {
       const filterTypename = data.user.education.map(({ __typename, ...rest }) => rest)
       setEducation(filterTypename)
       setEdit(false)
@@ -86,8 +86,8 @@ const Education = () => {
     if (data?.user?.education) {
       const filterTypename = data.user.education.map(({ __typename, ...rest }) => rest)
       setEducation(filterTypename)
-      setEdit(false)
     } else setEducation([])
+    setEdit(false)
   }
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {

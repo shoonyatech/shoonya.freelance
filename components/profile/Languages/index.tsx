@@ -52,7 +52,7 @@ const Language = () => {
   const [languages, setLanguages] = useState<string[]>([])
 
   useEffect(() => {
-    if (data?.user?.languages) {
+    if (data?.user?.languages && data?.user?.languages.length !== 0) {
       setLanguages(data.user.languages)
       setEdit(false)
     } else setEdit(true)
@@ -72,14 +72,14 @@ const Language = () => {
       variables: { _id: userId, languages },
       refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
-    setEdit(!edit)
+    setEdit(false)
   }
 
   const cancelUpdateUser = () => {
     if (data?.user?.languages) {
       setLanguages(data.user.languages)
-      setEdit(false)
     } else setLanguages([])
+    setEdit(false)
   }
 
   const addLanguage = () => {

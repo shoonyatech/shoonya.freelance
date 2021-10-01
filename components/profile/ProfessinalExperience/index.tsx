@@ -94,7 +94,7 @@ const ProfessionalExperience = () => {
   const [professionalExp, setProfessionalExp] = useState<professionalExperienceObj[]>([])
 
   useEffect(() => {
-    if (data?.user?.professionalExperience) {
+    if (data?.user?.professionalExperience && data?.user?.professionalExperience.length !== 0) {
       const filterTypename = data.user.professionalExperience.map(({ __typename, ...rest }) => rest)
       setProfessionalExp(filterTypename)
       setEdit(false)
@@ -155,8 +155,8 @@ const ProfessionalExperience = () => {
     if (data?.user?.professionalExperience) {
       const filterTypename = data.user.professionalExperience.map(({ __typename, ...rest }) => rest)
       setProfessionalExp(filterTypename)
-      setEdit(false)
     } else setProfessionalExp([])
+    setEdit(false)
   }
 
   const addProfessionalExperience = () => {

@@ -77,8 +77,8 @@ const Sport = () => {
   const cancelUpdateUser = () => {
     if (data?.user?.sports) {
       setSports(data.user.sports)
-      setEdit(false)
     } else setSports([])
+    setEdit(false)
   }
 
   const addSport = () => {
@@ -113,23 +113,25 @@ const Sport = () => {
       </div>
       {edit ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          {sports.map((sport, i): any => (
-            <React.Fragment key={i}>
-              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
-                <DeleteIcon color="error" />
-              </IconButton>
-              <TextField
-                name="name"
-                label="Name"
-                onChange={handleChange(i)}
-                value={sport}
-                color="primary"
-                margin="dense"
-                variant="outlined"
-                required
-              />
-            </React.Fragment>
-          ))}
+          {sports
+            ? sports.map((sport, i): any => (
+                <React.Fragment key={i}>
+                  <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                  <TextField
+                    name="name"
+                    label="Name"
+                    onChange={handleChange(i)}
+                    value={sport}
+                    color="primary"
+                    margin="dense"
+                    variant="outlined"
+                    required
+                  />
+                </React.Fragment>
+              ))
+            : null}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           <Button className={classes.btn} onClick={() => addSport()}>
             Add Sport
@@ -152,11 +154,13 @@ const Sport = () => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            {data.user.sports.map((sport) => (
-              <div key={sport} className="uppercase">
-                {sport}
-              </div>
-            ))}
+            {data?.user?.sports
+              ? data.user.sports.map((sport) => (
+                  <div key={sport} className="uppercase">
+                    {sport}
+                  </div>
+                ))
+              : null}
           </div>
         </>
       )}

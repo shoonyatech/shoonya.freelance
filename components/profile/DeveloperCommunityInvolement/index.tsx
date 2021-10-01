@@ -70,7 +70,7 @@ const DeveloperCommunityInvolement = () => {
   )
 
   useEffect(() => {
-    if (data?.user?.developerCommunityInvolement) {
+    if (data?.user?.developerCommunityInvolement && data?.user?.developerCommunityInvolement.length !== 0) {
       const filterTypename = data.user.developerCommunityInvolement.map(({ __typename, ...rest }) => rest)
       setDeveloperCommunityInvolement(filterTypename)
       setEdit(false)
@@ -117,8 +117,8 @@ const DeveloperCommunityInvolement = () => {
     if (data?.user?.developerCommunityInvolement) {
       const filterTypename = data.user.developerCommunityInvolement.map(({ __typename, ...rest }) => rest)
       setDeveloperCommunityInvolement(filterTypename)
-      setEdit(false)
     } else setDeveloperCommunityInvolement([])
+    setEdit(false)
   }
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
