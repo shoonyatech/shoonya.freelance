@@ -21,15 +21,9 @@ function Freelancer() {
   const { data } = useQuery(GET_FREELANCER)
   return (
     <div>
-      {data?.freelancer.map((list) => (
-        <FreelancerCard
-          name={list.name}
-          skills={list.skills}
-          experience={list.experience}
-          rate={list.rate}
-          currency={list.currency}
-          image={list.image}
-        />
+      {data?.freelancer.map((freelancer) => (
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        <FreelancerCard {...freelancer} />
       ))}
     </div>
   )
