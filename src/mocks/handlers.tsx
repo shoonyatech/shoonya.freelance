@@ -35,13 +35,25 @@ export const handlers = [
         freelancer: [
           {
             id: 1,
-            name: 'Souvik Basu',
-            skills: ['React', ' Vue', ' Angular'],
-            experience: 18,
-            rate: 500,
-            currency: 'INR',
-            image: 'https://pbs.twimg.com/profile_images/1439826328493068288/IyDqiBVT_400x400.jpg',
-          }
+            name: 'react',
+            description: 'some desc some desc some dessc',
+            __typename: 'Projects',
+            priceRange: 'low',
+          },
+          {
+            id: 2,
+            name: 'angular',
+            description: 'some desc some desc some dessc',
+            __typename: 'Projects',
+            priceRange: 'medium',
+          },
+          {
+            id: 3,
+            name: 'vue',
+            description: 'some desc some desc some dessc',
+            __typename: 'Projects',
+            priceRange: 'high',
+          },
         ],
       })
     )
