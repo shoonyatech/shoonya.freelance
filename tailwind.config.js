@@ -57,6 +57,15 @@ module.exports = {
         profile: '18rem 1fr',
         masterDetailsLayout: '36rem 1fr',
       },
+      gridTemplateRows: {
+        wizardFlow: '1fr max-content',
+      },
+      width: {
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '4/4': '100%',
+      },
     },
   },
   variants: {

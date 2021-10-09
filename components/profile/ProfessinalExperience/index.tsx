@@ -10,15 +10,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
 import { icons } from '../../../lib/icon'
+import SkillIcons from '../../common/SkillIcons'
 import DeleteAlert from '../DeleteAlert'
-import TechStackIcons from '../TechStackIcons'
 import TextEditor from '../TextEditor'
 import TextEditorReadOnly from '../TextEditorReadOnly'
 
@@ -81,8 +80,6 @@ const useStyles = makeStyles(() =>
 
 const ProfessionalExperience = () => {
   const classes = useStyles()
-  const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<number | null>(null)
-
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(false)
   const { user } = useUser()
@@ -129,7 +126,7 @@ const ProfessionalExperience = () => {
     ])
   }
 
-  const handleIconChange = (icon, index: number) => {
+  const onSelectedSkillChange = (icon, index: number) => {
     const spreadTechStack = professionalExp[index].techStack
     const newTechStack = spreadTechStack.includes(icon)
       ? spreadTechStack.filter((b) => b !== icon)
@@ -153,7 +150,7 @@ const ProfessionalExperience = () => {
 
   const cancelUpdateUser = () => {
     if (data?.user?.professionalExperience) {
-      const filterTypename = data.user.professionalExperience.map(({ __typename, ...rest }) => rest)
+      const filterTypename = data.user.professionalExperience(({ __typename, ...rest }) => rest)
       setProfessionalExp(filterTypename)
     } else setProfessionalExp([])
     setEdit(false)
@@ -191,14 +188,6 @@ const ProfessionalExperience = () => {
     closePopUp()
   }
 
-  const openTechStackPickor = (i: number) => {
-    setShowTechStackIconPickor(i)
-  }
-
-  const closeTechStackPickor = () => {
-    setShowTechStackIconPickor(null)
-  }
-
   return (
     <div className="flex flex-col p-4 md:p-6">
       <div className="flex justify-between pb-3">
@@ -230,28 +219,8 @@ const ProfessionalExperience = () => {
                   required
                   fullWidth
                 />
+                <SkillIcons techStack={details.techStack} i={i} onSelectedSkillChange={onSelectedSkillChange} />
 
-                <div className="pb-4 relative h-10">
-                  <div className="flex items-center">
-                    <p className="flex items-center">
-                      <span className="mr-2">Tech stack : </span>
-                      {details.techStack.map((icon) => (
-                        <span className="px-px">{icons[`${icon}`]}</span>
-                      ))}
-                    </p>
-                    <Button onClick={() => openTechStackPickor(i)}>
-                      <AddIcon />
-                    </Button>
-                    {(showTechStackIconPickor || showTechStackIconPickor === 0) && showTechStackIconPickor === i ? (
-                      <TechStackIcons
-                        closeTechStackPickor={closeTechStackPickor}
-                        techStack={details.techStack}
-                        handleIconChange={handleIconChange}
-                        index={i}
-                      />
-                    ) : null}
-                  </div>
-                </div>
                 <div className="grid grid-cols-2 gap-x-4">
                   <TextField
                     id="outlined-multiline-static"

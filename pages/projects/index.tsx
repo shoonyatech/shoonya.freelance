@@ -1,4 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { gql, useQuery } from '@apollo/client'
+import Link from '@material-ui/core/Button'
 import React, { useEffect, useState } from 'react'
 
 import MasterDetailsLayout from '../../components/common/MasterDetailsLayout'
@@ -9,9 +11,7 @@ const GET_PROJECTS = gql`
     projects {
       name
       description
-      __typename
       priceRange
-      id
     }
   }
 `
@@ -28,10 +28,15 @@ export default function Projects() {
   const setActiveId = (newId) => {
     setId(newId)
   }
+
   return (
     <div style={{ marginLeft: '57px' }}>
+      <Link href="/projects/new">
+        <a>New Project</a>
+      </Link>
+
       <MasterDetailsLayout>
-        <ProjectList setActiveId={setActiveId} data={data.projects} />
+        <ProjectList setActiveId={setActiveId} data={data?.projects} />
         <div className="border-l-2 border-solid border-primary">{id}</div>
       </MasterDetailsLayout>
     </div>

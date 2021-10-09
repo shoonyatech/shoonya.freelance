@@ -23,7 +23,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const TechStackIcons = ({ closeTechStackPickor, techStack, handleIconChange, index }) => {
+const TechStackIcons = ({ closeTechStackPickor, techStack, onSelectedSkillChange, index }) => {
   const classes = useStyles()
 
   return (
@@ -34,7 +34,7 @@ const TechStackIcons = ({ closeTechStackPickor, techStack, handleIconChange, ind
       <div className="flex flex-wrap p-2">
         {iconsArr.map((icon) => (
           <Button
-            onClick={() => handleIconChange(icon, index)}
+            onClick={() => onSelectedSkillChange(icon, index)}
             className={`iconbtn ${techStack.includes(icon) && classes.active}`}
             key={icon}
           >
