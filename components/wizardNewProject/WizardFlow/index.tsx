@@ -1,0 +1,163 @@
+import { gql, useMutation } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
+import Button from '@material-ui/core/Button'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
+import React, { useReducer } from 'react'
+
+import WizardBudgetFlow from '../wizardBudget/WizardBudgetFlow'
+import WizardHeadlineFlow from '../wizardHeadline/WizardHeadlineFlow'
+import WizardScopeFlow from '../wizardScope/WizardScopeFlow'
+import WizardSkillsFlow from '../wizardskills/WizardSkillsFlow'
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    btn: {
+      marginRight: '0.5rem',
+    },
+  })
+)
+
+const ADD_PROJECT = gql`
+  mutation AddProject($owner: ID!, $title: String, $scope: ScopeInput, $budget: BudgetInput) {
+    addProject(owner: $owner, title: $title, scope: $scope, budget: $budget) {
+      owner
+      title
+      scope {
+        size
+        duration
+        experience
+      }
+      budget {
+        type
+        currency
+        amount
+      }
+    }
+  }
+`
+
+const initialValue = {
+  title: '',
+  skills: [],
+  scope: {
+    size: null,
+    duration: null,
+    experience: null,
+  },
+  budget: {
+    type: null,
+    currency: '',
+    amount: 0,
+  },
+}
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'textInput':
+    case 'currency':
+      return {
+        ...state,
+        [action.payload.key]: action.payload.value,
+      }
+    case 'option':
+      return {
+        ...state,
+        [action.payload.key]: {
+          ...state[action.payload.key],
+          [action.payload.nestedkey]: action.payload.value,
+        },
+      }
+    case 'skill': {
+      const { skills } = state
+      const newTechStack = skills.includes(action.payload.icon)
+        ? skills.filter((b) => b !== action.payload.icon)
+        : [...skills, action.payload.icon]
+      return {
+        ...state,
+        skills: newTechStack,
+      }
+    }
+    default:
+      throw new Error(`Unknown action type: ${action.type}`)
+  }
+}
+
+const WizardFlow = ({ step, incrStep, decrStep }) => {
+  const classes = useStyles()
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const [addNewProject, { loading, error }] = useMutation(ADD_PROJECT)
+
+  const [state, dispatch] = useReducer(reducer, initialValue)
+
+  const handleTextChange = (event) =>
+    dispatch({
+      type: 'textInput',
+      payload: { key: 'title', value: event.target.value },
+    })
+
+  const handleOptionChange = (key, nestedkey, value) =>
+    dispatch({
+      type: 'option',
+      payload: { key, nestedkey, value },
+    })
+
+  const handleSkillsChange = (icon) =>
+    dispatch({
+      type: 'skill',
+      payload: { icon },
+    })
+
+  const reviewJobPost = () => {
+    addNewProject({
+      variables: { owner: userId, title: state.title, scope: state.scope, budget: state.budget },
+    })
+  }
+
+  let wizardFlow
+
+  switch (step) {
+    case 1:
+      wizardFlow = <WizardHeadlineFlow handleTextChange={handleTextChange} state={state.title} />
+      break
+    case 2:
+      wizardFlow = <WizardSkillsFlow handleSkillsChange={handleSkillsChange} state={state.skills} />
+      break
+    case 3:
+      wizardFlow = <WizardScopeFlow handleOptionChange={handleOptionChange} state={state} />
+      break
+    case 4:
+      wizardFlow = <WizardBudgetFlow handleOptionChange={handleOptionChange} state={state} />
+      break
+    default:
+      return null
+  }
+
+  if (loading) return <div>Submitting...</div>
+  if (error) return `Submission error! ${JSON.stringify(error, null, 2)}`
+
+  return (
+    <div className="flex-1 grid grid-rows-wizardFlow px-4">
+      <div className="pt-40">{wizardFlow}</div>
+
+      <div className="flex justify-end p-4">
+        {step > 1 ? (
+          <Button className={classes.btn} variant="contained" color="secondary" onClick={() => decrStep()}>
+            Previous
+          </Button>
+        ) : null}
+        {step === 4 ? (
+          <Button className={classes.btn} variant="contained" color="primary" onClick={() => reviewJobPost()}>
+            Review job post
+          </Button>
+        ) : (
+          <Button className={classes.btn} variant="contained" color="primary" onClick={() => incrStep()}>
+            Next
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default WizardFlow
