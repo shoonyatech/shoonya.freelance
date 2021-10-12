@@ -3,14 +3,14 @@ import React from 'react'
 
 import FreelancerCard from '../components/profile/FreelancerCard'
 
-const GET_FREELANCER = gql`
-  query Freelancer {
-    freelancer {
+const GET_FREELANCERS = gql`
+  query getFreelancers {
+    freelancers {
       id
       name
       skills
-      experience
-      rate
+      expInYears
+      hourlyRate
       currency
       image
     }
@@ -18,12 +18,12 @@ const GET_FREELANCER = gql`
 `
 
 function Freelancer() {
-  const { data } = useQuery(GET_FREELANCER)
+  const { data } = useQuery(GET_FREELANCERS)
   return (
     <div>
-      {data?.freelancer.map((freelancer) => (
+      {data?.freelancers.map((freelancers) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <FreelancerCard {...freelancer} />
+        <FreelancerCard {...freelancers} />
       ))}
     </div>
   )
