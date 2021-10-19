@@ -23,7 +23,7 @@ const WizardScopeFlow = ({ handleOptionChange, state }) => (
     <WizardScopeSection
       handleOptionChange={handleOptionChange}
       state={state}
-      title="How long will your work take"
+      title="What level of experience will it need?"
       parentkey="scope"
       nestedkey="experience"
       values={['entry', 'intermediate', 'expert']}

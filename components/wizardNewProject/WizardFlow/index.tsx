@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { gql, useMutation } from '@apollo/client'
 import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
@@ -5,6 +6,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { useRouter } from 'next/router'
 import React, { useReducer } from 'react'
 
+import { isArrayEmpty, isBlank, isObjEmpty } from '../../../lib/utils'
 import WizardBudgetFlow from '../wizardBudget/WizardBudgetFlow'
 import WizardHeadlineFlow from '../wizardHeadline/WizardHeadlineFlow'
 import WizardScopeFlow from '../wizardScope/WizardScopeFlow'
@@ -105,13 +107,13 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
     })
 
   const reviewJobPost = () => {
-    addNewProject({
-      variables: { owner: userId, title: state.title, scope: state.scope, budget: state.budget },
-    })
+    if (!isObjEmpty(state.budget) && state.budget.amount !== 0)
+      addNewProject({
+        variables: { owner: userId, title: state.title, scope: state.scope, budget: state.budget },
+      })
   }
 
   let wizardFlow
-
   switch (step) {
     case 1:
       wizardFlow = <WizardHeadlineFlow handleTextChange={handleTextChange} state={state.title} />
@@ -130,10 +132,27 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
   }
 
   if (loading) return <div>Submitting...</div>
-  if (error) return `Submission error! ${JSON.stringify(error, null, 2)}`
+  if (error) return <div>Submission error! {JSON.stringify(error, null, 2)}</div>
 
+  const next = () => {
+    switch (step) {
+      case 1:
+        if (!isBlank(state.title)) return incrStep()
+        break
+      case 2:
+        if (!isArrayEmpty(state.skills)) return incrStep()
+        break
+      case 3:
+        if (!isObjEmpty(state.scope)) {
+          return incrStep()
+        }
+        break
+      default:
+        return null
+    }
+  }
   return (
-    <div className="flex-1 grid grid-rows-wizardFlow px-4">
+    <div onSubmit={reviewJobPost} className="flex-1 grid grid-rows-wizardFlow px-4">
       <div className="pt-40">{wizardFlow}</div>
 
       <div className="flex justify-end p-4">
@@ -147,7 +166,7 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
             Review job post
           </Button>
         ) : (
-          <Button className={classes.btn} variant="contained" color="primary" onClick={() => incrStep()}>
+          <Button className={classes.btn} variant="contained" color="primary" onClick={() => next()}>
             Next
           </Button>
         )}
