@@ -2,6 +2,7 @@ import { gql, useMutation } from '@apollo/client'
 import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { useRouter } from 'next/router'
 import React, { useReducer } from 'react'
 
 import WizardBudgetFlow from '../wizardBudget/WizardBudgetFlow'
@@ -20,18 +21,7 @@ const useStyles = makeStyles(() =>
 const ADD_PROJECT = gql`
   mutation AddProject($owner: ID!, $title: String, $scope: ScopeInput, $budget: BudgetInput) {
     addProject(owner: $owner, title: $title, scope: $scope, budget: $budget) {
-      owner
-      title
-      scope {
-        size
-        duration
-        experience
-      }
-      budget {
-        type
-        currency
-        amount
-      }
+      _id
     }
   }
 `
@@ -83,10 +73,16 @@ const reducer = (state, action) => {
 }
 
 const WizardFlow = ({ step, incrStep, decrStep }) => {
+  const router = useRouter()
   const classes = useStyles()
   const { user } = useUser()
   const userId = user?.sub?.split('|')[1]
-  const [addNewProject, { loading, error }] = useMutation(ADD_PROJECT)
+  const [addNewProject, { loading, error }] = useMutation(ADD_PROJECT, {
+    onCompleted(data) {
+      const { _id } = data.addProject
+      router.push(`/projects/${_id}`)
+    },
+  })
 
   const [state, dispatch] = useReducer(reducer, initialValue)
 
