@@ -4,7 +4,7 @@ import React from 'react'
 import ProjectMain from '../ProjectMain'
 import ProjectSideBar from '../ProjectSideBar'
 
-const AddProject = () => {
+const ManageProject = () => {
   return (
     <div className="max-w-5xl mx-auto w-full">
       <div className="flex flex-col-reverse lg:grid lg:grid-cols-profile   lg:min-h-screen ">
@@ -15,4 +15,4 @@ const AddProject = () => {
   )
 }
 
-export default AddProject
+export default ManageProject
