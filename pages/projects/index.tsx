@@ -9,6 +9,7 @@ import ProjectList from '../../components/projects/ProjectList'
 const GET_PROJECTS = gql`
   query Projects {
     projects {
+      id
       name
       description
       priceRange

@@ -8,18 +8,21 @@ export const handlers = [
       ctx.data({
         projects: [
           {
+            id: 1,
             name: 'react',
             description: 'some desc some desc some dessc',
             __typename: 'Projects',
             priceRange: 'low',
           },
           {
+            id: 2,
             name: 'angular',
             description: 'some desc some desc some dessc',
             __typename: 'Projects',
             priceRange: 'medium',
           },
           {
+            id: 3,
             name: 'vue',
             description: 'some desc some desc some dessc',
             __typename: 'Projects',

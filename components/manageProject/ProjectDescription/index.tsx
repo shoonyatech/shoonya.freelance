@@ -24,7 +24,7 @@ const ProjectDescription = () => {
       <div className="flex flex-col ">
         <TextField
           id="outlined-multiline-static"
-          label="ProjectDetails"
+          label="Project Details"
           multiline
           rows={4}
           variant="outlined"
