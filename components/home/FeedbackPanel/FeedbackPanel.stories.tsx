@@ -1,7 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 
-import GetApolloClient from '../../../apis/apollo.client'
+import client from '../../../apis/apollo.client'
 import FeedbackPanel from '.'
 
 export default {
@@ -10,7 +10,7 @@ export default {
 }
 
 const Template = () => (
-  <ApolloProvider client={GetApolloClient()}>
+  <ApolloProvider client={client}>
     <FeedbackPanel />
   </ApolloProvider>
 )
