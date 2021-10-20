@@ -1,23 +1,21 @@
 import React from 'react'
 
-function FreelancerCard({ name, skills, expInYears, hourlyRate, currency, image }) {
+function FreelancerCard({ data }) {
   return (
-    <>
-      <div className="flex p-3 mb-3">
-        <div>
-          <img className="h-20 w-20 rounded-full" src={image} alt="Display Pic" />
+    <div className="ml-12 mt-5">
+      {data?.freelancers?.map((freelancer) => (
+        <div className="flex p-3 mb-3">
+          <div>
+            <img className="h-20 w-20 rounded-full cursor-pointer" src={freelancer.picture} alt="Display Pic" />
+          </div>
+          <div className="ml-3">
+            <p className="text-sm font-bold mb-2">{freelancer.name}</p>
+            <p className="text-sm">{freelancer.title}</p>
+            <p className="text-sm">{freelancer.professionalExperience} year exp</p>
+          </div>
         </div>
-        <div className="ml-3">
-          <p className="text-sm font-bold mb-2">{name}</p>
-          <p className="text-sm mb-2">{skills.toString()}</p>
-          <p className="text-sm">{expInYears} year exp</p>
-        </div>
-        <div className="flex absolute right-5">
-          <p className="text-sm">{currency}</p>
-          <p className="text-sm ml-1">{hourlyRate}/hr</p>
-        </div>
-      </div>
-    </>
+      ))}
+    </div>
   )
 }
 

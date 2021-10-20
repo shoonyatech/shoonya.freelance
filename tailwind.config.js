@@ -55,7 +55,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         profile: '18rem 1fr',
-        masterDetailsLayout: '36rem 1fr',
+        masterDetailsLayout: '28rem 1fr',
       },
     },
   },

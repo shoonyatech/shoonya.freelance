@@ -1,5 +1,4 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -33,11 +32,9 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Bio = () => {
+const Bio = ({ display, userId }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(false)
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
   const { loading, data } = useQuery(GET_USER, {
     variables: { _id: userId },
   })
@@ -74,13 +71,13 @@ const Bio = () => {
 
   return (
     <div className="p-4 md:p-6">
-      {!edit ? (
+      {!edit || display ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">bio</h3>
-      {edit ? (
+      {edit || display ? (
         <div className="flex flex-col ">
           <TextField
             id="outlined-multiline-static"

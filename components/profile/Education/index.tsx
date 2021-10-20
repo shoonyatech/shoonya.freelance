@@ -3,7 +3,6 @@
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -59,13 +58,11 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Education = () => {
+const Education = ({ display, userId }) => {
   const classes = useStyles()
-  const { user } = useUser()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
   const [education, setEducation] = useState<educationObj[]>([])
-  const userId = user?.sub?.split('|')[1]
   const { loading, data } = useQuery(GET_USER, {
     variables: { _id: userId },
   })
@@ -148,13 +145,13 @@ const Education = () => {
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">education</h3>
-        {!edit ? (
+        {!edit || display ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit || display ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <div className="self-end pt-2">
             {education.map((edu, i: number) => (

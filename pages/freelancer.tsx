@@ -1,32 +1,42 @@
 import { gql, useQuery } from '@apollo/client'
-import React from 'react'
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0'
+import React, { useState } from 'react'
 
+import MasterDetailsLayout from '../components/common/MasterDetailsLayout'
 import FreelancerCard from '../components/profile/FreelancerCard'
+import Profile from '../components/profile/Profile'
+import ClientSideRendering from '../lib/client-side-rendering'
 
 const GET_FREELANCERS = gql`
-  query getFreelancers {
+  {
     freelancers {
-      id
       name
-      skills
-      expInYears
-      hourlyRate
-      currency
-      image
+      title
+      picture
     }
   }
 `
 
-function Freelancer() {
-  const { data } = useQuery(GET_FREELANCERS)
+export default function Freelancer() {
+  const { user } = useUser()
+  const userId = user?.sub?.split('|')[1]
+  const { error, loading, data } = useQuery(GET_FREELANCERS, {
+    variables: { _id: userId },
+  })
+  const [display] = useState(true)
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error! {error.message}</div>
   return (
     <div>
-      {data?.freelancers.map((freelancers) => (
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        <FreelancerCard {...freelancers} />
-      ))}
+      <ClientSideRendering>
+        <MasterDetailsLayout>
+          <FreelancerCard data={data} />
+          <Profile data={data} display={display} userId={userId} />
+        </MasterDetailsLayout>
+      </ClientSideRendering>
     </div>
   )
 }
 
-export default Freelancer
+export const getServerSideProps = withPageAuthRequired()

@@ -4,16 +4,16 @@ import Bio from '../Bio'
 import DeveloperCommunityInvolement from '../DeveloperCommunityInvolement'
 import ProfessionalExperience from '../ProfessinalExperience'
 
-const ProfileMain = ({ page }: { page: 1 | 2 }) => (
+const ProfileMain = ({ page, display, userId }) => (
   <div>
     {page === 1 ? (
       <>
-        <Bio />
-        <ProfessionalExperience />
+        <Bio display={display} userId={userId} />
+        <ProfessionalExperience display={display} userId={userId} />
       </>
     ) : (
       <>
-        <DeveloperCommunityInvolement />
+        <DeveloperCommunityInvolement display={display} userId={userId} />
       </>
     )}
   </div>

@@ -3,7 +3,6 @@
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -79,14 +78,12 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProfessionalExperience = () => {
+const ProfessionalExperience = ({ display, userId }) => {
   const classes = useStyles()
   const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<number | null>(null)
 
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(false)
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
   const { loading, data } = useQuery(GET_USER, {
     variables: { _id: userId },
   })
@@ -203,13 +200,13 @@ const ProfessionalExperience = () => {
     <div className="flex flex-col p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">professional experience</h3>
-        {!edit ? (
+        {!edit || display ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit || display ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <div>
             {professionalExp.map((details, i: number) => (

@@ -8,25 +8,25 @@ import Languages from '../Languages'
 import Skills from '../Skills'
 import Sport from '../Sport'
 
-const ProfileSidebar = ({ page }: { page: 1 | 2 }) => (
+const ProfileSidebar = ({ display, page, userId }) => (
   <div className="bg-resume py-4">
     {page === 1 ? (
       <>
-        <Contacts />
+        <Contacts display={display} userId={userId} />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-        <Education />
+        <Education display={display} userId={userId} />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-        <Skills />
+        <Skills display={display} userId={userId} />
       </>
     ) : (
       <>
-        <Languages />
+        <Languages display={display} userId={userId} />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-        <Hobbies />
+        <Hobbies display={display} userId={userId} />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-        <Sport />
+        <Sport display={display} userId={userId} />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-        <CountriesICanWork />
+        <CountriesICanWork display={display} userId={userId} />
         <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
       </>
     )}

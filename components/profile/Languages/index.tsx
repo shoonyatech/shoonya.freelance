@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
@@ -36,12 +35,10 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Language = () => {
+const Language = ({ display, userId }) => {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
   const { loading, data } = useQuery(GET_USER, {
     variables: { _id: userId },
   })
@@ -104,13 +101,13 @@ const Language = () => {
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Languages</h3>
-        {!edit ? (
+        {!edit || display ? (
           <button onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit || display ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           {languages.map((lang, i): any => (
             <TextFieldAndDeleteBtn

@@ -1,6 +1,5 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Slider from '@material-ui/core/Slider'
@@ -51,11 +50,9 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Skills = () => {
+const Skills = ({ display, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
   const [edit, setEdit] = useState<boolean>(false)
   const { loading, data } = useQuery(GET_USER, {
     variables: { _id: userId },
@@ -127,13 +124,13 @@ const Skills = () => {
 
   return (
     <div className="px-6">
-      {!edit ? (
+      {!edit || display ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">skills</h3>
-      {edit ? (
+      {edit || display ? (
         <form onSubmit={updateUser} className="flex flex-col ">
           {skills.map((skill, i): any => (
             <div key={i} className="flex flex-col">

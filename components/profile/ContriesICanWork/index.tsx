@@ -1,5 +1,4 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import { InputLabel } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -41,12 +40,10 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const CountriesICanWork = () => {
+const CountriesICanWork = ({ display, userId }) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
   const { loading, data } = useQuery(GET_USER_AND_COUNTRY, {
     variables: { _id: userId },
   })
@@ -112,13 +109,13 @@ const CountriesICanWork = () => {
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Countries I Can Work</h3>
-        {!edit ? (
+        {!edit || display ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit || display ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           {countriesICanWork.map((countryName, i): any => (
             <>

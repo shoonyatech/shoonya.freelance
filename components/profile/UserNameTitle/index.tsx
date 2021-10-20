@@ -1,5 +1,4 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -40,12 +39,10 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const UserNameTitle = () => {
+function UserNameTitle({ data, display, userId }) {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER, {
+  const { loading } = useQuery(GET_USER, {
     variables: { _id: userId },
   })
   const [updateUserNameTitle, { error }] = useMutation(UPDATE_USER)
@@ -58,10 +55,10 @@ const UserNameTitle = () => {
   const [nameTitle, setNameTitle] = useState<UserObj>(initialVal)
 
   useEffect(() => {
-    if (data?.user?.name) {
+    if (data?.name) {
       setNameTitle({
-        name: data.user.name,
-        title: data.user.title,
+        name: data.name,
+        title: data.title,
       })
       setEdit(false)
     } else setEdit(true)
@@ -88,10 +85,10 @@ const UserNameTitle = () => {
   }
 
   const cancelUpdateUser = () => {
-    if (data?.user) {
+    if (data) {
       setNameTitle({
-        name: data.user.name,
-        title: data.user.title,
+        name: data.name,
+        title: data.title,
       })
     } else setNameTitle(initialVal)
     setEdit(false)
@@ -99,7 +96,7 @@ const UserNameTitle = () => {
 
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
-      {edit ? (
+      {edit || display ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <TextField
             name="name"
@@ -137,12 +134,12 @@ const UserNameTitle = () => {
       ) : (
         <div className="flex flex-col whitespace-nowrap">
           <div className="flex justify-between">
-            <h1 className="text-black text-5xl">{data.user.name}</h1>
+            <h1 className="text-black text-5xl">{data.name}</h1>
             <button type="button" onClick={() => setEdit(!edit)}>
               <EditIcon />
             </button>
           </div>
-          <h3>{data.user.title} </h3>
+          <h3>{data.title} </h3>
         </div>
       )}
     </div>

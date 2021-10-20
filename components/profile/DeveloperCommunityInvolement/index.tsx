@@ -1,6 +1,5 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -55,12 +54,10 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const DeveloperCommunityInvolement = () => {
+const DeveloperCommunityInvolement = ({ display, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
   const { loading, data } = useQuery(GET_USER, {
     variables: { _id: userId },
   })
@@ -142,13 +139,13 @@ const DeveloperCommunityInvolement = () => {
 
   return (
     <div className="p-4 md:p-6">
-      {!edit ? (
+      {!edit || display ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">developer community involement</h3>
-      {edit ? (
+      {edit || display ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <div>
             {developerCommunityInvolement.map((dev, i: number) => (

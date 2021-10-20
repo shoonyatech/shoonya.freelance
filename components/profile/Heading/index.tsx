@@ -3,10 +3,10 @@ import React from 'react'
 import Avatar from '../Avatar'
 import UserNameTitle from '../UserNameTitle'
 
-const Heading = () => (
+const Heading = ({ data, display, userId }) => (
   <div className="lg:grid lg:grid-cols-profile">
-    <UserNameTitle />
-    <Avatar />
+    <UserNameTitle data={data} display={display} userId={userId} />
+    <Avatar data={data} display={display} userId={userId} />
   </div>
 )
 
