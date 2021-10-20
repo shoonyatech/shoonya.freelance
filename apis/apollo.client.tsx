@@ -1,25 +1,8 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
-
-const httpLink = createHttpLink({
-  uri: '/api/graphql',
-})
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 const client = new ApolloClient({
-  link: httpLink,
+  uri: process.env.GRAPHQL_SERVER,
   cache: new InMemoryCache(),
-  // link: new RestLink({
-  //   endpoints: {
-  //     feedback: `${process.env.WALLORA_BACKEND_SUBMIT_FEEDBACK}`,
-  //     majorPlannedExpensesWorkItemwise: `${process.env.WALLORA_BACKEND_TOTAL_PLANNED_AMOUNT_WORKITEMWISE}`,
-  //     majorPlannedExpensesMonthwise: `${process.env.WALLORA_BACKEND_TOTAL_PLANNED_EXPENSES_MONTHWISE}`,
-  //   },
-  // }),
 })
 
-// NOTE: Both graphql server and mocking rest with graphql doesn't work simultaneously.
-// Setup your client.
-function GetApolloClient() {
-  return client
-}
-
-export default GetApolloClient
+export default client
