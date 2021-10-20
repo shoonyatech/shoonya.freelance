@@ -2,13 +2,33 @@
 
 import { graphql } from 'msw'
 
-import freelancers from '../../components/profile/FreelancerCard/mockdata'
-
 export const handlers = [
   graphql.query('getFreelancers', (req, res, ctx) =>
     res(
       ctx.data({
-        freelancers,
+        freelancer: [
+          {
+            id: 1,
+            name: 'react',
+            description: 'some desc some desc some dessc',
+            __typename: 'Projects',
+            priceRange: 'low',
+          },
+          {
+            id: 2,
+            name: 'angular',
+            description: 'some desc some desc some dessc',
+            __typename: 'Projects',
+            priceRange: 'medium',
+          },
+          {
+            id: 3,
+            name: 'vue',
+            description: 'some desc some desc some dessc',
+            __typename: 'Projects',
+            priceRange: 'high',
+          },
+        ],
       })
     )
   ),
