@@ -25,7 +25,7 @@ const ProjectTitle = () => {
       <form className="flex flex-col" onSubmit={updateTitle}>
         <TextField
           name="projecttitle"
-          label="ProjectTitle"
+          label="Project Title"
           color="primary"
           margin="dense"
           variant="outlined"
