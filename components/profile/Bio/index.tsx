@@ -57,7 +57,8 @@ const Bio = () => {
     setBio(evt.target.value)
   }
 
-  const updateUser = async () => {
+  const updateUser = async (e) => {
+    e.preventDefault()
     await updateUserBio({
       variables: { _id: userId, bio },
       refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
@@ -81,7 +82,7 @@ const Bio = () => {
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">bio</h3>
       {edit ? (
-        <div className="flex flex-col ">
+        <form onSubmit={updateUser} className="flex flex-col ">
           <TextField
             id="outlined-multiline-static"
             label="Bio"
@@ -95,7 +96,7 @@ const Bio = () => {
             fullWidth
           />
           <div className="self-end pt-2">
-            <Button className={classes.savecancelbtn} onClick={() => updateUser()} variant="contained" color="primary">
+            <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
               Save
             </Button>
             <Button
@@ -107,7 +108,7 @@ const Bio = () => {
               Cancel
             </Button>
           </div>
-        </div>
+        </form>
       ) : (
         <div>
           <div>{data?.user?.bio}</div>
