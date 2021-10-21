@@ -28,12 +28,12 @@ const UPDATE_PROJECT_TITLE = gql`
 
 const ProjectTitle = ({ data }) => {
   const router = useRouter()
-
   const classes = useStyles()
+
   const [projectTitle, setProjectTitle] = useState<string>(data)
   const [updatedTitle, setUpdatedTitle] = useState<string | null>(null)
-
   const [edit, setEdit] = useState<boolean>(false)
+
   const [updateProjectTitle, { loading, error }] = useMutation(UPDATE_PROJECT_TITLE, {
     onCompleted(val) {
       const newTitle = val.updateProjectTitle.title
