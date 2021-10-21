@@ -39,9 +39,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const Project = ({data}) => (
+const Project = ({ data }) => (
   <div>
-    <ManageProject data={data}/>
+    <ManageProject data={data} />
   </div>
 )
 export default Project
