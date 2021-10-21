@@ -31,7 +31,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { data } = await client.query({
     query: GET_PROJECT,
     variables: { _id: context.query.id },
+    errorPolicy: 'ignore',
   })
+
+  if (!data.project) {
+    return {
+      notFound: true,
+    }
+  }
   return {
     props: {
       data: data.project,

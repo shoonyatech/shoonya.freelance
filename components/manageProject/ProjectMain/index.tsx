@@ -3,10 +3,10 @@ import React from 'react'
 
 import ProjectDescription from '../ProjectDescription'
 
-const ProjectMain = () => {
+const ProjectMain = ({ data }) => {
   return (
     <div>
-      <ProjectDescription />
+      <ProjectDescription data={data} />
     </div>
   )
 }
