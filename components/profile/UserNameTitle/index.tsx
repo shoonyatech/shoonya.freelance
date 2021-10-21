@@ -39,10 +39,10 @@ const useStyles = makeStyles(() =>
   })
 )
 
-function UserNameTitle({ data, display, userId }) {
+function UserNameTitle({ isReadOnly, userId }) {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
-  const { loading } = useQuery(GET_USER, {
+  const { loading, data } = useQuery(GET_USER, {
     variables: { _id: userId },
   })
   const [updateUserNameTitle, { error }] = useMutation(UPDATE_USER)
@@ -55,10 +55,10 @@ function UserNameTitle({ data, display, userId }) {
   const [nameTitle, setNameTitle] = useState<UserObj>(initialVal)
 
   useEffect(() => {
-    if (data?.name) {
+    if (data?.user?.name) {
       setNameTitle({
-        name: data.name,
-        title: data.title,
+        name: data.user.name,
+        title: data.user.title,
       })
       setEdit(false)
     } else setEdit(true)
@@ -96,8 +96,18 @@ function UserNameTitle({ data, display, userId }) {
 
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
-      {edit || display ? (
+      <h3 className="text-xl md:text-2xl  uppercase pb-3">name</h3>
+      {edit && isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
+          <div className="flex flex-col whitespace-nowrap">
+            <div className="flex justify-between">
+              <h1 className="text-black text-5xl">{data.name}</h1>
+              <button type="button" onClick={() => setEdit(!edit)}>
+                <EditIcon />
+              </button>
+            </div>
+            <h3>{data.title} </h3>
+          </div>
           <TextField
             name="name"
             label="Name"
@@ -132,15 +142,16 @@ function UserNameTitle({ data, display, userId }) {
           </div>
         </form>
       ) : (
-        <div className="flex flex-col whitespace-nowrap">
-          <div className="flex justify-between">
-            <h1 className="text-black text-5xl">{data.name}</h1>
-            <button type="button" onClick={() => setEdit(!edit)}>
-              <EditIcon />
-            </button>
-          </div>
-          <h3>{data.title} </h3>
-        </div>
+        <>
+          <TextField onChange={handleChange} value={nameTitle.name} color="primary" margin="dense" variant="outlined" />
+          <TextField
+            onChange={handleChange}
+            value={nameTitle.title}
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
+        </>
       )}
     </div>
   )

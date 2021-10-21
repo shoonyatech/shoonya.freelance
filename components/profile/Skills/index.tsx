@@ -50,7 +50,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Skills = ({ display, userId }) => {
+const Skills = ({ isReadOnly, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
@@ -124,14 +124,14 @@ const Skills = ({ display, userId }) => {
 
   return (
     <div className="px-6">
-      {!edit || display ? (
-        <button type="button" className="float-right" onClick={() => setEdit(true)}>
-          <EditIcon />
-        </button>
-      ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">skills</h3>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <form onSubmit={updateUser} className="flex flex-col ">
+          <div className="flex justify-end">
+            <button type="button" className="float-right" onClick={() => setEdit(!edit)}>
+              <EditIcon />
+            </button>
+          </div>
           {skills.map((skill, i): any => (
             <div key={i} className="flex flex-col">
               <div className="flex">
@@ -182,13 +182,29 @@ const Skills = ({ display, userId }) => {
         </form>
       ) : (
         <div>
-          {data.user.skills.map((skill, i): any => (
-            <div key={i}>
-              <div>{skill.name}</div>
-              <div className="h-2 bg-skillbarempty">
-                <div className={`bg-skillbarfilled ${skill.scale < 5 ? `w-${skill.scale}/5` : 'w-full'} h-full`} />
-              </div>
-            </div>
+          {skills.map((skill, i): any => (
+            <>
+              <TextField
+                index={i}
+                onChange={handleNameChange}
+                value={skill.name}
+                size="small"
+                color="primary"
+                margin="dense"
+                variant="outlined"
+              />
+              <Slider
+                value={skill.scale}
+                onChange={handleScaleChange}
+                // getAriaValueText={valuetext}
+                // aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={1}
+                marks
+                min={1}
+                max={5}
+              />
+            </>
           ))}
         </div>
       )}

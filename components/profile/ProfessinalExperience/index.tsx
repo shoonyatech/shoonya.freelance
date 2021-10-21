@@ -19,7 +19,7 @@ import { icons } from '../../../lib/icon'
 import DeleteAlert from '../DeleteAlert'
 import TechStackIcons from '../TechStackIcons'
 import TextEditor from '../TextEditor'
-import TextEditorReadOnly from '../TextEditorReadOnly'
+// import TextEditorReadOnly from '../TextEditorReadOnly'
 
 interface professionalExperienceObj {
   company: string
@@ -78,7 +78,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProfessionalExperience = ({ display, userId }) => {
+const ProfessionalExperience = ({ isReadOnly, userId }) => {
   const classes = useStyles()
   const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<number | null>(null)
 
@@ -200,125 +200,123 @@ const ProfessionalExperience = ({ display, userId }) => {
     <div className="flex flex-col p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">professional experience</h3>
-        {!edit || display ? (
-          <button type="button" onClick={() => setEdit(true)}>
-            <EditIcon />
-          </button>
-        ) : null}
       </div>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          <div>
-            {professionalExp.map((details, i: number) => (
-              <div key={i} className="flex flex-col pb-28">
-                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
-                  <DeleteIcon color="error" />
-                </IconButton>
+          <div className="flex justify-end">
+            <button type="button" onClick={() => setEdit(!edit)}>
+              <EditIcon />
+            </button>
+          </div>
+          {professionalExp.map((details, i: number) => (
+            <div key={i} className="flex flex-col pb-28">
+              <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <DeleteIcon color="error" />
+              </IconButton>
+              <TextField
+                id="outlined-m  ultiline-static"
+                label="Job Title"
+                margin="dense"
+                value={details.jobTitle}
+                name="jobTitle"
+                onChange={handleChange(i, 'Job title')}
+                rows={4}
+                variant="outlined"
+                color="primary"
+                required
+                fullWidth
+              />
+
+              <div className="pb-4 relative h-10">
+                <div className="flex items-center">
+                  <p className="flex items-center">
+                    <span className="mr-2">Tech stack : </span>
+                    {details.techStack.map((icon) => (
+                      <span className="px-px">{icons[`${icon}`]}</span>
+                    ))}
+                  </p>
+                  <Button onClick={() => openTechStackPickor(i)}>
+                    <AddIcon />
+                  </Button>
+                  {(showTechStackIconPickor || showTechStackIconPickor === 0) && showTechStackIconPickor === i ? (
+                    <TechStackIcons
+                      closeTechStackPickor={closeTechStackPickor}
+                      techStack={details.techStack}
+                      handleIconChange={handleIconChange}
+                      index={i}
+                    />
+                  ) : null}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-x-4">
                 <TextField
-                  id="outlined-m  ultiline-static"
-                  label="Job Title"
+                  id="outlined-multiline-static"
+                  label="Company"
+                  name="company"
                   margin="dense"
-                  value={details.jobTitle}
-                  name="jobTitle"
-                  onChange={handleChange(i, 'Job title')}
+                  value={details.company}
+                  onChange={handleChange(i, 'Company')}
                   rows={4}
                   variant="outlined"
                   color="primary"
-                  required
                   fullWidth
+                  required
                 />
-
-                <div className="pb-4 relative h-10">
-                  <div className="flex items-center">
-                    <p className="flex items-center">
-                      <span className="mr-2">Tech stack : </span>
-                      {details.techStack.map((icon) => (
-                        <span className="px-px">{icons[`${icon}`]}</span>
-                      ))}
-                    </p>
-                    <Button onClick={() => openTechStackPickor(i)}>
-                      <AddIcon />
-                    </Button>
-                    {(showTechStackIconPickor || showTechStackIconPickor === 0) && showTechStackIconPickor === i ? (
-                      <TechStackIcons
-                        closeTechStackPickor={closeTechStackPickor}
-                        techStack={details.techStack}
-                        handleIconChange={handleIconChange}
-                        index={i}
-                      />
-                    ) : null}
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-x-4">
-                  <TextField
-                    id="outlined-multiline-static"
-                    label="Company"
-                    name="company"
-                    margin="dense"
-                    value={details.company}
-                    onChange={handleChange(i, 'Company')}
-                    rows={4}
-                    variant="outlined"
-                    color="primary"
-                    fullWidth
-                    required
-                  />
-                  <TextField
-                    id="outlined-multiline-static"
-                    label="Location"
-                    name="location"
-                    margin="dense"
-                    value={details.location}
-                    onChange={handleChange(i, 'location')}
-                    rows={4}
-                    variant="outlined"
-                    color="primary"
-                    fullWidth
-                    required
-                  />
-                </div>
-                <div className="flex">
-                  <div>
-                    <label>Start Year</label>
-                    <DatePicker
-                      selected={new Date(`${details?.startYear}`)}
-                      onChange={(date: Date) => handleTimeChange(date, i, 'startYear')}
-                      showYearPicker
-                      dateFormat="yyyy"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="endYear" className="text-gray-400">
-                      End Year
-                    </label>
-                    <DatePicker
-                      disabled={details.currentJob}
-                      selected={details?.endYear && !details.currentJob ? new Date(`${details?.endYear}`) : null}
-                      onChange={(date: Date) => handleTimeChange(date, i, 'endYear')}
-                      showYearPicker
-                      dateFormat="yyyy"
-                    />
-                  </div>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={details.currentJob}
-                        onChange={handleChange(i, 'checkbox')}
-                        name="currentJob"
-                        color="primary"
-                      />
-                    }
-                    label="currentJob"
-                  />
-                </div>
-                <div className="pt-6">
-                  <div className="text-xl md:text-2xl">Description</div>
-                  <TextEditor handleEditorChange={handleEditorChange(i)} defaultValue={details.description} />
-                </div>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Location"
+                  name="location"
+                  margin="dense"
+                  value={details.location}
+                  onChange={handleChange(i, 'location')}
+                  rows={4}
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  required
+                />
               </div>
-            ))}
-            {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
-          </div>
+              <div className="flex">
+                <div>
+                  <label>Start Year</label>
+                  <DatePicker
+                    selected={new Date(`${details?.startYear}`)}
+                    onChange={(date: Date) => handleTimeChange(date, i, 'startYear')}
+                    showYearPicker
+                    dateFormat="yyyy"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="endYear" className="text-gray-400">
+                    End Year
+                  </label>
+                  <DatePicker
+                    disabled={details.currentJob}
+                    selected={details?.endYear && !details.currentJob ? new Date(`${details?.endYear}`) : null}
+                    onChange={(date: Date) => handleTimeChange(date, i, 'endYear')}
+                    showYearPicker
+                    dateFormat="yyyy"
+                  />
+                </div>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={details.currentJob}
+                      onChange={handleChange(i, 'checkbox')}
+                      name="currentJob"
+                      color="primary"
+                    />
+                  }
+                  label="currentJob"
+                />
+              </div>
+              <div className="pt-6">
+                <div className="text-xl md:text-2xl">Description</div>
+                <TextEditor handleEditorChange={handleEditorChange(i)} defaultValue={details.description} />
+              </div>
+            </div>
+          ))}
+          {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           <Button className={classes.btn} onClick={() => addProfessionalExperience()}>
             Add Professional Experience
           </Button>
@@ -338,20 +336,109 @@ const ProfessionalExperience = ({ display, userId }) => {
         </form>
       ) : (
         <div>
-          {data.user.professionalExperience.map((details, i): any => (
-            <div className="pb-10" key={i}>
-              <div className="flex items-center">
-                <div className="font-bold mr-2">{details.jobTitle}</div>
-                {details.techStack.map((icon) => (
-                  <span className="px-px">{icons[`${icon}`]}</span>
-                ))}
-              </div>
+          {professionalExp.map((details, i: number) => (
+            <div key={i} className="flex flex-col pb-28">
+              <TextField
+                id="outlined-m  ultiline-static"
+                label="Job Title"
+                margin="dense"
+                value={details.jobTitle}
+                name="jobTitle"
+                onChange={handleChange(i, 'Job title')}
+                rows={4}
+                variant="outlined"
+                color="primary"
+                required
+                fullWidth
+              />
 
-              <div>
-                <span className="uppercase">{details.company} </span>| {details.location} | {details.startYear} -
-                {details.currentJob ? 'PRESENT' : details.endYear}
+              <div className="pb-4 relative h-10">
+                <div className="flex items-center">
+                  <p className="flex items-center">
+                    <span className="mr-2">Tech stack : </span>
+                    {details.techStack.map((icon) => (
+                      <span className="px-px">{icons[`${icon}`]}</span>
+                    ))}
+                  </p>
+                  <Button onClick={() => openTechStackPickor(i)}>
+                    <AddIcon />
+                  </Button>
+                  {(showTechStackIconPickor || showTechStackIconPickor === 0) && showTechStackIconPickor === i ? (
+                    <TechStackIcons
+                      closeTechStackPickor={closeTechStackPickor}
+                      techStack={details.techStack}
+                      handleIconChange={handleIconChange}
+                      index={i}
+                    />
+                  ) : null}
+                </div>
               </div>
-              <TextEditorReadOnly defaultValue={details.description} />
+              <div className="grid grid-cols-2 gap-x-4">
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Company"
+                  name="company"
+                  margin="dense"
+                  value={details.company}
+                  onChange={handleChange(i, 'Company')}
+                  rows={4}
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Location"
+                  name="location"
+                  margin="dense"
+                  value={details.location}
+                  onChange={handleChange(i, 'location')}
+                  rows={4}
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  required
+                />
+              </div>
+              <div className="flex">
+                <div>
+                  <label>Start Year</label>
+                  <DatePicker
+                    selected={new Date(`${details?.startYear}`)}
+                    onChange={(date: Date) => handleTimeChange(date, i, 'startYear')}
+                    showYearPicker
+                    dateFormat="yyyy"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="endYear" className="text-gray-400">
+                    End Year
+                  </label>
+                  <DatePicker
+                    disabled={details.currentJob}
+                    selected={details?.endYear && !details.currentJob ? new Date(`${details?.endYear}`) : null}
+                    onChange={(date: Date) => handleTimeChange(date, i, 'endYear')}
+                    showYearPicker
+                    dateFormat="yyyy"
+                  />
+                </div>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={details.currentJob}
+                      onChange={handleChange(i, 'checkbox')}
+                      name="currentJob"
+                      color="primary"
+                    />
+                  }
+                  label="currentJob"
+                />
+              </div>
+              <div className="pt-6">
+                <div className="text-xl md:text-2xl">Description</div>
+                <TextEditor handleEditorChange={handleEditorChange(i)} defaultValue={details.description} />
+              </div>
             </div>
           ))}
         </div>

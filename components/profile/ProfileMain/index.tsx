@@ -4,16 +4,16 @@ import Bio from '../Bio'
 import DeveloperCommunityInvolement from '../DeveloperCommunityInvolement'
 import ProfessionalExperience from '../ProfessinalExperience'
 
-const ProfileMain = ({ page, display, userId }) => (
+const ProfileMain = ({ isReadOnly, page, userId }) => (
   <div>
     {page === 1 ? (
       <>
-        <Bio display={display} userId={userId} />
-        <ProfessionalExperience display={display} userId={userId} />
+        <Bio isReadOnly={isReadOnly} userId={userId} />
+        <ProfessionalExperience isReadOnly={isReadOnly} userId={userId} />
       </>
     ) : (
       <>
-        <DeveloperCommunityInvolement display={display} userId={userId} />
+        <DeveloperCommunityInvolement isReadOnly={isReadOnly} userId={userId} />
       </>
     )}
   </div>

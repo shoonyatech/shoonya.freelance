@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/button-has-type */
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { TextField } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
@@ -35,7 +36,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Language = ({ display, userId }) => {
+const Language = ({ isReadOnly, userId }) => {
   const [edit, setEdit] = useState<boolean>(false)
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
@@ -101,14 +102,14 @@ const Language = ({ display, userId }) => {
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Languages</h3>
-        {!edit || display ? (
-          <button onClick={() => setEdit(true)}>
-            <EditIcon />
-          </button>
-        ) : null}
       </div>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
+          <div className="flex justify-end">
+            <button onClick={() => setEdit(!edit)}>
+              <EditIcon />
+            </button>
+          </div>
           {languages.map((lang, i): any => (
             <TextFieldAndDeleteBtn
               key={i}
@@ -139,7 +140,20 @@ const Language = ({ display, userId }) => {
           </div>
         </form>
       ) : (
-        <div className="uppercase">{data.user.languages.join(' | ')}</div>
+        <>
+          {languages.map((lang, i): any => (
+            <TextField
+              onChange={handleChange}
+              index={i}
+              value={lang}
+              openPopup={openPopup}
+              size="small"
+              color="primary"
+              margin="dense"
+              variant="outlined"
+            />
+          ))}
+        </>
       )}
     </div>
   )

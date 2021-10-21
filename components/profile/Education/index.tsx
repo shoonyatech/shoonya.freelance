@@ -58,7 +58,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Education = ({ display, userId }) => {
+const Education = ({ isReadOnly, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
@@ -145,14 +145,14 @@ const Education = ({ display, userId }) => {
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">education</h3>
-        {!edit || display ? (
-          <button type="button" onClick={() => setEdit(true)}>
-            <EditIcon />
-          </button>
-        ) : null}
       </div>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
+          <div className="flex justify-end">
+            <button type="button" onClick={() => setEdit(true)}>
+              <EditIcon />
+            </button>
+          </div>
           <div className="self-end pt-2">
             {education.map((edu, i: number) => (
               <div className="flex flex-col" key={i}>
@@ -220,17 +220,30 @@ const Education = ({ display, userId }) => {
           </div>
         </form>
       ) : (
-        <div>
-          {data.user.education.map((edu, i) => (
-            <div key={i}>
-              <div className="font-bold">{edu.degree}</div>
-              <div>{edu.school}</div>
-              <div>
-                {edu.startYear} - {edu.endYear}
+        <>
+          <div>
+            {education.map((edu, i: number) => (
+              <div className="flex flex-col" key={i}>
+                <TextField
+                  margin="dense"
+                  value={edu.degree}
+                  onChange={handleChange(i, 'degree')}
+                  variant="outlined"
+                  color="primary"
+                  required
+                />
+                <TextField
+                  margin="dense"
+                  value={edu.school}
+                  onChange={handleChange(i, 'school')}
+                  variant="outlined"
+                  color="primary"
+                  required
+                />
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   )

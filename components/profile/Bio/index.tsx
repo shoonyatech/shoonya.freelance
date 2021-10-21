@@ -32,7 +32,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Bio = ({ display, userId }) => {
+const Bio = ({ isReadOnly, userId }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(false)
   const { loading, data } = useQuery(GET_USER, {
@@ -71,14 +71,14 @@ const Bio = ({ display, userId }) => {
 
   return (
     <div className="p-4 md:p-6">
-      {!edit || display ? (
-        <button type="button" className="float-right" onClick={() => setEdit(true)}>
-          <EditIcon />
-        </button>
-      ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">bio</h3>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <div className="flex flex-col ">
+          <div className="flex justify-end">
+            <button type="button" className="float-right" onClick={() => setEdit(!edit)}>
+              <EditIcon />
+            </button>
+          </div>
           <TextField
             id="outlined-multiline-static"
             label="Bio"
@@ -106,9 +106,17 @@ const Bio = ({ display, userId }) => {
           </div>
         </div>
       ) : (
-        <div>
-          <div>{data?.user?.bio}</div>
-        </div>
+        <>
+          <TextField
+            value={bio}
+            multiline
+            onChange={handleChange}
+            rows={4}
+            variant="outlined"
+            color="primary"
+            fullWidth
+          />
+        </>
       )}
     </div>
   )

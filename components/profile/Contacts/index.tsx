@@ -3,12 +3,12 @@ import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import GitHubIcon from '@material-ui/icons/GitHub'
-import LinkedInIcon from '@material-ui/icons/LinkedIn'
-import MailIcon from '@material-ui/icons/Mail'
-import PhoneIcon from '@material-ui/icons/Phone'
-import RoomIcon from '@material-ui/icons/Room'
-import TwitterIcon from '@material-ui/icons/Twitter'
+// import GitHubIcon from '@material-ui/icons/GitHub'
+// import LinkedInIcon from '@material-ui/icons/LinkedIn'
+// import MailIcon from '@material-ui/icons/Mail'
+// import PhoneIcon from '@material-ui/icons/Phone'
+// import RoomIcon from '@material-ui/icons/Room'
+// import TwitterIcon from '@material-ui/icons/Twitter'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 interface ContactObj {
@@ -61,7 +61,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Contacts = ({ display, userId }) => {
+const Contacts = ({ isReadOnly, userId }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(false)
   const { loading, data } = useQuery(GET_USER, {
@@ -129,16 +129,15 @@ const Contacts = ({ display, userId }) => {
   }
 
   return (
-    <div className="px-6">
-      {!edit || display ? (
-        <button type="button" className="float-right" onClick={() => setEdit(true)}>
-          <EditIcon />
-        </button>
-      ) : null}
+    <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <h3 className="text-xl md:text-2xl  uppercase pb-3">contacts</h3>
-
-      {edit || display ? (
-        <form onSubmit={updateUser} className="flex flex-col w-max">
+      {edit && isReadOnly ? (
+        <form onSubmit={updateUser} className="flex flex-col">
+          <div className="flex justify-end">
+            <button type="button" className="flex flex-end" onClick={() => setEdit(!edit)}>
+              <EditIcon />
+            </button>
+          </div>
           <TextField
             className="self-start"
             label="Location"
@@ -218,42 +217,57 @@ const Contacts = ({ display, userId }) => {
         </form>
       ) : (
         <>
-          <ul className="list-none">
-            {data?.user?.contact?.location ? (
-              <li className="pb-1">
-                <RoomIcon />
-                <span className="break-all">{data.user.contact.location}</span>
-              </li>
-            ) : null}
-            {data?.user?.contact?.phone ? (
-              <li className="pb-1">
-                <PhoneIcon /> <span className="break-all">{data?.user?.contact.phone}</span>
-              </li>
-            ) : null}
-            {data?.user?.contact?.mail ? (
-              <li className="pb-1">
-                <MailIcon /> <span className="break-all">{data?.user?.contact.mail}</span>
-              </li>
-            ) : null}
+          <TextField
+            className="self-start"
+            onChange={handleChange}
+            value={contact.location}
+            size="small"
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
+          <TextField
+            className="self-start"
+            onChange={handleChange}
+            value={contact.phone}
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
+          <TextField
+            className="self-start"
+            onChange={handleChange}
+            value={contact.mail}
+            size="medium"
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
+          <TextField
+            className="self-start"
+            onChange={handleChange}
+            value={contact.linkedin}
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
 
-            {data?.user?.contact?.linkedin ? (
-              <li className="pb-1">
-                <LinkedInIcon /> <span className="break-all">{data?.user?.contact.linkedin}</span>
-              </li>
-            ) : null}
-
-            {data?.user?.contact?.github ? (
-              <li className="pb-1">
-                <GitHubIcon /> <span className="break-all">{data?.user?.contact.github}</span>
-              </li>
-            ) : null}
-
-            {data?.user?.contact?.twitter ? (
-              <li className="pb-1">
-                <TwitterIcon /> <span className="break-all">{data?.user?.contact.twitter}</span>
-              </li>
-            ) : null}
-          </ul>
+          <TextField
+            className="self-start"
+            onChange={handleChange}
+            value={contact.github}
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
+          <TextField
+            className="self-start"
+            onChange={handleChange}
+            value={contact.twitter}
+            color="primary"
+            margin="dense"
+            variant="outlined"
+          />
         </>
       )}
     </div>

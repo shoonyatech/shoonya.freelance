@@ -1,9 +1,10 @@
+/* eslint-disable react/button-has-type */
 import { gql, useQuery } from '@apollo/client'
-import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0'
-import React, { useState } from 'react'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0'
+import React, { useEffect, useState } from 'react'
 
 import MasterDetailsLayout from '../components/common/MasterDetailsLayout'
-import FreelancerCard from '../components/profile/FreelancerCard'
+import FreelancerCard from '../components/profile/FreelancerCard/index'
 import Profile from '../components/profile/Profile'
 import ClientSideRendering from '../lib/client-side-rendering'
 
@@ -11,28 +12,32 @@ const GET_FREELANCERS = gql`
   {
     freelancers {
       name
-      title
-      picture
     }
   }
 `
 
 export default function Freelancer() {
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
+  const [userId, setUserId] = useState()
   const { error, loading, data } = useQuery(GET_FREELANCERS, {
     variables: { _id: userId },
   })
-  const [display] = useState(true)
+  const isReadOnly = true
 
+  useEffect(() => {
+    if (data) setUserId(data?.freelancers)
+  }, [data])
+
+  function handleClick(Id) {
+    setUserId(Id)
+  }
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error! {error.message}</div>
   return (
     <div>
       <ClientSideRendering>
         <MasterDetailsLayout>
-          <FreelancerCard data={data} />
-          <Profile data={data} display={display} userId={userId} />
+          <FreelancerCard handleClick={handleClick} data={data} />
+          <Profile isReadOnly={isReadOnly} userId={userId} />
         </MasterDetailsLayout>
       </ClientSideRendering>
     </div>

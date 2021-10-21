@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { TextField } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
@@ -34,7 +35,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Sport = ({ display, userId }) => {
+const Sport = ({ isReadOnly, userId }) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
@@ -100,26 +101,24 @@ const Sport = ({ display, userId }) => {
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Sports</h3>
-        {!edit || display ? (
-          <button type="button" onClick={() => setEdit(true)}>
-            <EditIcon />
-          </button>
-        ) : null}
       </div>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
-          {sports
-            ? sports.map((sport, i): any => (
-                <TextFieldAndDeleteBtn
-                  key={i}
-                  handleChange={handleChange}
-                  index={i}
-                  label="language"
-                  value={sport}
-                  openPopup={openPopup}
-                />
-              ))
-            : null}
+          <div className="flex justify-end">
+            <button type="button" onClick={() => setEdit(!edit)}>
+              <EditIcon />
+            </button>
+          </div>
+          {sports.map((sport, i): any => (
+            <TextFieldAndDeleteBtn
+              key={i}
+              handleChange={handleChange}
+              index={i}
+              label="language"
+              value={sport}
+              openPopup={openPopup}
+            />
+          ))}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           <Button className={classes.btn} onClick={() => addSport()}>
             Add Sport
@@ -141,15 +140,18 @@ const Sport = ({ display, userId }) => {
         </form>
       ) : (
         <>
-          <div className="flex flex-col whitespace-nowrap">
-            {data?.user?.sports
-              ? data.user.sports.map((sport) => (
-                  <div key={sport} className="uppercase">
-                    {sport}
-                  </div>
-                ))
-              : null}
-          </div>
+          {sports.map((sport, i): any => (
+            <TextField
+              onChange={handleChange}
+              index={i}
+              value={sport}
+              openPopup={openPopup}
+              size="small"
+              color="primary"
+              margin="dense"
+              variant="outlined"
+            />
+          ))}
         </>
       )}
     </div>

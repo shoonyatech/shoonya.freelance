@@ -10,7 +10,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 import DeleteAlert from '../DeleteAlert'
 import TextEditor from '../TextEditor'
-import TextEditorReadOnly from '../TextEditorReadOnly'
+// import TextEditorReadOnly from '../TextEditorReadOnly'
 
 interface developerCommunityInvolementObj {
   title: string
@@ -54,7 +54,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const DeveloperCommunityInvolement = ({ display, userId }) => {
+const DeveloperCommunityInvolement = ({ isReadOnly, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(false)
@@ -139,14 +139,14 @@ const DeveloperCommunityInvolement = ({ display, userId }) => {
 
   return (
     <div className="p-4 md:p-6">
-      {!edit || display ? (
-        <button type="button" className="float-right" onClick={() => setEdit(true)}>
-          <EditIcon />
-        </button>
-      ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">developer community involement</h3>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
+          <div>
+            <button type="button" className="float-right" onClick={() => setEdit(true)}>
+              <EditIcon />
+            </button>
+          </div>
           <div>
             {developerCommunityInvolement.map((dev, i: number) => (
               <div key={i} className="flex flex-col pb-28">
@@ -188,14 +188,25 @@ const DeveloperCommunityInvolement = ({ display, userId }) => {
           </div>
         </form>
       ) : (
-        <div>
-          {data.user.developerCommunityInvolement.map((dev, i): any => (
-            <div key={i}>
-              <div className="font-bold uppercase">{dev.title}</div>
-              <TextEditorReadOnly defaultValue={dev.description} />
+        <>
+          {developerCommunityInvolement.map((dev, i: number) => (
+            <div key={i} className="flex flex-col pb-28">
+              <TextField
+                label="Title"
+                margin="dense"
+                value={dev.title}
+                name="title"
+                onChange={handleChange(i)}
+                variant="outlined"
+                color="primary"
+                required
+                fullWidth
+              />
+              <div className="text-xl md:text-2xl">Description</div>
+              <TextEditor handleEditorChange={handleEditorChange(i)} defaultValue={dev.description} />
             </div>
           ))}
-        </div>
+        </>
       )}
     </div>
   )

@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { InputLabel } from '@material-ui/core'
+import { InputLabel, TextField } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -40,7 +40,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const CountriesICanWork = ({ display, userId }) => {
+const CountriesICanWork = ({ isReadOnly, userId }) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [popUp, setPopup] = useState({ show: false, index: null })
   const classes = useStyles()
@@ -109,14 +109,14 @@ const CountriesICanWork = ({ display, userId }) => {
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Countries I Can Work</h3>
-        {!edit || display ? (
-          <button type="button" onClick={() => setEdit(true)}>
-            <EditIcon />
-          </button>
-        ) : null}
       </div>
-      {edit || display ? (
+      {edit && isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
+          <div className="flex justify-end">
+            <button type="button" onClick={() => setEdit(true)}>
+              <EditIcon />
+            </button>
+          </div>
           {countriesICanWork.map((countryName, i): any => (
             <>
               <div className="flex">
@@ -164,13 +164,33 @@ const CountriesICanWork = ({ display, userId }) => {
         </form>
       ) : (
         <>
-          <div className="flex flex-col">
-            {data.user.countriesICanWork.map((country): any => (
-              <div key={country}>
-                <div className="uppercase">{country} </div>
+          {countriesICanWork.map((countryName, i): any => (
+            <>
+              <div className="flex">
+                <div className="flex-1">
+                  <InputLabel key={countryName} id="demo-simple-select-label">
+                    Country
+                  </InputLabel>
+                  <TextField
+                    id="demo-simple-select"
+                    value={countryName}
+                    size="small"
+                    color="primary"
+                    margin="dense"
+                    variant="outlined"
+                    onChange={handleChange(i)}
+                    fullWidth
+                  >
+                    {data.countries.map((country) => (
+                      <MenuItem key={country.name} value={country.name}>
+                        {country.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
               </div>
-            ))}
-          </div>
+            </>
+          ))}
         </>
       )}
     </div>
