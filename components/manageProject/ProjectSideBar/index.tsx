@@ -2,9 +2,9 @@ import React from 'react'
 
 import ProjectTitle from '../ProjectTitle'
 
-const ProjectSideBar = () => (
+const ProjectSideBar = ({ data }) => (
   <div className="bg-resume py-4">
-    <ProjectTitle />
+    <ProjectTitle data={data.title} />
   </div>
 )
 
