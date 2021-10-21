@@ -11,6 +11,7 @@ const GET_PROJECT = gql`
       _id
       owner
       title
+      description
       skills
       scope {
         size

@@ -6,7 +6,7 @@ import ProjectDescription from '../ProjectDescription'
 const ProjectMain = ({ data }) => {
   return (
     <div>
-      <ProjectDescription data={data} />
+      <ProjectDescription data={data.description} />
     </div>
   )
 }
