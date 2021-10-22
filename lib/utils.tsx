@@ -7,3 +7,5 @@ export const isArrayEmpty = (arr) =>
 
 
 export const isObjEmpty = (object)  =>  Object.values(object).some(x => x === null  || x === '');
+
+export const removeKey = (key, {[key]: _, ...rest}) => rest;
