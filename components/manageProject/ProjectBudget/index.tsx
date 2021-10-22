@@ -106,6 +106,8 @@ const ProjectBudget = ({ data }) => {
             selectedValue={projectBudget.type}
             options={['hourly rate', 'fixed rate']}
             handleChange={handleChange}
+            name="type"
+            ariaLabel="project budget type"
           />
           <div className="flex">
             <div>
