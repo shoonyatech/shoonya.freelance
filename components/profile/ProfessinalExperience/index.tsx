@@ -219,7 +219,7 @@ const ProfessionalExperience = () => {
                   required
                   fullWidth
                 />
-                <SkillIcons techStack={details.techStack} i={i} onSelectedSkillChange={onSelectedSkillChange} />
+                <SkillIcons techStack={details.techStack} onSelectedSkillChange={onSelectedSkillChange} />
 
                 <div className="grid grid-cols-2 gap-x-4">
                   <TextField

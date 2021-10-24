@@ -3,9 +3,9 @@ import AddIcon from '@material-ui/icons/Add'
 import React, { useState } from 'react'
 
 import { icons } from '../../../lib/icon'
-import TechStackIcons from '../../profile/TechStackIcons'
+import TechStackIcons from '../TechStackIcons'
 
-const SkillIcons = ({ techStack, onSelectedSkillChange, i }) => {
+const SkillIcons = ({ techStack, onSelectedSkillChange }) => {
   const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
 
   const openTechStackPickor = () => {
@@ -35,7 +35,6 @@ const SkillIcons = ({ techStack, onSelectedSkillChange, i }) => {
             closeTechStackPickor={closeTechStackPickor}
             techStack={techStack}
             onSelectedSkillChange={onSelectedSkillChange}
-            index={i}
           />
         ) : null}
       </div>
