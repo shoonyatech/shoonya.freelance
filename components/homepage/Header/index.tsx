@@ -26,7 +26,6 @@ import DrawerButtons from './drawer'
 
 const useStyle = makeStyles((theme) => ({
   header: {
-    height: 92,
     width: '100%',
     justifyContent: 'space-evenly',
     display: 'flex',
@@ -141,7 +140,6 @@ const useStyle = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       position: 'absolute',
       right: 12,
-      marginTop: '26px',
     },
   },
   button: {
@@ -161,7 +159,7 @@ const useStyle = makeStyles((theme) => ({
 
 const ToolBar = withStyles({
   root: {
-    minHeight: 55,
+    minHeight: 100,
   },
 })(Toolbar)
 
@@ -178,7 +176,7 @@ function Header() {
   }
 
   const list = () => (
-    <Box onClick={handleClose}>
+    <Box>
       <List>
         <ListItem button>
           <DrawerButtons />

@@ -61,7 +61,7 @@ const useStyle = makeStyles((theme) => ({
     background: '#FFFFFF',
     marginLeft: '0px',
     justifyContent: 'space-between',
-    boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)',
+    borderBottom: '1px solid #d8d8d8',
   },
   logo: {
     color: '#002BF5',
