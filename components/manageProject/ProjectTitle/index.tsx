@@ -1,9 +1,9 @@
 import { gql, useMutation } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 const useStyles = makeStyles(() =>
@@ -19,17 +19,16 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_TITLE = gql`
-  mutation UpdateProjectTitle($_id: ID!, $title: String) {
-    updateProjectTitle(_id: $_id, title: $title) {
+  mutation UpdateProjectTitle($owner: ID!, $title: String) {
+    updateProjectTitle(owner: $owner, title: $title) {
       title
     }
   }
 `
 
 const ProjectTitle = ({ data }) => {
-  const router = useRouter()
   const classes = useStyles()
-
+  const { user } = useUser()
   const [projectTitle, setProjectTitle] = useState<string>(data)
   const [updatedTitle, setUpdatedTitle] = useState<string | null>(null)
   const [edit, setEdit] = useState<boolean>(false)
@@ -46,7 +45,7 @@ const ProjectTitle = ({ data }) => {
   const updateTitle = (e) => {
     e.preventDefault()
     updateProjectTitle({
-      variables: { _id: router.query.id, title: projectTitle },
+      variables: { owner: user?.sub?.split('|')[1], title: projectTitle },
     })
   }
 

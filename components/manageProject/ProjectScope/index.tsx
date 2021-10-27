@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 import { removeKey } from '../../../lib/utils'
@@ -21,8 +21,8 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_SCOPE = gql`
-  mutation UpdateProjectScope($_id: ID!, $scope: ScopeInput) {
-    updateProjectScope(_id: $_id, scope: $scope) {
+  mutation UpdateProjectScope($owner: ID!, $scope: ScopeInput) {
+    updateProjectScope(owner: $owner, scope: $scope) {
       _id
       scope {
         size
@@ -34,9 +34,8 @@ const UPDATE_PROJECT_SCOPE = gql`
 `
 
 const ProjectScope = ({ data }) => {
-  const router = useRouter()
   const classes = useStyles()
-
+  const { user } = useUser()
   const [edit, setEdit] = useState<boolean>(!data)
   const [projectScope, setProjectScope] = useState(data)
   const [updatedScope, setUpdatedScope] = useState<string | null>(null)
@@ -54,7 +53,7 @@ const ProjectScope = ({ data }) => {
     e.preventDefault()
     const filterTypename = removeKey('__typename', projectScope)
     updateProjectScope({
-      variables: { _id: router.query.id, scope: filterTypename },
+      variables: { owner: user?.sub?.split('|')[1], scope: filterTypename },
     })
   }
 

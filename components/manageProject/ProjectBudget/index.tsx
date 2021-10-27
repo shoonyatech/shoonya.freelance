@@ -1,11 +1,11 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 import { removeKey } from '../../../lib/utils'
@@ -33,8 +33,8 @@ const GET_CURRENCIES = gql`
 `
 
 const UPDATE_PROJECT_BUDGET = gql`
-  mutation UpdateProjectBudget($_id: ID!, $budget: BudgetInput) {
-    updateProjectBudget(_id: $_id, budget: $budget) {
+  mutation UpdateProjectBudget($owner: ID!, $budget: BudgetInput) {
+    updateProjectBudget(owner: $owner, budget: $budget) {
       budget {
         type
         currency
@@ -45,10 +45,9 @@ const UPDATE_PROJECT_BUDGET = gql`
 `
 
 const ProjectBudget = ({ data }) => {
-  const router = useRouter()
+  const { user } = useUser()
   const classes = useStyles()
   const { error, loading, data: countryData } = useQuery(GET_CURRENCIES)
-
   const [edit, setEdit] = useState<boolean>(!data)
   const [projectBudget, setProjectBudget] = useState(data)
   const [updatedBudget, setUpdatedBudget] = useState<string | null>(null)
@@ -80,7 +79,7 @@ const ProjectBudget = ({ data }) => {
     e.preventDefault()
     const filterTypename = removeKey('__typename', projectBudget)
     updateProjectBudget({
-      variables: { _id: router.query.id, budget: filterTypename },
+      variables: { owner: user?.sub?.split('|')[1], budget: filterTypename },
     })
   }
 

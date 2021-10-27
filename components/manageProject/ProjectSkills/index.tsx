@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client'
+import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 import { icons } from '../../../lib/icon'
@@ -21,15 +21,15 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_SKILLS = gql`
-  mutation UpdateProjectSkills($_id: ID!, $skills: [String]) {
-    updateProjectSkills(_id: $_id, skills: $skills) {
+  mutation UpdateProjectSkills($owner: ID!, $skills: [String]) {
+    updateProjectSkills(owner: $owner, skills: $skills) {
       skills
     }
   }
 `
 
 const ProjectSkills = ({ data }) => {
-  const router = useRouter()
+  const { user } = useUser()
   const classes = useStyles()
 
   const [projectSkills, setProjectSkills] = useState<any>(data)
@@ -55,7 +55,7 @@ const ProjectSkills = ({ data }) => {
   const updateSkills = (e) => {
     e.preventDefault()
     updateProjectSkills({
-      variables: { _id: router.query.id, skills: projectSkills },
+      variables: { owner: user?.sub?.split('|')[1], skills: projectSkills },
     })
   }
 
