@@ -10,7 +10,7 @@ import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 
-import client from '../apis/apollo.client'
+import GetApolloClient from '../apis/apollo.client'
 import Layout from '../components/common/Layout'
 import * as ga from '../lib/ga'
 import MaterialUiTheme from '../styles/material.ui.theme.provider'
@@ -38,6 +38,8 @@ export default function WalloraApp({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [router.events])
+
+  const client = GetApolloClient('/api/graphql')
 
   return (
     <ApolloProvider client={client}>
