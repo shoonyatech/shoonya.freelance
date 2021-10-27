@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 import { GetServerSideProps } from 'next'
 import React from 'react'
 
-import client from '../../apis/apollo.client'
+import GetApolloClient from '../../apis/apollo.client'
 import ManageProject from '../../components/manageProject/ManageProject'
 
 const GET_PROJECT = gql`
@@ -27,6 +27,7 @@ const GET_PROJECT = gql`
     }
   }
 `
+const client = GetApolloClient('http://localhost:4000/graphql')
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { data } = await client.query({

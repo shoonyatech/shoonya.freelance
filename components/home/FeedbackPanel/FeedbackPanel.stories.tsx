@@ -1,13 +1,14 @@
 import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 
-import client from '../../../apis/apollo.client'
+import GetApolloClient from '../../../apis/apollo.client'
 import FeedbackPanel from '.'
 
 export default {
   title: 'FeedbackPanel',
   component: FeedbackPanel,
 }
+const client = GetApolloClient('/api/graphql')
 
 const Template = () => (
   <ApolloProvider client={client}>
