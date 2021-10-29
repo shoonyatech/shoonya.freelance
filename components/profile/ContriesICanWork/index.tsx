@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { FormEvent, useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
 const GET_USER_AND_COUNTRY = gql`
@@ -61,9 +62,7 @@ const CountriesICanWork = () => {
     } else setEdit(true)
   }, [data])
 
-  if (loading) return <div>Loading...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   const handleChange = (index: number) => (evt: any) => {
     setCountriesICanWork([

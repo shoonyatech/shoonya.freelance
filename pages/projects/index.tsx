@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client'
 import Link from '@material-ui/core/Button'
 import React, { useEffect, useState } from 'react'
 
+import Loader from '../../components/common/Loader'
 import MasterDetailsLayout from '../../components/common/MasterDetailsLayout'
 import ProjectList from '../../components/projects/ProjectList'
 
@@ -23,7 +24,7 @@ export default function Projects() {
   useEffect(() => {
     if (data) setId(data.projects[0].id)
   }, [data])
-  if (loading) return <div>Loading...</div>
+  if (loading) return <Loader open={loading} error={error} />
   if (error) return <div>Error! {error.message}</div>
 
   const setActiveId = (newId) => {

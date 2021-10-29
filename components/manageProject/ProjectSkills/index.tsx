@@ -5,6 +5,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { useState } from 'react'
 
 import { icons } from '../../../lib/icon'
+import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
 import TechStackIcons from '../../common/TechStackIcons'
 
@@ -80,9 +81,8 @@ const ProjectSkills = ({ data, userId, projectId }) => {
     const newTechStack = skills.includes(icon) ? skills.filter((b) => b !== icon) : [...skills, icon]
     setProjectSkills(newTechStack)
   }
-  if (loading) return <div>Loading...</div>
+  if (loading) return <Loader open={loading} error={error} />
 
-  if (error) return <div>Error! ${error.message}</div>
   return (
     <div className="p-4 md:p-6">
       {!edit ? (

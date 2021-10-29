@@ -1,6 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0'
 import React from 'react'
 
+import Loader from '../../common/Loader'
 import ProjectHeading from '../ProjectHeading'
 import ProjectMain from '../ProjectMain'
 import ProjectSideBar from '../ProjectSideBar'
@@ -8,8 +9,7 @@ import ProjectSideBar from '../ProjectSideBar'
 const ManageProject = ({ data }) => {
   const { user, isLoading, error } = useUser()
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error! {error.message}</div>
+  if (isLoading) return <Loader open={isLoading} error={error} />
 
   const userId = user?.sub?.split('|')[1]
 

@@ -13,6 +13,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
+import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
 interface educationObj {
@@ -78,9 +79,7 @@ const Education = () => {
       setEdit(false)
     } else setEdit(true)
   }, [data])
-  if (loading) return <div>Loading...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   const cancelUpdateUser = () => {
     if (data?.user?.education) {

@@ -12,6 +12,8 @@ import RoomIcon from '@material-ui/icons/Room'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
+
 interface ContactObj {
   location: string
   phone: string
@@ -97,9 +99,7 @@ const Contacts = () => {
     } else setEdit(true)
   }, [data])
 
-  if (loading) return <div>Loading...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setContact({

@@ -4,6 +4,8 @@ import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import React from 'react'
 
+import Loader from '../Loader'
+
 const GET_CURRENCIES = gql`
   {
     countries {
@@ -15,8 +17,7 @@ const GET_CURRENCIES = gql`
 const CurrencyAndRate = ({ handleOptionChange, state, parentkey }) => {
   const { error, loading, data } = useQuery(GET_CURRENCIES)
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error! {error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div className="flex">

@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { useState } from 'react'
 
+import Loader from '../../common/Loader'
+
 const useStyles = makeStyles(() =>
   createStyles({
     btn: {
@@ -58,8 +60,8 @@ const ProjectTitle = ({ data, userId, projectId }) => {
     setEdit(false)
   }
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
+
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       {edit ? (

@@ -16,6 +16,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
 import { icons } from '../../../lib/icon'
+import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
 import TechStackIcons from '../../common/TechStackIcons'
 import DeleteAlert from '../DeleteAlert'
@@ -116,9 +117,7 @@ const ProfessionalExperience = () => {
       setEdit(false)
     } else setEdit(true)
   }, [data])
-  if (loading) return <div>Loading...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   const handleChange = (index: number, type: any) => (evt: ChangeEvent<HTMLInputElement>) => {
     const value = type === 'checkbox' ? evt.target.checked : evt.target.value

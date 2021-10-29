@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
+
 interface UserObj {
   name: string
   title: string
@@ -67,9 +69,7 @@ const UserNameTitle = () => {
     } else setEdit(true)
   }, [data])
 
-  if (loading) return <div>Loading...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setNameTitle({
