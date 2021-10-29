@@ -21,8 +21,8 @@ const useStyles = makeStyles(() =>
 )
 
 const ADD_PROJECT = gql`
-  mutation AddProject($owner: ID!, $title: String, $scope: ScopeInput, $budget: BudgetInput) {
-    addProject(owner: $owner, title: $title, scope: $scope, budget: $budget) {
+  mutation AddProject($owner: ID!, $title: String, $scope: ScopeInput, $budget: BudgetInput, $skills: [String]) {
+    addProject(owner: $owner, title: $title, scope: $scope, budget: $budget, skills: $skills) {
       _id
     }
   }
@@ -105,11 +105,16 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
       type: 'skill',
       payload: { icon },
     })
-
   const reviewJobPost = () => {
     if (!isObjEmpty(state.budget) && state.budget.amount !== 0)
       addNewProject({
-        variables: { owner: userId, title: state.title, scope: state.scope, budget: state.budget },
+        variables: {
+          owner: userId,
+          title: state.title,
+          scope: state.scope,
+          budget: state.budget,
+          skills: state.skills,
+        },
       })
   }
 
