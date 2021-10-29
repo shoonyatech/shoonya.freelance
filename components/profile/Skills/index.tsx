@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
 interface SkillsObj {
@@ -70,9 +71,8 @@ const Skills = () => {
       setEdit(false)
     } else setEdit(true)
   }, [data])
-  if (loading) return <div>Loading...</div>
+  if (loading) return <Loader open={loading} error={error} />
 
-  if (error) return <div>Error! ${error.message}</div>
   const handleScaleChange = (index: number) => (_, newValue) => {
     setSkills([...skills.slice(0, index), { ...skills[index], scale: newValue }, ...skills.slice(index + 1)])
   }

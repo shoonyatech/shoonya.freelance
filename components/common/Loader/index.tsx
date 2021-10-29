@@ -2,7 +2,7 @@ import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import React from 'react'
 
-const Loader = ({ open, error }: any) => (
+const Loader = ({ open, error = false }: any) => (
   <div>
     {open !== undefined || error !== undefined ? (
       <Backdrop open={open}>

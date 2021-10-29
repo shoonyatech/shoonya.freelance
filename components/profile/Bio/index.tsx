@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
+
 const GET_USER = gql`
   query User($_id: ID!) {
     user(_id: $_id) {
@@ -50,9 +52,8 @@ const Bio = () => {
       setEdit(false)
     } else setEdit(true)
   }, [data])
-  if (loading) return <div>Loading...</div>
+  if (loading) return <Loader open={loading} error={error} />
 
-  if (error) return <div>Error! ${error.message}</div>
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setBio(evt.target.value)
   }

@@ -5,6 +5,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { useState } from 'react'
 
 import { removeKey } from '../../../lib/utils'
+import Loader from '../../common/Loader'
 import RadioButtonsGroup from '../../common/RadioButtonsGroup'
 
 const useStyles = makeStyles(() =>
@@ -68,8 +69,7 @@ const ProjectScope = ({ data, userId, projectId }) => {
       [e.target.name]: e.target.value,
     })
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error! {error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div className="flex flex-col px-6">

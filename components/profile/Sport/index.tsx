@@ -6,6 +6,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 
@@ -55,9 +56,7 @@ const Sport = () => {
     } else setEdit(true)
   }, [data])
 
-  if (loading) return <div>Loading...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
     setSports([...sports.slice(0, index), evt.target.value, ...sports.slice(index + 1)])

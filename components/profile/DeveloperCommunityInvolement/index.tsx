@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 import TextEditor from '../TextEditor'
 import TextEditorReadOnly from '../TextEditorReadOnly'
@@ -77,9 +78,7 @@ const DeveloperCommunityInvolement = () => {
     } else setEdit(true)
   }, [data])
 
-  if (loading) return <div>Loading...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
     setDeveloperCommunityInvolement([

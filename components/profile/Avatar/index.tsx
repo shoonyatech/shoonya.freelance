@@ -9,6 +9,7 @@ import Axios from 'axios'
 import { Image } from 'cloudinary-react'
 import React, { useEffect, useState } from 'react'
 
+import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
 const useStyles = makeStyles(() =>
@@ -88,9 +89,7 @@ const Avatar = () => {
       setEdit(false)
     } else setEdit(true)
   }, [data])
-  if (loading) return <div>Loadixng...</div>
-
-  if (error) return <div>Error! ${error.message}</div>
+  if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div className="flex flex-col justify-self-end p-6">
