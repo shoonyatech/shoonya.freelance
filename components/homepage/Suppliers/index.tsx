@@ -189,6 +189,7 @@ const useStyle = makeStyles((theme) => ({
     alignItems: 'center',
   },
   mobile: {
+    display: 'flex',
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
     },
