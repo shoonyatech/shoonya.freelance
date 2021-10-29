@@ -43,7 +43,6 @@ const ProjectSkills = ({ data }) => {
   const [projectSkills, setProjectSkills] = useState<any>(data)
   const [updatedSkills, setUpdatedSkills] = useState<any | null>(null)
   const [edit, setEdit] = useState<boolean>(!data)
- 
   const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
   const iconsArr = Object.keys(icons)
 
@@ -97,22 +96,21 @@ const ProjectSkills = ({ data }) => {
 
       {edit ? (
         <form onSubmit={updateSkills} className="flex flex-col ">
-          
           <SkillIcons techStack={projectSkills} openTechStackPickor={openTechStackPickor}>
-                  {showTechStackIconPickor ? (
-                    <TechStackIcons closeTechStackPickor={closeTechStackPickor}>
-                      {iconsArr.map((icon) => (
-                        <Button
-                          onClick={() => onSelectedSkillChange(icon)}
-                          className={`iconbtn ${projectSkills.includes(icon) && classes.active}`}
-                          key={icon}
-                        >
-                          {icons[icon]}
-                        </Button>
-                      ))}
-                    </TechStackIcons>
-                  ) : null}
-                </SkillIcons>
+            {showTechStackIconPickor ? (
+              <TechStackIcons closeTechStackPickor={closeTechStackPickor}>
+                {iconsArr.map((icon) => (
+                  <Button
+                    onClick={() => onSelectedSkillChange(icon)}
+                    className={`iconbtn ${projectSkills.includes(icon) && classes.active}`}
+                    key={icon}
+                  >
+                    {icons[icon]}
+                  </Button>
+                ))}
+              </TechStackIcons>
+            ) : null}
+          </SkillIcons>
           <div className="self-end pt-2">
             <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
               Save
