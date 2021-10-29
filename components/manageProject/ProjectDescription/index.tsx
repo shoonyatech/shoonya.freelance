@@ -19,14 +19,14 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_DESCRIPTION = gql`
-  mutation UpdateProjectDescription($owner: ID!, $description: String) {
-    updateProjectDescription(owner: $owner, description: $description) {
+  mutation UpdateProjectDescription($_id: ID!, $owner: ID!, $description: String) {
+    updateProjectDescription(_id: $_id, owner: $owner, description: $description) {
       description
     }
   }
 `
 
-const ProjectDescription = ({ data }) => {
+const ProjectDescription = ({ data, _id }) => {
   const classes = useStyles()
   const { user } = useUser()
   const [projectDescription, setProjectDescription] = useState<string>(data)
@@ -45,7 +45,7 @@ const ProjectDescription = ({ data }) => {
   const updateDescription = (e) => {
     e.preventDefault()
     updateProjectDescription({
-      variables: { owner: user?.sub?.split('|')[1], description: projectDescription },
+      variables: { _id, owner: user?.sub?.split('|')[1], description: projectDescription },
     })
   }
 

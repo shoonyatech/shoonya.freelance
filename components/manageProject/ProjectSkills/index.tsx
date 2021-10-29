@@ -29,14 +29,14 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_SKILLS = gql`
-  mutation UpdateProjectSkills($owner: ID!, $skills: [String]) {
-    updateProjectSkills(owner: $owner, skills: $skills) {
+  mutation UpdateProjectSkills($_id: ID!, $owner: ID!, $skills: [String]) {
+    updateProjectSkills(_id: $_id, owner: $owner, skills: $skills) {
       skills
     }
   }
 `
 
-const ProjectSkills = ({ data }) => {
+const ProjectSkills = ({ data, _id }) => {
   const { user } = useUser()
   const classes = useStyles()
 
@@ -73,7 +73,7 @@ const ProjectSkills = ({ data }) => {
   const updateSkills = (e) => {
     e.preventDefault()
     updateProjectSkills({
-      variables: { owner: user?.sub?.split('|')[1], skills: projectSkills },
+      variables: { _id, owner: user?.sub?.split('|')[1], skills: projectSkills },
     })
   }
 

@@ -19,14 +19,14 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_TITLE = gql`
-  mutation UpdateProjectTitle($owner: ID!, $title: String) {
-    updateProjectTitle(owner: $owner, title: $title) {
+  mutation UpdateProjectTitle($_id: ID!, $owner: ID!, $title: String) {
+    updateProjectTitle(_id: $_id, owner: $owner, title: $title) {
       title
     }
   }
 `
 
-const ProjectTitle = ({ data }) => {
+const ProjectTitle = ({ data, _id }) => {
   const classes = useStyles()
   const { user } = useUser()
   const [projectTitle, setProjectTitle] = useState<string>(data)
@@ -45,7 +45,7 @@ const ProjectTitle = ({ data }) => {
   const updateTitle = (e) => {
     e.preventDefault()
     updateProjectTitle({
-      variables: { owner: user?.sub?.split('|')[1], title: projectTitle },
+      variables: { _id, owner: user?.sub?.split('|')[1], title: projectTitle },
     })
   }
 
@@ -61,7 +61,6 @@ const ProjectTitle = ({ data }) => {
   }
 
   if (loading) return <div>Loading...</div>
-
   if (error) return <div>Error! ${error.message}</div>
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
