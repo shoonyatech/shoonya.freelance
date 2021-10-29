@@ -3,9 +3,9 @@ import React from 'react'
 
 import ProjectTitle from '../ProjectTitle'
 
-const ProjectHeading = ({ data }) => (
+const ProjectHeading = ({ data, userId }) => (
   <div className="lg:grid lg:grid-cols-profile">
-    <ProjectTitle data={data.title} _id={data._id} />
+    <ProjectTitle data={data.title} projectId={data._id} userId={userId} />
   </div>
 )
 

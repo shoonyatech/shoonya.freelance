@@ -1,5 +1,4 @@
 import { gql, useMutation } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
@@ -33,9 +32,8 @@ const UPDATE_PROJECT_SCOPE = gql`
   }
 `
 
-const ProjectScope = ({ data, _id }) => {
+const ProjectScope = ({ data, userId, projectId }) => {
   const classes = useStyles()
-  const { user } = useUser()
   const [edit, setEdit] = useState<boolean>(!data)
   const [projectScope, setProjectScope] = useState(data)
   const [updatedScope, setUpdatedScope] = useState<string | null>(null)
@@ -53,7 +51,7 @@ const ProjectScope = ({ data, _id }) => {
     e.preventDefault()
     const filterTypename = removeKey('__typename', projectScope)
     updateProjectScope({
-      variables: { _id, owner: user?.sub?.split('|')[1], scope: filterTypename },
+      variables: { _id: projectId, owner: userId, scope: filterTypename },
     })
   }
 

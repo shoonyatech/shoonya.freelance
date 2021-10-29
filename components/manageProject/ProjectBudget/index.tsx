@@ -1,5 +1,4 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
@@ -44,8 +43,7 @@ const UPDATE_PROJECT_BUDGET = gql`
   }
 `
 
-const ProjectBudget = ({ data, _id }) => {
-  const { user } = useUser()
+const ProjectBudget = ({ data, userId, projectId }) => {
   const classes = useStyles()
   const { error, loading, data: countryData } = useQuery(GET_CURRENCIES)
   const [edit, setEdit] = useState<boolean>(!data)
@@ -79,7 +77,7 @@ const ProjectBudget = ({ data, _id }) => {
     e.preventDefault()
     const filterTypename = removeKey('__typename', projectBudget)
     updateProjectBudget({
-      variables: { _id, owner: user?.sub?.split('|')[1], budget: filterTypename },
+      variables: { _id: projectId, owner: userId, budget: filterTypename },
     })
   }
 
