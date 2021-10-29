@@ -1,5 +1,4 @@
 import { gql, useMutation } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -26,9 +25,8 @@ const UPDATE_PROJECT_TITLE = gql`
   }
 `
 
-const ProjectTitle = ({ data, _id }) => {
+const ProjectTitle = ({ data, userId, projectId }) => {
   const classes = useStyles()
-  const { user } = useUser()
   const [projectTitle, setProjectTitle] = useState<string>(data)
   const [updatedTitle, setUpdatedTitle] = useState<string | null>(null)
   const [edit, setEdit] = useState<boolean>(false)
@@ -45,7 +43,7 @@ const ProjectTitle = ({ data, _id }) => {
   const updateTitle = (e) => {
     e.preventDefault()
     updateProjectTitle({
-      variables: { _id, owner: user?.sub?.split('|')[1], title: projectTitle },
+      variables: { _id: projectId, owner: userId, title: projectTitle },
     })
   }
 
