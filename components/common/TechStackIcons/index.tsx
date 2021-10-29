@@ -1,12 +1,7 @@
-import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import CancelIcon from '@material-ui/icons/Cancel'
 import React from 'react'
-
-import { icons } from '../../../lib/icon'
-
-const iconsArr = Object.keys(icons)
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -23,7 +18,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const TechStackIcons = ({ closeTechStackPickor, techStack, onSelectedSkillChange }) => {
+const TechStackIcons = ({ closeTechStackPickor, children }) => {
   const classes = useStyles()
 
   return (
@@ -31,17 +26,7 @@ const TechStackIcons = ({ closeTechStackPickor, techStack, onSelectedSkillChange
       <IconButton onClick={() => closeTechStackPickor()} className={classes.btn}>
         <CancelIcon />
       </IconButton>
-      <div className="flex flex-wrap p-2">
-        {iconsArr.map((icon) => (
-          <Button
-            onClick={() => onSelectedSkillChange(icon)}
-            className={`iconbtn ${techStack.includes(icon) && classes.active}`}
-            key={icon}
-          >
-            {icons[icon]}
-          </Button>
-        ))}
-      </div>
+      <div className="flex flex-wrap p-2">{children}</div>
     </div>
   )
 }

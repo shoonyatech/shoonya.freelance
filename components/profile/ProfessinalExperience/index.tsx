@@ -17,6 +17,7 @@ import DatePicker from 'react-datepicker'
 
 import { icons } from '../../../lib/icon'
 import SkillIcons from '../../common/SkillIcons'
+import TechStackIcons from '../../common/TechStackIcons'
 import DeleteAlert from '../DeleteAlert'
 import TextEditor from '../TextEditor'
 import TextEditorReadOnly from '../TextEditorReadOnly'
@@ -75,6 +76,13 @@ const useStyles = makeStyles(() =>
     savecancelbtn: {
       marginRight: '.5rem',
     },
+    iconbtn: {
+      margin: '0.5rem',
+      borderRadius: '1rem',
+    },
+    active: {
+      border: '1px solid',
+    },
   })
 )
 
@@ -89,6 +97,17 @@ const ProfessionalExperience = () => {
   })
   const [updateUserProfessionalExperience, { error }] = useMutation(UPDATE_USER)
   const [professionalExp, setProfessionalExp] = useState<professionalExperienceObj[]>([])
+
+  const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
+  const iconsArr = Object.keys(icons)
+
+  const openTechStackPickor = () => {
+    setShowTechStackIconPickor(true)
+  }
+
+  const closeTechStackPickor = () => {
+    setShowTechStackIconPickor(false)
+  }
 
   useEffect(() => {
     if (data?.user?.professionalExperience && data?.user?.professionalExperience.length !== 0) {
@@ -219,7 +238,21 @@ const ProfessionalExperience = () => {
                   required
                   fullWidth
                 />
-                <SkillIcons techStack={details.techStack} onSelectedSkillChange={onSelectedSkillChange} />
+                <SkillIcons techStack={details.techStack} openTechStackPickor={openTechStackPickor}>
+                  {showTechStackIconPickor ? (
+                    <TechStackIcons closeTechStackPickor={closeTechStackPickor}>
+                      {iconsArr.map((icon) => (
+                        <Button
+                          onClick={() => onSelectedSkillChange(icon, i)}
+                          className={`iconbtn ${details.techStack.includes(icon) && classes.active}`}
+                          key={icon}
+                        >
+                          {icons[icon]}
+                        </Button>
+                      ))}
+                    </TechStackIcons>
+                  ) : null}
+                </SkillIcons>
 
                 <div className="grid grid-cols-2 gap-x-4">
                   <TextField
