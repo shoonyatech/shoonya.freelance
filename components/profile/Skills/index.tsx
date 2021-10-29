@@ -147,6 +147,7 @@ const Skills = () => {
                   color="primary"
                   margin="dense"
                   variant="outlined"
+                  required
                 />
                 <IconButton onClick={() => openPopup(i)} className={classes.btn}>
                   <DeleteIcon color="error" />
