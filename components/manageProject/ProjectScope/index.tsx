@@ -21,8 +21,8 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_SCOPE = gql`
-  mutation UpdateProjectScope($owner: ID!, $scope: ScopeInput) {
-    updateProjectScope(owner: $owner, scope: $scope) {
+  mutation UpdateProjectScope($_id: ID!, $owner: ID!, $scope: ScopeInput) {
+    updateProjectScope(_id: $_id, owner: $owner, scope: $scope) {
       _id
       scope {
         size
@@ -33,7 +33,7 @@ const UPDATE_PROJECT_SCOPE = gql`
   }
 `
 
-const ProjectScope = ({ data }) => {
+const ProjectScope = ({ data, _id }) => {
   const classes = useStyles()
   const { user } = useUser()
   const [edit, setEdit] = useState<boolean>(!data)
@@ -53,7 +53,7 @@ const ProjectScope = ({ data }) => {
     e.preventDefault()
     const filterTypename = removeKey('__typename', projectScope)
     updateProjectScope({
-      variables: { owner: user?.sub?.split('|')[1], scope: filterTypename },
+      variables: { _id, owner: user?.sub?.split('|')[1], scope: filterTypename },
     })
   }
 

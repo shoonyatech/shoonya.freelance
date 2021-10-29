@@ -33,8 +33,8 @@ const GET_CURRENCIES = gql`
 `
 
 const UPDATE_PROJECT_BUDGET = gql`
-  mutation UpdateProjectBudget($owner: ID!, $budget: BudgetInput) {
-    updateProjectBudget(owner: $owner, budget: $budget) {
+  mutation UpdateProjectBudget($_id: ID!, $owner: ID!, $budget: BudgetInput) {
+    updateProjectBudget(_id: $_id, owner: $owner, budget: $budget) {
       budget {
         type
         currency
@@ -44,7 +44,7 @@ const UPDATE_PROJECT_BUDGET = gql`
   }
 `
 
-const ProjectBudget = ({ data }) => {
+const ProjectBudget = ({ data, _id }) => {
   const { user } = useUser()
   const classes = useStyles()
   const { error, loading, data: countryData } = useQuery(GET_CURRENCIES)
@@ -79,7 +79,7 @@ const ProjectBudget = ({ data }) => {
     e.preventDefault()
     const filterTypename = removeKey('__typename', projectBudget)
     updateProjectBudget({
-      variables: { owner: user?.sub?.split('|')[1], budget: filterTypename },
+      variables: { _id, owner: user?.sub?.split('|')[1], budget: filterTypename },
     })
   }
 
