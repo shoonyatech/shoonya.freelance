@@ -2,9 +2,10 @@ import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { icons } from '../../../lib/icon'
+import ProjectIsReadOnlyContext from '../../../src/context/ProjectIsReadOnlyContext'
 import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
 import TechStackIcons from '../../common/TechStackIcons'
@@ -42,8 +43,13 @@ const ProjectSkills = ({ data, userId, projectId }) => {
   const [projectSkills, setProjectSkills] = useState<any>(data)
   const [updatedSkills, setUpdatedSkills] = useState<any | null>(null)
   const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(ProjectIsReadOnlyContext)
   const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
   const iconsArr = Object.keys(icons)
+
+  useEffect(() => {
+    setProjectSkills(data)
+  }, [data])
 
   const openTechStackPickor = () => {
     setShowTechStackIconPickor(true)
@@ -82,17 +88,16 @@ const ProjectSkills = ({ data, userId, projectId }) => {
     setProjectSkills(newTechStack)
   }
   if (loading) return <Loader open={loading} error={error} />
-
   return (
     <div className="p-4 md:p-6">
-      {!edit ? (
+      {!edit && !isReadOnly ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">Skills</h3>
 
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form onSubmit={updateSkills} className="flex flex-col ">
           <SkillIcons techStack={projectSkills} openTechStackPickor={openTechStackPickor}>
             {showTechStackIconPickor ? (

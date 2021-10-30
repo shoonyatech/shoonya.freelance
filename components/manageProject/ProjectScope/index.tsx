@@ -2,9 +2,10 @@ import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { removeKey } from '../../../lib/utils'
+import ProjectIsReadOnlyContext from '../../../src/context/ProjectIsReadOnlyContext'
 import Loader from '../../common/Loader'
 import RadioButtonsGroup from '../../common/RadioButtonsGroup'
 
@@ -36,6 +37,8 @@ const UPDATE_PROJECT_SCOPE = gql`
 const ProjectScope = ({ data, userId, projectId }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(ProjectIsReadOnlyContext)
+
   const [projectScope, setProjectScope] = useState(data)
   const [updatedScope, setUpdatedScope] = useState<string | null>(null)
 
@@ -47,6 +50,10 @@ const ProjectScope = ({ data, userId, projectId }) => {
       setEdit(false)
     },
   })
+
+  useEffect(() => {
+    setProjectScope(data)
+  }, [data])
 
   const updateScope = (e) => {
     e.preventDefault()
@@ -75,14 +82,14 @@ const ProjectScope = ({ data, userId, projectId }) => {
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">scope</h3>
-        {!edit ? (
+        {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
 
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateScope}>
           <RadioButtonsGroup
             formLabel="Project size"
@@ -122,15 +129,15 @@ const ProjectScope = ({ data, userId, projectId }) => {
       ) : (
         <div>
           <div className="grid grid-cols-2">
-            <span>Project Size</span> <span>: {projectScope.size}</span>
+            <span>Project Size</span> <span>: {projectScope?.size}</span>
           </div>
           <div className="grid grid-cols-2">
             <span>Duration</span>
-            <span>: {projectScope.duration}</span>
+            <span>: {projectScope?.duration}</span>
           </div>
           <div className="grid grid-cols-2">
             <span>Experience</span>
-            <span>: {projectScope.experience}</span>
+            <span>: {projectScope?.experience}</span>
           </div>
         </div>
       )}

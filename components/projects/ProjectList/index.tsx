@@ -1,22 +1,27 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react'
 
-const range = {
+/* const range = {
   low: '$',
   medium: '$$',
   high: '$$$',
-}
+} */
+const range = ['$', '$$', '$$$']
 
-const ProjectList = ({ data, setActiveId }: any) => (
+const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
   <div className="flex flex-col">
-    {data.map((listItem: any) => (
+    {data.map((project: any) => (
       <button
-        onClick={() => setActiveId(listItem.id)}
+        key={project._id}
+        onClick={() => updateActiveProjectId(project._id)}
         type="button"
-        className="flex flex-col border-2 border-solid border-primary m-4 p-4"
+        className={`flex flex-col border-solid border-primary m-4 p-4 ${
+          project._id === activeProjectId ? 'border-4 ' : ' border-2'
+        }`}
       >
-        <div className="text-xl font-bold">{listItem.name}</div>
-        <div>{listItem.description}</div>
-        <div className="self-end">{range[listItem.priceRange]} </div>
+        <div className="text-xl font-bold">{project.title}</div>
+        <div>{project.description}</div>
+        <div className="self-end">{range[Math.floor(Math.random() * range.length)]} </div>
       </button>
     ))}
   </div>

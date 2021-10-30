@@ -3,8 +3,9 @@ import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
+import ProjectIsReadOnlyContext from '../../../src/context/ProjectIsReadOnlyContext'
 import Loader from '../../common/Loader'
 
 const useStyles = makeStyles(() =>
@@ -31,7 +32,12 @@ const ProjectTitle = ({ data, userId, projectId }) => {
   const classes = useStyles()
   const [projectTitle, setProjectTitle] = useState<string>(data)
   const [updatedTitle, setUpdatedTitle] = useState<string | null>(null)
-  const [edit, setEdit] = useState<boolean>(false)
+  const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(ProjectIsReadOnlyContext)
+
+  useEffect(() => {
+    setProjectTitle(data)
+  }, [data])
 
   const [updateProjectTitle, { loading, error }] = useMutation(UPDATE_PROJECT_TITLE, {
     onCompleted(val) {
@@ -61,10 +67,9 @@ const ProjectTitle = ({ data, userId, projectId }) => {
   }
 
   if (loading) return <Loader open={loading} error={error} />
-
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateTitle}>
           <TextField
             name="projecttitle"
@@ -88,9 +93,11 @@ const ProjectTitle = ({ data, userId, projectId }) => {
       ) : (
         <div className="flex justify-between whitespace-nowrap">
           <h1 className="text-black text-5xl">{projectTitle}</h1>
-          <button type="button" onClick={() => setEdit(!edit)}>
-            <EditIcon />
-          </button>
+          {!isReadOnly ? (
+            <button type="button" onClick={() => setEdit(!edit)}>
+              <EditIcon />
+            </button>
+          ) : null}
         </div>
       )}
     </div>

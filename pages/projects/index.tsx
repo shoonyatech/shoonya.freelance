@@ -1,46 +1,54 @@
+/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { gql, useQuery } from '@apollo/client'
+import { gql } from '@apollo/client'
 import Link from '@material-ui/core/Button'
-import React, { useEffect, useState } from 'react'
+import { GetServerSideProps } from 'next'
 
-import Loader from '../../components/common/Loader'
-import MasterDetailsLayout from '../../components/common/MasterDetailsLayout'
-import ProjectList from '../../components/projects/ProjectList'
+import GetApolloClient from '../../apis/apollo.client'
+import Projects from '../../components/projects/Projects'
 
 const GET_PROJECTS = gql`
-  query Projects {
+  {
     projects {
-      id
-      name
+      _id
+      owner
+      skills
+      budget {
+        type
+        amount
+      }
+      title
       description
-      priceRange
+      scope {
+        experience
+        size
+        size
+      }
     }
   }
 `
+const client = GetApolloClient('http://localhost:4000/graphql')
 
-export default function Projects() {
-  const { error, loading, data } = useQuery(GET_PROJECTS)
-  const [id, setId] = useState<any>(null)
-  useEffect(() => {
-    if (data) setId(data.projects[0].id)
-  }, [data])
-  if (loading) return <Loader open={loading} error={error} />
-  if (error) return <div>Error! {error.message}</div>
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { data } = await client.query({
+    query: GET_PROJECTS,
+    errorPolicy: 'ignore',
+  })
 
-  const setActiveId = (newId) => {
-    setId(newId)
+  return {
+    props: {
+      data: data.projects,
+    },
   }
+}
 
+export default function ProjectsPage({ data }) {
   return (
     <div style={{ marginLeft: '57px' }}>
       <Link href="/projects/new">
         <a>New Project</a>
       </Link>
-
-      <MasterDetailsLayout>
-        <ProjectList setActiveId={setActiveId} data={data?.projects} />
-        <div className="border-l-2 border-solid border-primary">{id}</div>
-      </MasterDetailsLayout>
+      <Projects data={data} />
     </div>
   )
 }
