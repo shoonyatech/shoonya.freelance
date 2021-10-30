@@ -60,13 +60,9 @@ const reducer = (state, action) => {
         },
       }
     case 'skill': {
-      const { skills } = state
-      const newTechStack = skills.includes(action.payload.icon)
-        ? skills.filter((b) => b !== action.payload.icon)
-        : [...skills, action.payload.icon]
       return {
         ...state,
-        skills: newTechStack,
+        skills: action.payload.icon,
       }
     }
     default:
@@ -100,7 +96,7 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
       payload: { key, nestedkey, value },
     })
 
-  const handleSkillsChange = (icon) =>
+  const handleSkillChange = (icon) =>
     dispatch({
       type: 'skill',
       payload: { icon },
@@ -124,7 +120,7 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
       wizardFlow = <WizardHeadlineFlow handleTextChange={handleTextChange} state={state.title} />
       break
     case 2:
-      wizardFlow = <WizardSkillsFlow handleSkillsChange={handleSkillsChange} state={state.skills} />
+      wizardFlow = <WizardSkillsFlow handleSkillChange={handleSkillChange} state={state.skills} />
       break
     case 3:
       wizardFlow = <WizardScopeFlow handleOptionChange={handleOptionChange} state={state} />

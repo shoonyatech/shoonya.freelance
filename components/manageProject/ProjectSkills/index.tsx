@@ -8,7 +8,6 @@ import { icons } from '../../../lib/icon'
 import ProjectIsReadOnlyContext from '../../../src/context/ProjectIsReadOnlyContext'
 import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
-import TechStackIcons from '../../common/TechStackIcons'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -44,20 +43,10 @@ const ProjectSkills = ({ data, userId, projectId }) => {
   const [updatedSkills, setUpdatedSkills] = useState<any | null>(null)
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(ProjectIsReadOnlyContext)
-  const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
-  const iconsArr = Object.keys(icons)
 
   useEffect(() => {
     setProjectSkills(data)
   }, [data])
-
-  const openTechStackPickor = () => {
-    setShowTechStackIconPickor(true)
-  }
-
-  const closeTechStackPickor = () => {
-    setShowTechStackIconPickor(false)
-  }
 
   const [updateProjectSkills, { loading, error }] = useMutation(UPDATE_PROJECT_SKILLS, {
     onCompleted(val) {
@@ -82,11 +71,10 @@ const ProjectSkills = ({ data, userId, projectId }) => {
     })
   }
 
-  const onSelectedSkillChange = (icon) => {
-    const skills = [...projectSkills]
-    const newTechStack = skills.includes(icon) ? skills.filter((b) => b !== icon) : [...skills, icon]
-    setProjectSkills(newTechStack)
+  const handleSkillChange = (selectedIcons) => {
+    setProjectSkills(selectedIcons)
   }
+
   if (loading) return <Loader open={loading} error={error} />
   return (
     <div className="p-4 md:p-6">
@@ -99,21 +87,7 @@ const ProjectSkills = ({ data, userId, projectId }) => {
 
       {edit && !isReadOnly ? (
         <form onSubmit={updateSkills} className="flex flex-col ">
-          <SkillIcons techStack={projectSkills} openTechStackPickor={openTechStackPickor}>
-            {showTechStackIconPickor ? (
-              <TechStackIcons closeTechStackPickor={closeTechStackPickor}>
-                {iconsArr.map((icon) => (
-                  <Button
-                    onClick={() => onSelectedSkillChange(icon)}
-                    className={`iconbtn ${projectSkills.includes(icon) && classes.active}`}
-                    key={icon}
-                  >
-                    {icons[icon]}
-                  </Button>
-                ))}
-              </TechStackIcons>
-            ) : null}
-          </SkillIcons>
+          <SkillIcons techStack={projectSkills} handleSkillChange={(icon) => handleSkillChange(icon)} />
           <div className="self-end pt-2">
             <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
               Save

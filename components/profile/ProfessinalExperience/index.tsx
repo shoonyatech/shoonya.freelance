@@ -18,7 +18,6 @@ import DatePicker from 'react-datepicker'
 import { icons } from '../../../lib/icon'
 import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
-import TechStackIcons from '../../common/TechStackIcons'
 import DeleteAlert from '../DeleteAlert'
 import TextEditor from '../TextEditor'
 import TextEditorReadOnly from '../TextEditorReadOnly'
@@ -99,17 +98,6 @@ const ProfessionalExperience = () => {
   const [updateUserProfessionalExperience, { error }] = useMutation(UPDATE_USER)
   const [professionalExp, setProfessionalExp] = useState<professionalExperienceObj[]>([])
 
-  const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
-  const iconsArr = Object.keys(icons)
-
-  const openTechStackPickor = () => {
-    setShowTechStackIconPickor(true)
-  }
-
-  const closeTechStackPickor = () => {
-    setShowTechStackIconPickor(false)
-  }
-
   useEffect(() => {
     if (data?.user?.professionalExperience && data?.user?.professionalExperience.length !== 0) {
       const filterTypename = data.user.professionalExperience.map(({ __typename, ...rest }) => rest)
@@ -144,15 +132,10 @@ const ProfessionalExperience = () => {
     ])
   }
 
-  const onSelectedSkillChange = (icon, index: number) => {
-    const spreadTechStack = professionalExp[index].techStack
-    const newTechStack = spreadTechStack.includes(icon)
-      ? spreadTechStack.filter((b) => b !== icon)
-      : [...spreadTechStack, icon]
-
+  const handleSkillChange = (index: number) => (icon) => {
     setProfessionalExp([
       ...professionalExp.slice(0, index),
-      { ...professionalExp[index], techStack: newTechStack },
+      { ...professionalExp[index], techStack: icon },
       ...professionalExp.slice(index + 1),
     ])
   }
@@ -237,22 +220,7 @@ const ProfessionalExperience = () => {
                   required
                   fullWidth
                 />
-                <SkillIcons techStack={details.techStack} openTechStackPickor={openTechStackPickor}>
-                  {showTechStackIconPickor ? (
-                    <TechStackIcons closeTechStackPickor={closeTechStackPickor}>
-                      {iconsArr.map((icon) => (
-                        <Button
-                          onClick={() => onSelectedSkillChange(icon, i)}
-                          className={`iconbtn ${details.techStack.includes(icon) && classes.active}`}
-                          key={icon}
-                        >
-                          {icons[icon]}
-                        </Button>
-                      ))}
-                    </TechStackIcons>
-                  ) : null}
-                </SkillIcons>
-
+                <SkillIcons techStack={details.techStack} handleSkillChange={(icon) => handleSkillChange(i)(icon)} />
                 <div className="grid grid-cols-2 gap-x-4">
                   <TextField
                     id="outlined-multiline-static"
