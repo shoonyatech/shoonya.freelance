@@ -5,9 +5,10 @@ import Select from '@material-ui/core/Select'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { removeKey } from '../../../lib/utils'
+import ProjectIsReadOnlyContext from '../../../src/context/ProjectIsReadOnlyContext'
 import Loader from '../../common/Loader'
 import RadioButtonsGroup from '../../common/RadioButtonsGroup'
 
@@ -48,6 +49,7 @@ const ProjectBudget = ({ data, userId, projectId }) => {
   const classes = useStyles()
   const { error, loading, data: countryData } = useQuery(GET_CURRENCIES)
   const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(ProjectIsReadOnlyContext)
   const [projectBudget, setProjectBudget] = useState(data)
   const [updatedBudget, setUpdatedBudget] = useState<string | null>(null)
 
@@ -59,6 +61,10 @@ const ProjectBudget = ({ data, userId, projectId }) => {
       setEdit(false)
     },
   })
+
+  useEffect(() => {
+    setProjectBudget(data)
+  }, [data])
 
   const cancel = () => {
     const revertBudget = updatedBudget || data
@@ -88,14 +94,14 @@ const ProjectBudget = ({ data, userId, projectId }) => {
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Budget</h3>
-        {!edit ? (
+        {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
 
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateBudget}>
           <RadioButtonsGroup
             formLabel="Type"
