@@ -22,9 +22,8 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_SCOPE = gql`
-  mutation UpdateProjectScope($_id: ID!, $owner: ID!, $scope: ScopeInput) {
-    updateProjectScope(_id: $_id, owner: $owner, scope: $scope) {
-      _id
+  mutation UpdateProjectScope($_id: ID!, $scope: ScopeInput) {
+    updateProjectScope(_id: $_id, scope: $scope) {
       scope {
         size
         duration

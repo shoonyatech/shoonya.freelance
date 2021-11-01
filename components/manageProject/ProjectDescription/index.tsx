@@ -21,8 +21,8 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_DESCRIPTION = gql`
-  mutation UpdateProjectDescription($_id: ID!, $owner: ID!, $description: String) {
-    updateProjectDescription(_id: $_id, owner: $owner, description: $description) {
+  mutation UpdateProjectDescription($_id: ID!, $description: String) {
+    updateProjectDescription(_id: $_id, description: $description) {
       description
     }
   }
