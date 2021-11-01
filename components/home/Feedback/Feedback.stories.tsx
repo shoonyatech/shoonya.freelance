@@ -1,7 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 
-import client from '../../../apis/apollo.client'
+import GetApolloClient from '../../../apis/apollo.client'
 import Feedback from '.'
 
 export default {
@@ -9,6 +9,7 @@ export default {
   component: Feedback,
 }
 
+const client = GetApolloClient('/api/graphql')
 const Template = () => (
   <ApolloProvider client={client}>
     <Feedback />
