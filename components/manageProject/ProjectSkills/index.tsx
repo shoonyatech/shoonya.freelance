@@ -29,8 +29,8 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_PROJECT_SKILLS = gql`
-  mutation UpdateProjectSkills($_id: ID!, $owner: ID!, $skills: [String]) {
-    updateProjectSkills(_id: $_id, owner: $owner, skills: $skills) {
+  mutation UpdateProjectSkills($_id: ID!, $skills: [String]) {
+    updateProjectSkills(_id: $_id, skills: $skills) {
       skills
     }
   }

@@ -34,8 +34,8 @@ const GET_CURRENCIES = gql`
 `
 
 const UPDATE_PROJECT_BUDGET = gql`
-  mutation UpdateProjectBudget($_id: ID!, $owner: ID!, $budget: BudgetInput) {
-    updateProjectBudget(_id: $_id, owner: $owner, budget: $budget) {
+  mutation UpdateProjectBudget($_id: ID!, $budget: BudgetInput) {
+    updateProjectBudget(_id: $_id, budget: $budget) {
       budget {
         type
         currency
