@@ -93,7 +93,7 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
                         icon={icons[`${icon}`]}
                         label={icon}
                         color="primary"
-                        variant={`${techStack.includes(icon) ? 'default' : 'outlined'}`}
+                        // variant={`${techStack.includes(icon) ? 'default' : 'outlined'}`}
                       />
                     </li>
                   )
