@@ -20,8 +20,8 @@ const useStyles = makeStyles(() =>
 )
 
 const ADD_PROJECT = gql`
-  mutation AddProject($title: String, $scope: ScopeInput, $budget: BudgetInput) {
-    addProject(title: $title, scope: $scope, budget: $budget) {
+  mutation AddProject($title: String, $scope: ScopeInput, $budget: BudgetInput, $skills: [String]) {
+    addProject(title: $title, scope: $scope, budget: $budget, skills: $skills) {
       _id
     }
   }
