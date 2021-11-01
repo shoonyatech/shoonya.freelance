@@ -87,7 +87,7 @@ const ProjectSkills = ({ data, userId, projectId }) => {
 
       {edit && !isReadOnly ? (
         <form onSubmit={updateSkills} className="flex flex-col ">
-          <SkillIcons techStack={projectSkills} handleSkillChange={(icon) => handleSkillChange(icon)} />
+          <SkillIcons techStack={projectSkills} handleSkillChange={(icon) => handleSkillChange(icon)} isIconName />
           <div className="self-end pt-2">
             <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
               Save

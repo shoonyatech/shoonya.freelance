@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 import Button from '@material-ui/core/Button'
+import Chip from '@material-ui/core/Chip'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
@@ -23,7 +24,17 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const SkillIcons = ({ techStack, handleSkillChange }) => {
+interface Props {
+  techStack: any
+  handleSkillChange: any
+  isIconName?: boolean
+}
+
+const defaultProps = {
+  isIconName: false,
+}
+
+const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
   const classes = useStyles()
 
   const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
@@ -45,33 +56,60 @@ const SkillIcons = ({ techStack, handleSkillChange }) => {
   return (
     <div className="pb-4 relative h-10">
       <div className="flex items-center">
-        <p className="flex items-center">
-          <span className="mr-2">Tech stack : </span>
-          {techStack.map((icon) => (
-            <span key={icon} className="px-px">
-              {icons[`${icon}`]}
-            </span>
-          ))}
-        </p>
+        <div className="flex items-center">
+          <p className="mr-2">Tech stack : </p>
+          <ul className="flex">
+            {techStack.map((icon) => {
+              if (isIconName) {
+                return (
+                  <li key={icon} className="px-0.5">
+                    <Chip icon={icons[`${icon}`]} label={icon} color="primary" variant="outlined" />
+                  </li>
+                )
+              }
+              return (
+                <li key={icon} className="px-0.5">
+                  {icons[`${icon}`]}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
         <Button onClick={() => openTechStackPickor()}>
           <AddIcon />
         </Button>
         {showTechStackIconPickor ? (
-          <div className="flex flex-col max-h-60 w-80 bg-white shadow-lg rounded absolute top-10 z-20">
+          <div className="flex flex-col max-h-60 w-96 max-w-full bg-white shadow-lg rounded absolute top-10 z-20">
             <IconButton onClick={() => closeTechStackPickor()} className={classes.btn}>
               <CancelIcon />
             </IconButton>
-            <div className="flex flex-wrap p-2">
-              {iconsArr.map((icon) => (
-                <Button
-                  onClick={() => onSelectedSkillChange(icon)}
-                  className={`iconbtn ${techStack.includes(icon) && classes.active}`}
-                  key={icon}
-                >
-                  {icons[icon]}
-                </Button>
-              ))}
-            </div>
+            <ul className="flex flex-wrap p-2">
+              {iconsArr.map((icon) => {
+                if (isIconName) {
+                  return (
+                    <li key={icon} className="p-1 list-none">
+                      <Chip
+                        onClick={() => onSelectedSkillChange(icon)}
+                        icon={icons[`${icon}`]}
+                        label={icon}
+                        color="primary"
+                        variant={`${techStack.includes(icon) ? 'default' : 'outlined'}`}
+                      />
+                    </li>
+                  )
+                }
+                return (
+                  <li key={icon} className="px-0.5 list-none">
+                    <Button
+                      onClick={() => onSelectedSkillChange(icon)}
+                      className={`iconbtn ${techStack.includes(icon) && classes.active}`}
+                    >
+                      {icons[icon]}
+                    </Button>
+                  </li>
+                )
+              })}
+            </ul>
           </div>
         ) : null}
       </div>
@@ -79,3 +117,5 @@ const SkillIcons = ({ techStack, handleSkillChange }) => {
   )
 }
 export default SkillIcons
+
+SkillIcons.defaultProps = defaultProps
