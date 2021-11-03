@@ -4,6 +4,7 @@ import React from 'react'
 
 import GetApolloClient from '../../apis/apollo.client'
 import ManageProject from '../../components/manageProject/ManageProject'
+import { Project as ProjectProps } from '../../src/interfaces/project'
 
 const GET_PROJECT = gql`
   query Project($_id: ID!) {
@@ -27,7 +28,14 @@ const GET_PROJECT = gql`
     }
   }
 `
-const client = GetApolloClient('http://localhost:4000/graphql')
+const client = GetApolloClient(process.env.GRAPHQL_SERVER)
+
+const Project = ({ data }: { data: ProjectProps }) => (
+  <div>
+    <ManageProject data={data} />
+  </div>
+)
+export default Project
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { data } = await client.query({
@@ -47,10 +55,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   }
 }
-
-const Project = ({ data }) => (
-  <div>
-    <ManageProject data={data} />
-  </div>
-)
-export default Project
