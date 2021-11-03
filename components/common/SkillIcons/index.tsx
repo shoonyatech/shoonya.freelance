@@ -8,6 +8,7 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import React, { useState } from 'react'
 
 import { icons } from '../../../lib/icon'
+import SearchBar from '../SearchBar'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -39,6 +40,7 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
 
   const [showTechStackIconPickor, setShowTechStackIconPickor] = useState<boolean>(false)
   const iconsArr = Object.keys(icons)
+  const [filteredArr, setFilteredArr] = useState(iconsArr)
 
   const openTechStackPickor = () => {
     setShowTechStackIconPickor(true)
@@ -51,6 +53,10 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
   const onSelectedSkillChange = (icon: any) => {
     const updateTechStack = techStack.includes(icon) ? techStack.filter((b) => b !== icon) : [...techStack, icon]
     handleSkillChange(updateTechStack)
+  }
+
+  const handleFilterIcons = (icon) => {
+    setFilteredArr(icon)
   }
 
   return (
@@ -79,12 +85,13 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
           <AddIcon />
         </Button>
         {showTechStackIconPickor ? (
-          <div className="flex flex-col max-h-60 w-96 max-w-full bg-white shadow-lg rounded absolute top-10 z-20">
+          <div className="flex flex-col max-h-80 overflow-y-auto w-96 max-w-full bg-white shadow-lg rounded absolute top-10 z-20">
             <IconButton onClick={() => closeTechStackPickor()} className={classes.btn}>
               <CancelIcon />
             </IconButton>
+            <SearchBar list={iconsArr} label="search icons" handleFilter={handleFilterIcons} />
             <ul className="flex flex-wrap p-2">
-              {iconsArr.map((icon) => {
+              {filteredArr.map((icon) => {
                 if (isIconName) {
                   return (
                     <li key={icon} className="p-1 list-none">
