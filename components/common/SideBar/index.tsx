@@ -98,7 +98,9 @@ export default function MiniDrawer() {
             <Link href="/me" passHref>
               <ListItem button className={classes.list} key="profile">
                 <ListItemIcon>
-                  <Image className="rounded-full" src={user?.picture} alt="avatar" height="28" width="28" />
+                  {user?.picture ? (
+                    <Image className="rounded-full" src={user?.picture} alt="avatar" height="28" width="28" />
+                  ) : null}
                 </ListItemIcon>
                 <ListItemText primary="profile" />
               </ListItem>
