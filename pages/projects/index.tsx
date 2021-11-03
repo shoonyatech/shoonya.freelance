@@ -1,11 +1,12 @@
-/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { gql } from '@apollo/client'
 import Link from '@material-ui/core/Button'
 import { GetServerSideProps } from 'next'
+import React from 'react'
 
 import GetApolloClient from '../../apis/apollo.client'
 import Projects from '../../components/projects/Projects'
+import { Project } from '../../src/interfaces/project'
 
 const GET_PROJECTS = gql`
   {
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 }
 
-export default function ProjectsPage({ data }) {
+export default function ProjectsPage({ data }: { data: Project[] }) {
   return (
     <div style={{ marginLeft: '57px' }}>
       <Link href="/projects/new">
