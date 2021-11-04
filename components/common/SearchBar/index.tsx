@@ -1,3 +1,4 @@
+import TextField from '@material-ui/core/TextField'
 import React from 'react'
 
 const SearchBar = ({ list, label, handleFilter }) => {
@@ -7,8 +8,8 @@ const SearchBar = ({ list, label, handleFilter }) => {
   }
 
   return (
-    <div>
-      <input type="text" placeholder={label} onKeyUp={handleOnKeyUp} />
+    <div className="px-2">
+      <TextField id="standard-basic" label={label} onKeyUp={handleOnKeyUp} fullWidth />
     </div>
   )
 }
