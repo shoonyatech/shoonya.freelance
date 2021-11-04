@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { gql } from '@apollo/client'
-import Link from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import React from 'react'
 
 import GetApolloClient from '../../apis/apollo.client'
@@ -46,9 +47,13 @@ export const getServerSideProps: GetServerSideProps = async () => {
 export default function ProjectsPage({ data }: { data: Project[] }) {
   return (
     <div style={{ marginLeft: '57px' }}>
-      <Link href="/projects/new">
-        <a>New Project</a>
-      </Link>
+      <div className="flex justify-end p-2">
+        <Link href="/projects/new" passHref>
+          <Button variant="contained" color="primary">
+            New Project
+          </Button>
+        </Link>
+      </div>
       <Projects data={data} />
     </div>
   )
