@@ -69,7 +69,16 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
               if (isIconName) {
                 return (
                   <li key={icon} className="px-0.5">
-                    <Chip icon={icons[`${icon}`]} label={icon} color="primary" variant="outlined" />
+                    {icons[icon] ? (
+                      <Chip icon={icons[`${icon}`]} label={icon} color="primary" variant="outlined" />
+                    ) : (
+                      <Chip
+                        onClick={() => onSelectedSkillChange(icon)}
+                        label={icon}
+                        variant="outlined"
+                        color="primary"
+                      />
+                    )}
                   </li>
                 )
               }
@@ -92,16 +101,26 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
             <SearchBar list={iconsArr} label="search icons" handleFilter={handleFilterIcons} />
             <ul className="flex flex-wrap p-2">
               {filteredArr.map((icon) => {
+                const variant = techStack.includes(icon) ? 'default' : 'outlined'
                 if (isIconName) {
                   return (
                     <li key={icon} className="p-1 list-none">
-                      <Chip
-                        onClick={() => onSelectedSkillChange(icon)}
-                        icon={icons[`${icon}`]}
-                        label={icon}
-                        color="primary"
-                        // variant={`${techStack.includes(icon) ? 'default' : 'outlined'}`}
-                      />
+                      {icons[icon] ? (
+                        <Chip
+                          onClick={() => onSelectedSkillChange(icon)}
+                          icon={icons[`${icon}`]}
+                          label={icon}
+                          color="primary"
+                          variant={variant}
+                        />
+                      ) : (
+                        <Chip
+                          onClick={() => onSelectedSkillChange(icon)}
+                          label={icon}
+                          color="primary"
+                          variant={variant}
+                        />
+                      )}
                     </li>
                   )
                 }
