@@ -25,5 +25,6 @@ import {
     'python' : <SiPython size="2em" />,
     'materilui' : <SiMaterialUi size="2em" color="#007DC5" />,
     'tailwindcss' : <SiTailwindcss size="2em" color="#07B0CE" />,
-    'csharp' :  <SiCsharp size="2em" color="#9C75D5" />
+    'csharp' :  <SiCsharp size="2em" color="#9C75D5" />,
+    'agile': null
   }
