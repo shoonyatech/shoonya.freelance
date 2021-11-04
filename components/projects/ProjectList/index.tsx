@@ -9,7 +9,7 @@ import React from 'react'
 const range = ['$', '$$', '$$$']
 
 const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
-  <div className="flex flex-col">
+  <div className="flex flex-col overflow-y-auto max-h-screen">
     {data.map((project: any) => (
       <button
         key={project._id}

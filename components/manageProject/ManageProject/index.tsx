@@ -24,9 +24,9 @@ const ManageProject = ({ data, isReadOnly }: Props) => {
   const userId = user?.sub?.split('|')[1]
   return (
     <ProjectIsReadOnlyContext.Provider value={isReadOnly}>
-      <div className="max-w-5xl mx-auto w-full">
+      <div className="max-w-5xl mx-auto w-full lg:min-h-screen lg:flex lg:flex-col">
         <ProjectHeading data={data} userId={userId} />
-        <div className="flex flex-col-reverse lg:grid lg:grid-cols-profile   lg:min-h-screen ">
+        <div className="flex flex-col-reverse lg:grid lg:grid-cols-profile lg:flex-1">
           <ProjectSideBar data={data} userId={userId} />
           <ProjectMain data={data} userId={userId} />
         </div>
