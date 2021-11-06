@@ -29,7 +29,7 @@ const GET_PROJECTS = gql`
     }
   }
 `
-const client = GetApolloClient('http://localhost:4000/graphql')
+const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data } = await client.query({
