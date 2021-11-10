@@ -5,7 +5,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { icons } from '../../../lib/icon'
-import ProjectIsReadOnlyContext from '../../../src/context/ProjectIsReadOnlyContext'
+import { ProjectIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
 
