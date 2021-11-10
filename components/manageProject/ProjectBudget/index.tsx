@@ -8,7 +8,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { removeKey } from '../../../lib/utils'
-import ProjectIsReadOnlyContext from '../../../src/context/ProjectIsReadOnlyContext'
+import { ProjectIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import RadioButtonsGroup from '../../common/RadioButtonsGroup'
 
