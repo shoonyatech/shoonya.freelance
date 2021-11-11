@@ -25,8 +25,8 @@ interface ContactObj {
 }
 
 const UPDATE_USER = gql`
-  mutation UpdateUserContact($_id: ID!, $contact: ContactInput) {
-    updateUserContact(_id: $_id, contact: $contact) {
+  mutation UpdateUserContact($contact: ContactInput) {
+    updateUserContact(contact: $contact) {
       contact {
         location
         phone
@@ -51,7 +51,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Contacts = ({ data, userId }) => {
+const Contacts = ({ data }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -72,7 +72,7 @@ const Contacts = ({ data, userId }) => {
     e.preventDefault()
     const filterTypename = removeKey('__typename', contact)
     await updateUserContact({
-      variables: { _id: userId, contact: filterTypename },
+      variables: { contact: filterTypename },
     })
   }
 

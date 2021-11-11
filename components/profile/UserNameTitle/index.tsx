@@ -14,8 +14,8 @@ interface UserObj {
 }
 
 const UPDATE_USER = gql`
-  mutation UpdateUserNameTitle($_id: ID!, $name: String, $title: String) {
-    updateUserNameTitle(_id: $_id, name: $name, title: $title) {
+  mutation UpdateUserNameTitle($name: String, $title: String) {
+    updateUserNameTitle(name: $name, title: $title) {
       name
       title
     }
@@ -34,7 +34,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const UserNameTitle = ({ data, userId }) => {
+const UserNameTitle = ({ data }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -61,7 +61,7 @@ const UserNameTitle = ({ data, userId }) => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserNameTitle({
-      variables: { _id: userId, name: nameTitle.name, title: nameTitle.title },
+      variables: { name: nameTitle.name, title: nameTitle.title },
     })
   }
 

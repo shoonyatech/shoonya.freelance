@@ -12,8 +12,8 @@ import DeleteAlert from '../DeleteAlert'
 import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 
 const UPDATE_USER = gql`
-  mutation UpdateUserLanguages($_id: ID!, $languages: [String]) {
-    updateUserLanguages(_id: $_id, languages: $languages) {
+  mutation UpdateUserLanguages($languages: [String]) {
+    updateUserLanguages(languages: $languages) {
       languages
     }
   }
@@ -30,7 +30,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Language = ({ data, userId }) => {
+const Language = ({ data }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
@@ -51,7 +51,7 @@ const Language = ({ data, userId }) => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserLanguage({
-      variables: { _id: userId, languages },
+      variables: { languages },
     })
   }
 
@@ -80,7 +80,7 @@ const Language = ({ data, userId }) => {
     const filterDeletedItem = languages.filter((_, index) => index !== popUp.index)
 
     await updateUserLanguage({
-      variables: { _id: userId, languages: filterDeletedItem },
+      variables: { languages: filterDeletedItem },
     })
     closePopUp()
   }

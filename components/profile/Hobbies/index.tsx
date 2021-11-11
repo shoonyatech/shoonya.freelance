@@ -11,8 +11,8 @@ import DeleteAlert from '../DeleteAlert'
 import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 
 const UPDATE_USER = gql`
-  mutation UpdateUserHobbies($_id: ID!, $hobbies: [String]) {
-    updateUserHobbies(_id: $_id, hobbies: $hobbies) {
+  mutation UpdateUserHobbies($hobbies: [String]) {
+    updateUserHobbies(hobbies: $hobbies) {
       hobbies
     }
   }
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Hobbies = ({ data, userId }) => {
+const Hobbies = ({ data }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
@@ -50,7 +50,7 @@ const Hobbies = ({ data, userId }) => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserHobbies({
-      variables: { _id: userId, hobbies },
+      variables: { hobbies },
     })
   }
 
@@ -78,7 +78,7 @@ const Hobbies = ({ data, userId }) => {
   const handleDelete = async () => {
     const filterDeletedItem = hobbies.filter((_, index) => index !== popUp.index)
     await updateUserHobbies({
-      variables: { _id: userId, hobbies: filterDeletedItem },
+      variables: { hobbies: filterDeletedItem },
     })
     closePopUp()
   }

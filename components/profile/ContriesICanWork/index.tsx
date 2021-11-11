@@ -14,8 +14,8 @@ import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
 const UPDATE_USER = gql`
-  mutation UpdateUserCountriesICanWork($_id: ID!, $countriesICanWork: [String]) {
-    updateUserCountriesICanWork(_id: $_id, countriesICanWork: $countriesICanWork) {
+  mutation UpdateUserCountriesICanWork($countriesICanWork: [String]) {
+    updateUserCountriesICanWork(countriesICanWork: $countriesICanWork) {
       countriesICanWork
     }
   }
@@ -32,7 +32,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const CountriesICanWork = ({ data, userId, countries }) => {
+const CountriesICanWork = ({ data, countries }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
@@ -52,7 +52,7 @@ const CountriesICanWork = ({ data, userId, countries }) => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserCountriesICanWork({
-      variables: { _id: userId, countriesICanWork },
+      variables: { countriesICanWork },
     })
     setEdit(!edit)
   }
@@ -84,7 +84,7 @@ const CountriesICanWork = ({ data, userId, countries }) => {
   const handleDelete = async () => {
     const filterDeletedItem = countriesICanWork.filter((_, index) => index !== popUp.index)
     await updateUserCountriesICanWork({
-      variables: { _id: userId, countriesICanWork: filterDeletedItem },
+      variables: { countriesICanWork: filterDeletedItem },
     })
     closePopUp()
   }
