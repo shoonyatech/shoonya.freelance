@@ -1,22 +1,15 @@
 /* eslint-disable react/no-array-index-key */
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 
-const GET_USER = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      hobbies
-    }
-  }
-`
 const UPDATE_USER = gql`
   mutation UpdateUserHobbies($_id: ID!, $hobbies: [String]) {
     updateUserHobbies(_id: $_id, hobbies: $hobbies) {
@@ -36,46 +29,39 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Hobbies = () => {
-  const [edit, setEdit] = useState<boolean>(false)
-  const [popUp, setPopup] = useState({ show: false, index: null })
+const Hobbies = ({ data, userId }) => {
   const classes = useStyles()
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER, {
-    variables: { _id: userId },
-  })
-  const [updateUserHobbies, { error }] = useMutation(UPDATE_USER)
+  const [edit, setEdit] = useState<boolean>(!data)
+  const [popUp, setPopup] = useState({ show: false, index: null })
+  const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  const [hobbies, setHobbies] = useState<String[]>([])
+  const [hobbies, setHobbies] = useState<any>(data)
+  const [updatedHobbies, setUpdatedHobbies] = useState(null)
 
-  useEffect(() => {
-    if (data?.user?.hobbies) {
-      setHobbies(data.user.hobbies)
+  const [updateUserHobbies, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newUserHobbies = val.updateUserHobbies.hobbies
+      setHobbies(newUserHobbies)
+      setUpdatedHobbies(newUserHobbies)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
-
-  if (loading) return <Loader open={loading} error={error} />
-
-  const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
-    setHobbies([...hobbies.slice(0, index), evt.target.value, ...hobbies.slice(index + 1)])
-  }
+    },
+  })
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserHobbies({
       variables: { _id: userId, hobbies },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
-    setEdit(!edit)
   }
 
   const cancelUpdateUser = () => {
-    if (data?.user?.hobbies) {
-      setHobbies(data.user.hobbies)
-    } else setHobbies([])
+    const revertUserHobbies = updatedHobbies || data
+    setHobbies(revertUserHobbies)
     setEdit(false)
+  }
+
+  const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
+    setHobbies([...hobbies.slice(0, index), evt.target.value, ...hobbies.slice(index + 1)])
   }
 
   const addHobby = () => {
@@ -93,22 +79,23 @@ const Hobbies = () => {
     const filterDeletedItem = hobbies.filter((_, index) => index !== popUp.index)
     await updateUserHobbies({
       variables: { _id: userId, hobbies: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
     closePopUp()
   }
+
+  if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Hobbies</h3>
-        {!edit ? (
+        {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           {hobbies
             ? hobbies.map((hobby, i): any => (
@@ -144,13 +131,11 @@ const Hobbies = () => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            {data?.user?.hobbies
-              ? data.user.hobbies.map((hobby) => (
-                  <div key={hobby} className="uppercase">
-                    {hobby}
-                  </div>
-                ))
-              : null}
+            {hobbies.map((hobby) => (
+              <div key={hobby} className="uppercase">
+                {hobby}
+              </div>
+            ))}
           </div>
         </>
       )}

@@ -1,5 +1,4 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import { InputLabel } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -8,21 +7,12 @@ import Select from '@material-ui/core/Select'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useState } from 'react'
 
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
-const GET_USER_AND_COUNTRY = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      countriesICanWork
-    }
-    countries {
-      name
-    }
-  }
-`
 const UPDATE_USER = gql`
   mutation UpdateUserCountriesICanWork($_id: ID!, $countriesICanWork: [String]) {
     updateUserCountriesICanWork(_id: $_id, countriesICanWork: $countriesICanWork) {
@@ -42,27 +32,36 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const CountriesICanWork = () => {
-  const [edit, setEdit] = useState<boolean>(false)
-  const [popUp, setPopup] = useState({ show: false, index: null })
+const CountriesICanWork = ({ data, userId, countries }) => {
   const classes = useStyles()
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER_AND_COUNTRY, {
-    variables: { _id: userId },
-  })
-  const [updateUserCountriesICanWork, { error }] = useMutation(UPDATE_USER)
+  const [edit, setEdit] = useState<boolean>(!data)
+  const [popUp, setPopup] = useState({ show: false, index: null })
+  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const [countriesICanWork, setCountriesICanWork] = useState<any[]>(data)
+  const [updatedCountriesICanWork, setupdatedCountriesICanWork] = useState(null)
 
-  const [countriesICanWork, setCountriesICanWork] = useState<any[]>([])
-
-  useEffect(() => {
-    if (data?.user?.countriesICanWork && data?.user?.countriesICanWork.length !== 0) {
-      setCountriesICanWork(data.user.countriesICanWork)
+  const [updateUserCountriesICanWork, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newCountriesICanWork = val.updateUserCountriesICanWork.countriesICanWork
+      setCountriesICanWork(newCountriesICanWork)
+      setupdatedCountriesICanWork(newCountriesICanWork)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
+    },
+  })
 
-  if (loading) return <Loader open={loading} error={error} />
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await updateUserCountriesICanWork({
+      variables: { _id: userId, countriesICanWork },
+    })
+    setEdit(!edit)
+  }
+
+  const cancelUpdateUser = () => {
+    const revertUserCountriesICanWork = updatedCountriesICanWork || data
+    setCountriesICanWork(revertUserCountriesICanWork)
+    setEdit(false)
+  }
 
   const handleChange = (index: number) => (evt: any) => {
     setCountriesICanWork([
@@ -70,22 +69,6 @@ const CountriesICanWork = () => {
       evt.target.value,
       ...countriesICanWork.slice(index + 1),
     ])
-  }
-
-  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    await updateUserCountriesICanWork({
-      variables: { _id: userId, countriesICanWork },
-      refetchQueries: [{ query: GET_USER_AND_COUNTRY, variables: { _id: userId } }],
-    })
-    setEdit(!edit)
-  }
-
-  const cancelUpdateUser = () => {
-    if (data?.user?.countriesICanWork) {
-      setCountriesICanWork(data.user.countriesICanWork)
-    } else setCountriesICanWork([])
-    setEdit(false)
   }
 
   const addCountry = () => {
@@ -102,22 +85,23 @@ const CountriesICanWork = () => {
     const filterDeletedItem = countriesICanWork.filter((_, index) => index !== popUp.index)
     await updateUserCountriesICanWork({
       variables: { _id: userId, countriesICanWork: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER_AND_COUNTRY, variables: { _id: userId } }],
     })
     closePopUp()
   }
+
+  if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">Countries I Can Work</h3>
-        {!edit ? (
+        {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           {countriesICanWork.map((countryName, i): any => (
             <>
@@ -133,7 +117,7 @@ const CountriesICanWork = () => {
                     onChange={handleChange(i)}
                     fullWidth
                   >
-                    {data.countries.map((country) => (
+                    {countries.map((country) => (
                       <MenuItem key={country.name} value={country.name}>
                         {country.name}
                       </MenuItem>
@@ -167,7 +151,7 @@ const CountriesICanWork = () => {
       ) : (
         <>
           <div className="flex flex-col">
-            {data.user.countriesICanWork.map((country): any => (
+            {countriesICanWork.map((country): any => (
               <div key={country}>
                 <div className="uppercase">{country} </div>
               </div>

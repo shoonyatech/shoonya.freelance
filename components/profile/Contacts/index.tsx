@@ -1,5 +1,4 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -10,8 +9,10 @@ import MailIcon from '@material-ui/icons/Mail'
 import PhoneIcon from '@material-ui/icons/Phone'
 import RoomIcon from '@material-ui/icons/Room'
 import TwitterIcon from '@material-ui/icons/Twitter'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
+import { removeKey } from '../../../lib/utils'
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 
 interface ContactObj {
@@ -23,20 +24,6 @@ interface ContactObj {
   twitter: string
 }
 
-const GET_USER = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      contact {
-        location
-        phone
-        mail
-        linkedin
-        github
-        twitter
-      }
-    }
-  }
-`
 const UPDATE_USER = gql`
   mutation UpdateUserContact($_id: ID!, $contact: ContactInput) {
     updateUserContact(_id: $_id, contact: $contact) {
@@ -64,42 +51,30 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Contacts = () => {
+const Contacts = ({ data, userId }) => {
   const classes = useStyles()
-  const { user } = useUser()
-  const [edit, setEdit] = useState<boolean>(false)
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER, {
-    variables: { _id: userId },
-  })
-  const [updateUserContact, { error }] = useMutation(UPDATE_USER)
+  const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  const initialVal = {
-    location: '',
-    phone: '',
-    mail: '',
-    linkedin: '',
-    github: '',
-    twitter: '',
-  }
+  const [contact, setContact] = useState<ContactObj>(data)
+  const [updatedContact, setUpdatedContact] = useState(null)
 
-  const [contact, setContact] = useState<ContactObj>(initialVal)
-
-  useEffect(() => {
-    if (data?.user?.contact) {
-      setContact({
-        location: data.user.contact.location,
-        phone: data.user.contact.phone,
-        mail: data.user.contact.mail,
-        linkedin: data.user.contact.linkedin,
-        github: data.user.contact.github,
-        twitter: data.user.contact.twitter,
-      })
+  const [updateUserContact, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newContact = val.updateUserContact.contact
+      setContact(newContact)
+      setUpdatedContact(newContact)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
+    },
+  })
 
-  if (loading) return <Loader open={loading} error={error} />
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const filterTypename = removeKey('__typename', contact)
+    await updateUserContact({
+      variables: { _id: userId, contact: filterTypename },
+    })
+  }
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setContact({
@@ -108,46 +83,30 @@ const Contacts = () => {
     })
   }
 
-  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    await updateUserContact({
-      variables: { _id: userId, contact },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
-    })
-    setEdit(!edit)
-  }
-
   const cancelUpdateUser = () => {
-    if (data?.user?.contact) {
-      setContact({
-        location: data.user.contact.location,
-        phone: data.user.contact.phone,
-        mail: data.user.contact.mail,
-        linkedin: data.user.contact.linkedin,
-        github: data.user.contact.github,
-        twitter: data.user.contact.twitter,
-      })
-    } else setContact(initialVal)
+    const revertUserContact = updatedContact || data
+    setContact(revertUserContact)
     setEdit(false)
   }
 
+  if (loading) return <Loader open={loading} error={error} />
   return (
     <div className="px-6">
-      {!edit ? (
+      {!edit && !isReadOnly ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl  uppercase pb-3">contacts</h3>
 
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form onSubmit={updateUser} className="flex flex-col w-max">
           <TextField
             className="self-start"
             label="Location"
             name="location"
             onChange={handleChange}
-            value={contact.location}
+            value={contact?.location}
             size="small"
             color="primary"
             margin="dense"
@@ -158,7 +117,7 @@ const Contacts = () => {
             label="phone"
             name="phone"
             onChange={handleChange}
-            value={contact.phone}
+            value={contact?.phone}
             color="primary"
             margin="dense"
             variant="outlined"
@@ -168,7 +127,7 @@ const Contacts = () => {
             label="mail"
             name="mail"
             onChange={handleChange}
-            value={contact.mail}
+            value={contact?.mail}
             size="medium"
             color="primary"
             margin="dense"
@@ -179,7 +138,7 @@ const Contacts = () => {
             label="Linkedin"
             name="linkedin"
             onChange={handleChange}
-            value={contact.linkedin}
+            value={contact?.linkedin}
             color="primary"
             margin="dense"
             variant="outlined"
@@ -190,7 +149,7 @@ const Contacts = () => {
             label="Github"
             name="github"
             onChange={handleChange}
-            value={contact.github}
+            value={contact?.github}
             color="primary"
             margin="dense"
             variant="outlined"
@@ -200,7 +159,7 @@ const Contacts = () => {
             label="Twitter"
             name="twitter"
             onChange={handleChange}
-            value={contact.twitter}
+            value={contact?.twitter}
             color="primary"
             margin="dense"
             variant="outlined"
@@ -222,38 +181,39 @@ const Contacts = () => {
       ) : (
         <>
           <ul className="list-none">
-            {data?.user?.contact?.location ? (
+            {contact?.location ? (
               <li className="pb-1">
                 <RoomIcon />
-                <span className="break-all">{data.user.contact.location}</span>
+                <span className="break-all">{contact?.location}</span>
               </li>
             ) : null}
-            {data?.user?.contact?.phone ? (
+            {contact?.phone ? (
               <li className="pb-1">
-                <PhoneIcon /> <span className="break-all">{data?.user?.contact.phone}</span>
-              </li>
-            ) : null}
-            {data?.user?.contact?.mail ? (
-              <li className="pb-1">
-                <MailIcon /> <span className="break-all">{data?.user?.contact.mail}</span>
+                <PhoneIcon /> <span className="break-all">{contact?.phone}</span>
               </li>
             ) : null}
 
-            {data?.user?.contact?.linkedin ? (
+            {contact?.mail ? (
               <li className="pb-1">
-                <LinkedInIcon /> <span className="break-all">{data?.user?.contact.linkedin}</span>
+                <MailIcon /> <span className="break-all">{contact?.mail}</span>
               </li>
             ) : null}
 
-            {data?.user?.contact?.github ? (
+            {contact?.linkedin ? (
               <li className="pb-1">
-                <GitHubIcon /> <span className="break-all">{data?.user?.contact.github}</span>
+                <LinkedInIcon /> <span className="break-all">{contact?.linkedin}</span>
               </li>
             ) : null}
 
-            {data?.user?.contact?.twitter ? (
+            {contact?.github ? (
               <li className="pb-1">
-                <TwitterIcon /> <span className="break-all">{data?.user?.contact.twitter}</span>
+                <GitHubIcon /> <span className="break-all">{contact?.github}</span>
+              </li>
+            ) : null}
+
+            {contact?.twitter ? (
+              <li className="pb-1">
+                <TwitterIcon /> <span className="break-all">{contact?.twitter}</span>
               </li>
             ) : null}
           </ul>

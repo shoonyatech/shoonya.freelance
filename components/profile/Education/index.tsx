@@ -2,17 +2,18 @@
 /* eslint-disable react/no-array-index-key */
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
+import { removeKey } from '../../../lib/utils'
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
@@ -22,19 +23,6 @@ interface educationObj {
   startYear: number
   endYear: number | null
 }
-
-const GET_USER = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      education {
-        startYear
-        endYear
-        degree
-        school
-      }
-    }
-  }
-`
 
 const UPDATE_USER = gql`
   mutation UpdateUserEducation($_id: ID!, $education: [EducationInput]) {
@@ -60,42 +48,30 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Education = () => {
+const Education = ({ data, userId }) => {
   const classes = useStyles()
-  const { user } = useUser()
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const [edit, setEdit] = useState<boolean>(false)
-  const [education, setEducation] = useState<educationObj[]>([])
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER, {
-    variables: { _id: userId },
-  })
-  const [updateUserEducation, { error }] = useMutation(UPDATE_USER)
+  const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  useEffect(() => {
-    if (data?.user?.education && data?.user?.education.length !== 0) {
-      const filterTypename = data.user.education.map(({ __typename, ...rest }) => rest)
-      setEducation(filterTypename)
+  const [education, setEducation] = useState<educationObj[]>(data)
+  const [updatedEducation, setUpdatedEducation] = useState(null)
+
+  const [updateUserEducation, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newEducation = val.updateUserEducation.education
+      setEducation(newEducation)
+      setUpdatedEducation(newEducation)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
-  if (loading) return <Loader open={loading} error={error} />
-
-  const cancelUpdateUser = () => {
-    if (data?.user?.education) {
-      const filterTypename = data.user.education.map(({ __typename, ...rest }) => rest)
-      setEducation(filterTypename)
-    } else setEducation([])
-    setEdit(false)
-  }
+    },
+  })
 
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const filterTypenameMap = education.map((edu) => removeKey('__typename', edu))
     await updateUserEducation({
-      variables: { _id: userId, education },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
+      variables: { _id: userId, education: filterTypenameMap },
     })
-    setEdit(!edit)
   }
 
   const handleChange = (index: number, type: any) => (evt: ChangeEvent<HTMLInputElement>) => {
@@ -105,6 +81,12 @@ const Education = () => {
       { ...education[index], [evt.target.name]: value },
       ...education.slice(index + 1),
     ])
+  }
+
+  const cancelUpdateUser = () => {
+    const revertUserEducation = updatedEducation || data
+    setEducation(revertUserEducation)
+    setEdit(false)
   }
 
   const handleTimeChange = (date: Date, index: number, startOrEnd: string) => {
@@ -124,9 +106,9 @@ const Education = () => {
 
   const handleDelete = async () => {
     const filterDeletedItem = education.filter((_, index) => index !== popUp.index)
+    const filterTypenameMap = filterDeletedItem.map((edu) => removeKey('__typename', edu))
     await updateUserEducation({
-      variables: { _id: userId, education: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
+      variables: { _id: userId, education: filterTypenameMap },
     })
     closePopUp()
   }
@@ -143,17 +125,18 @@ const Education = () => {
     ])
   }
 
+  if (loading) return <Loader open={loading} error={error} />
   return (
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">education</h3>
-        {!edit ? (
+        {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <div className="self-end pt-2">
             {education.map((edu, i: number) => (
@@ -223,7 +206,7 @@ const Education = () => {
         </form>
       ) : (
         <div>
-          {data.user.education.map((edu, i) => (
+          {education.map((edu, i) => (
             <div key={i}>
               <div className="font-bold">{edu.degree}</div>
               <div>{edu.school}</div>

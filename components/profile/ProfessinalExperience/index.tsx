@@ -2,8 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -12,10 +11,12 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
 import { icons } from '../../../lib/icon'
+import { removeKey } from '../../../lib/utils'
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
 import DeleteAlert from '../DeleteAlert'
@@ -32,23 +33,6 @@ interface professionalExperienceObj {
   description: string
   techStack: Array<[]>
 }
-
-const GET_USER = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      professionalExperience {
-        company
-        location
-        jobTitle
-        currentJob
-        startYear
-        endYear
-        description
-        techStack
-      }
-    }
-  }
-`
 
 const UPDATE_USER = gql`
   mutation UpdateUserProfessionalExperience($_id: ID!, $professionalExperience: [ProfessionalExperienceInput]) {
@@ -86,26 +70,38 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProfessionalExperience = () => {
+const ProfessionalExperience = ({ data, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const [edit, setEdit] = useState<boolean | number>(false)
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER, {
-    variables: { _id: userId },
-  })
-  const [updateUserProfessionalExperience, { error }] = useMutation(UPDATE_USER)
-  const [professionalExp, setProfessionalExp] = useState<professionalExperienceObj[]>([])
+  const [edit, setEdit] = useState<boolean | number>(!data)
+  const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  useEffect(() => {
-    if (data?.user?.professionalExperience && data?.user?.professionalExperience.length !== 0) {
-      const filterTypename = data.user.professionalExperience.map(({ __typename, ...rest }) => rest)
-      setProfessionalExp(filterTypename)
+  const [professionalExp, setProfessionalExp] = useState<professionalExperienceObj[]>(data)
+  const [updatedProfessionalExp, setupdatedProfessionalExp] = useState(null)
+
+  const [updateUserProfessionalExperience, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newProfessionalExperience = val.updateUserProfessionalExperience.professionalExperience
+      setProfessionalExp(newProfessionalExperience)
+      setupdatedProfessionalExp(newProfessionalExperience)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
-  if (loading) return <Loader open={loading} error={error} />
+    },
+  })
+
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const filterTypenameMap = professionalExp.map((item) => removeKey('__typename', item))
+    await updateUserProfessionalExperience({
+      variables: { _id: userId, professionalExperience: filterTypenameMap },
+    })
+    setEdit(false)
+  }
+
+  const cancelUpdateUser = () => {
+    const revertUserProfessionalExperience = updatedProfessionalExp || data
+    setProfessionalExp(revertUserProfessionalExperience)
+    setEdit(false)
+  }
 
   const handleChange = (index: number, type: any) => (evt: ChangeEvent<HTMLInputElement>) => {
     const value = type === 'checkbox' ? evt.target.checked : evt.target.value
@@ -140,23 +136,6 @@ const ProfessionalExperience = () => {
     ])
   }
 
-  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    await updateUserProfessionalExperience({
-      variables: { _id: userId, professionalExperience: professionalExp },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
-    })
-    setEdit(!edit)
-  }
-
-  const cancelUpdateUser = () => {
-    if (data?.user?.professionalExperience) {
-      const filterTypename = data.user.professionalExperience(({ __typename, ...rest }) => rest)
-      setProfessionalExp(filterTypename)
-    } else setProfessionalExp([])
-    setEdit(false)
-  }
-
   const addProfessionalExperience = () => {
     setProfessionalExp([
       ...professionalExp,
@@ -182,24 +161,26 @@ const ProfessionalExperience = () => {
 
   const handleDelete = async () => {
     const filterDeletedItem = professionalExp.filter((_, index) => index !== popUp.index)
+    const filterTypenameMap = filterDeletedItem.map((item) => removeKey('__typename', item))
     await updateUserProfessionalExperience({
-      variables: { _id: userId, professionalExperience: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
+      variables: { _id: userId, professionalExperience: filterTypenameMap },
     })
     closePopUp()
   }
+
+  if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div className="flex flex-col p-4 md:p-6">
       <div className="flex justify-between pb-3">
         <h3 className="text-xl md:text-2xl uppercase">professional experience</h3>
-        {!edit ? (
+        {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
           </button>
         ) : null}
       </div>
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <div>
             {professionalExp.map((details, i: number) => (
@@ -310,12 +291,14 @@ const ProfessionalExperience = () => {
         </form>
       ) : (
         <div>
-          {data.user.professionalExperience.map((details, i): any => (
+          {professionalExp.map((details, i): any => (
             <div className="pb-10" key={i}>
               <div className="flex items-center">
                 <div className="font-bold mr-2">{details.jobTitle}</div>
                 {details.techStack.map((icon) => (
-                  <span className="px-px">{icons[`${icon}`]}</span>
+                  <span key={icon} className="px-px">
+                    {icons[`${icon}`]}
+                  </span>
                 ))}
               </div>
 

@@ -1,20 +1,13 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useState } from 'react'
 
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 
-const GET_USER = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      bio
-    }
-  }
-`
 const UPDATE_USER = gql`
   mutation UpdateUserBio($_id: ID!, $bio: String) {
     updateUserBio(_id: $_id, bio: $bio) {
@@ -35,24 +28,22 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Bio = () => {
+const Bio = ({ data, userId }) => {
   const classes = useStyles()
-  const [edit, setEdit] = useState<boolean>(false)
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER, {
-    variables: { _id: userId },
-  })
-  const [updateUserBio, { error }] = useMutation(UPDATE_USER)
-  const [bio, setBio] = useState<null | String>('')
+  const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  useEffect(() => {
-    if (data?.user?.bio) {
-      setBio(data.user.bio)
+  const [bio, setBio] = useState<null | String>(data)
+  const [updatedBio, setUpdatedBio] = useState(null)
+
+  const [updateUserBio, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newBio = val.updateUserBio.bio
+      setBio(newBio)
+      setUpdatedBio(newBio)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
-  if (loading) return <Loader open={loading} error={error} />
+    },
+  })
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setBio(evt.target.value)
@@ -62,27 +53,26 @@ const Bio = () => {
     e.preventDefault()
     await updateUserBio({
       variables: { _id: userId, bio },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
     })
-    setEdit(!edit)
   }
 
   const cancelUpdateUser = () => {
-    if (data?.user?.bio) {
-      setBio(data.user.bio)
-    } else setBio('')
+    const revertUserBio = updatedBio || data
+    setBio(revertUserBio)
     setEdit(false)
   }
 
+  if (loading) return <Loader open={loading} error={error} />
+
   return (
     <div className="p-4 md:p-6">
-      {!edit ? (
+      {!edit && !isReadOnly ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">bio</h3>
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form onSubmit={updateUser} className="flex flex-col ">
           <TextField
             id="outlined-multiline-static"
@@ -112,7 +102,7 @@ const Bio = () => {
         </form>
       ) : (
         <div>
-          <div>{data?.user?.bio}</div>
+          <div>{bio}</div>
         </div>
       )}
     </div>
