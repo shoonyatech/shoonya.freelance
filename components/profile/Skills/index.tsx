@@ -1,6 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Slider from '@material-ui/core/Slider'
@@ -8,8 +7,10 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
+import { removeKey } from '../../../lib/utils'
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
@@ -17,17 +18,6 @@ interface SkillsObj {
   name: string
   scale: number
 }
-
-const GET_USER = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      skills {
-        name
-        scale
-      }
-    }
-  }
-`
 
 const UPDATE_USER = gql`
   mutation UpdateUserSkills($_id: ID!, $skills: [SkillsInput]) {
@@ -52,26 +42,32 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Skills = () => {
+const Skills = ({ data, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
-  const [edit, setEdit] = useState<boolean>(false)
-  const { loading, data } = useQuery(GET_USER, {
-    variables: { _id: userId },
-  })
-  const [updateUserSkills, { error }] = useMutation(UPDATE_USER)
-  const [skills, setSkills] = useState<SkillsObj[]>([])
+  const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  useEffect(() => {
-    if (data?.user?.skills && data?.user?.skills.length !== 0) {
-      const filterTypename = data.user.skills.map(({ __typename, ...rest }) => rest)
-      setSkills(filterTypename)
+  const [skills, setSkills] = useState<SkillsObj[]>(data)
+  const [updatedSkills, setUpdatedSkills] = useState(null)
+
+  const [updateUserSkills, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newSkills = val.updateUserSkills.skills
+      setSkills(newSkills)
+      setUpdatedSkills(newSkills)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
-  if (loading) return <Loader open={loading} error={error} />
+    },
+  })
+
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const filterTypenameMap = skills.map((skill) => removeKey('__typename', skill))
+    await updateUserSkills({
+      variables: { _id: userId, skills: filterTypenameMap },
+    })
+    setEdit(!edit)
+  }
 
   const handleScaleChange = (index: number) => (_, newValue) => {
     setSkills([...skills.slice(0, index), { ...skills[index], scale: newValue }, ...skills.slice(index + 1)])
@@ -92,20 +88,9 @@ const Skills = () => {
   }
 
   const cancelUpdateUser = () => {
-    if (data?.user?.skills) {
-      const filterTypename = data.user.skills.map(({ __typename, ...rest }) => rest)
-      setSkills(filterTypename)
-    } else setSkills([])
+    const revertedUserSkills = updatedSkills || data
+    setSkills(revertedUserSkills)
     setEdit(false)
-  }
-
-  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    await updateUserSkills({
-      variables: { _id: userId, skills },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
-    })
-    setEdit(!edit)
   }
 
   const openPopup = (i) => {
@@ -117,23 +102,25 @@ const Skills = () => {
 
   const handleDelete = async () => {
     const filterDeletedItem = skills.filter((_, index) => index !== popUp.index)
+    const filterTypenameMap = filterDeletedItem.map((skill) => removeKey('__typename', skill))
     await updateUserSkills({
-      variables: { _id: userId, skills: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
+      variables: { _id: userId, skills: filterTypenameMap },
     })
     setEdit(false)
     closePopUp()
   }
 
+  if (loading) return <Loader open={loading} error={error} />
+
   return (
     <div className="px-6">
-      {!edit ? (
+      {!edit && !isReadOnly ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">skills</h3>
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form onSubmit={updateUser} className="flex flex-col ">
           {skills.map((skill, i): any => (
             <div key={i} className="flex flex-col">
@@ -186,7 +173,7 @@ const Skills = () => {
         </form>
       ) : (
         <div>
-          {data.user.skills.map((skill, i): any => (
+          {skills.map((skill, i): any => (
             <div key={i}>
               <div>{skill.name}</div>
               <div className="h-2 bg-skillbarempty">

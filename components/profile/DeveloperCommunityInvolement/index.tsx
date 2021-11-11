@@ -1,14 +1,15 @@
 /* eslint-disable react/no-array-index-key */
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useUser } from '@auth0/nextjs-auth0'
+import { gql, useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
+import { removeKey } from '../../../lib/utils'
+import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 import TextEditor from '../TextEditor'
@@ -18,17 +19,6 @@ interface developerCommunityInvolementObj {
   title: string
   description: string
 }
-
-const GET_USER = gql`
-  query User($_id: ID!) {
-    user(_id: $_id) {
-      developerCommunityInvolement {
-        title
-        description
-      }
-    }
-  }
-`
 
 const UPDATE_USER = gql`
   mutation UpdateUserDeveloperCommunityInvolement(
@@ -56,29 +46,52 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const DeveloperCommunityInvolement = () => {
+const DeveloperCommunityInvolement = ({ data, userId }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const [edit, setEdit] = useState<boolean>(false)
-  const { user } = useUser()
-  const userId = user?.sub?.split('|')[1]
-  const { loading, data } = useQuery(GET_USER, {
-    variables: { _id: userId },
-  })
-  const [updateUserDeveloperCommunityInvolement, { error }] = useMutation(UPDATE_USER)
-  const [developerCommunityInvolement, setDeveloperCommunityInvolement] = useState<developerCommunityInvolementObj[]>(
-    []
-  )
+  const [edit, setEdit] = useState<boolean>(!data)
+  const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  useEffect(() => {
-    if (data?.user?.developerCommunityInvolement && data?.user?.developerCommunityInvolement.length !== 0) {
-      const filterTypename = data.user.developerCommunityInvolement.map(({ __typename, ...rest }) => rest)
-      setDeveloperCommunityInvolement(filterTypename)
+  const [developerCommunityInvolement, setDeveloperCommunityInvolement] =
+    useState<developerCommunityInvolementObj[]>(data)
+  const [updatedDeveloperCommunityInvolement, setupdatedDeveloperCommunityInvolement] = useState(null)
+
+  const [updateUserDeveloperCommunityInvolement, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(val) {
+      const newDeveloperCommunityInvolement = val.updateUserDeveloperCommunityInvolement.developerCommunityInvolement
+      setDeveloperCommunityInvolement(newDeveloperCommunityInvolement)
+      setupdatedDeveloperCommunityInvolement(newDeveloperCommunityInvolement)
       setEdit(false)
-    } else setEdit(true)
-  }, [data])
+    },
+  })
 
-  if (loading) return <Loader open={loading} error={error} />
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const filterTypenameMap = developerCommunityInvolement.map((item) => removeKey('__typename', item))
+
+    await updateUserDeveloperCommunityInvolement({
+      variables: { _id: userId, developerCommunityInvolement: filterTypenameMap },
+    })
+    setEdit(false)
+  }
+
+  const cancelUpdateUser = () => {
+    const revertUserDeveloperCommunityInvolement = updatedDeveloperCommunityInvolement || data
+    setDeveloperCommunityInvolement(revertUserDeveloperCommunityInvolement)
+    setEdit(false)
+  }
+
+  const closePopUp = () => {
+    setPopup({ show: false, index: null })
+  }
+  const handleDelete = async () => {
+    const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== popUp.index)
+    const filterTypenameMap = filterDeletedItem.map((item) => removeKey('__typename', item))
+    await updateUserDeveloperCommunityInvolement({
+      variables: { _id: userId, developerCommunityInvolement: filterTypenameMap },
+    })
+    closePopUp()
+  }
 
   const handleChange = (index: number) => (evt: ChangeEvent<HTMLInputElement>) => {
     setDeveloperCommunityInvolement([
@@ -99,35 +112,6 @@ const DeveloperCommunityInvolement = () => {
   const openPopup = (i) => {
     setPopup({ show: true, index: i })
   }
-  const closePopUp = () => {
-    setPopup({ show: false, index: null })
-  }
-
-  const handleDelete = async () => {
-    const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== popUp.index)
-    await updateUserDeveloperCommunityInvolement({
-      variables: { _id: userId, developerCommunityInvolement: filterDeletedItem },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
-    })
-    closePopUp()
-  }
-
-  const cancelUpdateUser = () => {
-    if (data?.user?.developerCommunityInvolement) {
-      const filterTypename = data.user.developerCommunityInvolement.map(({ __typename, ...rest }) => rest)
-      setDeveloperCommunityInvolement(filterTypename)
-    } else setDeveloperCommunityInvolement([])
-    setEdit(false)
-  }
-
-  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    await updateUserDeveloperCommunityInvolement({
-      variables: { _id: userId, developerCommunityInvolement },
-      refetchQueries: [{ query: GET_USER, variables: { _id: userId } }],
-    })
-    setEdit(!edit)
-  }
 
   const addDeveloperCommunityInvolement = () => {
     setDeveloperCommunityInvolement([
@@ -139,15 +123,16 @@ const DeveloperCommunityInvolement = () => {
     ])
   }
 
+  if (loading) return <Loader open={loading} error={error} />
   return (
     <div className="p-4 md:p-6">
-      {!edit ? (
+      {!edit && !isReadOnly ? (
         <button type="button" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
         </button>
       ) : null}
       <h3 className="text-xl md:text-2xl uppercase pb-3">developer community involement</h3>
-      {edit ? (
+      {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <div>
             {developerCommunityInvolement.map((dev, i: number) => (
@@ -191,7 +176,7 @@ const DeveloperCommunityInvolement = () => {
         </form>
       ) : (
         <div>
-          {data.user.developerCommunityInvolement.map((dev, i): any => (
+          {developerCommunityInvolement.map((dev, i): any => (
             <div key={i}>
               <div className="font-bold uppercase">{dev.title}</div>
               <TextEditorReadOnly defaultValue={dev.description} />

@@ -1,10 +1,9 @@
 import { gql } from '@apollo/client'
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { GetServerSideProps } from 'next'
 import React from 'react'
 
-import GetApolloClient from '../apis/apollo.client'
-import Profile from '../components/profile/Profile'
-import { getUserId } from '../lib/user-helper'
+import GetApolloClient from '../../apis/apollo.client'
+import Profile from '../../components/profile/Profile'
 
 const GET_USER = gql`
   query User($_id: ID!) {
@@ -55,26 +54,31 @@ const GET_USER = gql`
     }
   }
 `
+
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function Me({ data, countries }) {
-  return <Profile countries={countries} data={data} />
+function UserPage({ data, countries }) {
+  return <Profile countries={countries} data={data} isReadOnly />
 }
 
-export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps(context) {
-    const session = getSession(context.req, context.res)
-    const userId = getUserId(session?.user.sub)
-    const { data } = await client.query({
-      query: GET_USER,
-      variables: { _id: userId },
-      errorPolicy: 'ignore',
-    })
+export default UserPage
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { data } = await client.query({
+    query: GET_USER,
+    variables: { _id: context.query.id },
+    errorPolicy: 'ignore',
+  })
+
+  if (!data.user) {
     return {
-      props: {
-        data: data.user,
-        countries: data.countries,
-      },
+      notFound: true,
     }
-  },
-})
+  }
+  return {
+    props: {
+      data: data.user,
+      countries: data.countries,
+    },
+  }
+}
