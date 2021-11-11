@@ -21,11 +21,8 @@ interface developerCommunityInvolementObj {
 }
 
 const UPDATE_USER = gql`
-  mutation UpdateUserDeveloperCommunityInvolement(
-    $_id: ID!
-    $developerCommunityInvolement: [DeveloperCommunityInvolementInput]
-  ) {
-    updateUserDeveloperCommunityInvolement(_id: $_id, developerCommunityInvolement: $developerCommunityInvolement) {
+  mutation UpdateUserDeveloperCommunityInvolement($developerCommunityInvolement: [DeveloperCommunityInvolementInput]) {
+    updateUserDeveloperCommunityInvolement(developerCommunityInvolement: $developerCommunityInvolement) {
       developerCommunityInvolement {
         title
         description
@@ -46,7 +43,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const DeveloperCommunityInvolement = ({ data, userId }) => {
+const DeveloperCommunityInvolement = ({ data }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(!data)
@@ -70,7 +67,7 @@ const DeveloperCommunityInvolement = ({ data, userId }) => {
     const filterTypenameMap = developerCommunityInvolement.map((item) => removeKey('__typename', item))
 
     await updateUserDeveloperCommunityInvolement({
-      variables: { _id: userId, developerCommunityInvolement: filterTypenameMap },
+      variables: { developerCommunityInvolement: filterTypenameMap },
     })
     setEdit(false)
   }
@@ -88,7 +85,7 @@ const DeveloperCommunityInvolement = ({ data, userId }) => {
     const filterDeletedItem = developerCommunityInvolement.filter((_, index) => index !== popUp.index)
     const filterTypenameMap = filterDeletedItem.map((item) => removeKey('__typename', item))
     await updateUserDeveloperCommunityInvolement({
-      variables: { _id: userId, developerCommunityInvolement: filterTypenameMap },
+      variables: { developerCommunityInvolement: filterTypenameMap },
     })
     closePopUp()
   }

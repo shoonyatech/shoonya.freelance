@@ -31,12 +31,12 @@ interface professionalExperienceObj {
   endYear: number | null
   currentJob: boolean
   description: string
-  techStack: Array<[]>
+  techStack: any
 }
 
 const UPDATE_USER = gql`
-  mutation UpdateUserProfessionalExperience($_id: ID!, $professionalExperience: [ProfessionalExperienceInput]) {
-    updateUserProfessionalExperience(_id: $_id, professionalExperience: $professionalExperience) {
+  mutation UpdateUserProfessionalExperience($professionalExperience: [ProfessionalExperienceInput]) {
+    updateUserProfessionalExperience(professionalExperience: $professionalExperience) {
       professionalExperience {
         company
         location
@@ -70,7 +70,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProfessionalExperience = ({ data, userId }) => {
+const ProfessionalExperience = ({ data }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(!data)
@@ -92,7 +92,7 @@ const ProfessionalExperience = ({ data, userId }) => {
     e.preventDefault()
     const filterTypenameMap = professionalExp.map((item) => removeKey('__typename', item))
     await updateUserProfessionalExperience({
-      variables: { _id: userId, professionalExperience: filterTypenameMap },
+      variables: { professionalExperience: filterTypenameMap },
     })
     setEdit(false)
   }
@@ -163,7 +163,7 @@ const ProfessionalExperience = ({ data, userId }) => {
     const filterDeletedItem = professionalExp.filter((_, index) => index !== popUp.index)
     const filterTypenameMap = filterDeletedItem.map((item) => removeKey('__typename', item))
     await updateUserProfessionalExperience({
-      variables: { _id: userId, professionalExperience: filterTypenameMap },
+      variables: { professionalExperience: filterTypenameMap },
     })
     closePopUp()
   }

@@ -25,8 +25,8 @@ interface educationObj {
 }
 
 const UPDATE_USER = gql`
-  mutation UpdateUserEducation($_id: ID!, $education: [EducationInput]) {
-    updateUserEducation(_id: $_id, education: $education) {
+  mutation UpdateUserEducation($education: [EducationInput]) {
+    updateUserEducation(education: $education) {
       education {
         degree
         school
@@ -48,7 +48,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Education = ({ data, userId }) => {
+const Education = ({ data }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(!data)
@@ -70,7 +70,7 @@ const Education = ({ data, userId }) => {
     e.preventDefault()
     const filterTypenameMap = education.map((edu) => removeKey('__typename', edu))
     await updateUserEducation({
-      variables: { _id: userId, education: filterTypenameMap },
+      variables: { education: filterTypenameMap },
     })
   }
 
@@ -108,7 +108,7 @@ const Education = ({ data, userId }) => {
     const filterDeletedItem = education.filter((_, index) => index !== popUp.index)
     const filterTypenameMap = filterDeletedItem.map((edu) => removeKey('__typename', edu))
     await updateUserEducation({
-      variables: { _id: userId, education: filterTypenameMap },
+      variables: { education: filterTypenameMap },
     })
     closePopUp()
   }

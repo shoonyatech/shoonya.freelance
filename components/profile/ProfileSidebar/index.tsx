@@ -9,36 +9,26 @@ import Languages from '../Languages'
 import Skills from '../Skills'
 import Sport from '../Sport'
 
-const ProfileSidebar = ({
-  data,
-  page,
-  userId,
-  countries,
-}: {
-  data: any
-  page: 1 | 2
-  userId: string
-  countries: any
-}) => {
+const ProfileSidebar = ({ data, page, countries }: { data: any; page: 1 | 2; countries: any }) => {
   return (
     <div className="bg-resume py-4">
       {page === 1 ? (
         <>
-          <Contacts data={data.contact} userId={userId} />
+          <Contacts data={data.contact} />
           <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-          <Education data={data.education} userId={userId} />
+          <Education data={data.education} />
           <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-          <Skills data={data.skills} userId={userId} />
+          <Skills data={data.skills} />
         </>
       ) : (
         <>
-          <Languages data={data.languages} userId={userId} />
+          <Languages data={data.languages} />
           <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-          <Hobbies data={data.hobbies} userId={userId} />
+          <Hobbies data={data.hobbies} />
           <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-          <Sport data={data.sports} userId={userId} />
+          <Sport data={data.sports} />
           <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
-          <CountriesICanWork countries={countries} data={data.countriesICanWork} userId={userId} />
+          <CountriesICanWork countries={countries} data={data.countriesICanWork} />
           <hr className="h-px border-0 bg-black w-4/5 mx-auto my-6" />
         </>
       )}

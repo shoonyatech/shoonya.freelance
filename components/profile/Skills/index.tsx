@@ -20,8 +20,8 @@ interface SkillsObj {
 }
 
 const UPDATE_USER = gql`
-  mutation UpdateUserSkills($_id: ID!, $skills: [SkillsInput]) {
-    updateUserSkills(_id: $_id, skills: $skills) {
+  mutation UpdateUserSkills($skills: [SkillsInput]) {
+    updateUserSkills(skills: $skills) {
       skills {
         name
         scale
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Skills = ({ data, userId }) => {
+const Skills = ({ data }) => {
   const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(!data)
@@ -64,7 +64,7 @@ const Skills = ({ data, userId }) => {
     e.preventDefault()
     const filterTypenameMap = skills.map((skill) => removeKey('__typename', skill))
     await updateUserSkills({
-      variables: { _id: userId, skills: filterTypenameMap },
+      variables: { skills: filterTypenameMap },
     })
     setEdit(!edit)
   }
@@ -104,7 +104,7 @@ const Skills = ({ data, userId }) => {
     const filterDeletedItem = skills.filter((_, index) => index !== popUp.index)
     const filterTypenameMap = filterDeletedItem.map((skill) => removeKey('__typename', skill))
     await updateUserSkills({
-      variables: { _id: userId, skills: filterTypenameMap },
+      variables: { skills: filterTypenameMap },
     })
     setEdit(false)
     closePopUp()

@@ -11,8 +11,8 @@ import DeleteAlert from '../DeleteAlert'
 import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 
 const UPDATE_USER = gql`
-  mutation UpdateUserSports($_id: ID!, $sports: [String]) {
-    updateUserSports(_id: $_id, sports: $sports) {
+  mutation UpdateUserSports($sports: [String]) {
+    updateUserSports(sports: $sports) {
       sports
     }
   }
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Sport = ({ data, userId }) => {
+const Sport = ({ data }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
@@ -50,7 +50,7 @@ const Sport = ({ data, userId }) => {
   const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await updateUserSports({
-      variables: { _id: userId, sports },
+      variables: { sports },
     })
   }
 
@@ -78,7 +78,7 @@ const Sport = ({ data, userId }) => {
   const handleDelete = async () => {
     const filterDeletedItem = sports.filter((_, index) => index !== popUp.index)
     await updateUserSports({
-      variables: { _id: userId, sports: filterDeletedItem },
+      variables: { sports: filterDeletedItem },
     })
     closePopUp()
   }

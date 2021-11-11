@@ -9,8 +9,8 @@ import { UserIsReadOnlyContext } from '../../../src/context/isReadOnlyContext'
 import Loader from '../../common/Loader'
 
 const UPDATE_USER = gql`
-  mutation UpdateUserBio($_id: ID!, $bio: String) {
-    updateUserBio(_id: $_id, bio: $bio) {
+  mutation UpdateUserBio($bio: String) {
+    updateUserBio(bio: $bio) {
       bio
     }
   }
@@ -28,7 +28,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Bio = ({ data, userId }) => {
+const Bio = ({ data }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -52,7 +52,7 @@ const Bio = ({ data, userId }) => {
   const updateUser = async (e) => {
     e.preventDefault()
     await updateUserBio({
-      variables: { _id: userId, bio },
+      variables: { bio },
     })
   }
 

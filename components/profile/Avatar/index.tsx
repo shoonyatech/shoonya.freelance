@@ -25,15 +25,15 @@ const useStyles = makeStyles(() =>
 )
 
 const UPDATE_USER = gql`
-  mutation UpdateUserPicture($_id: ID!, $picture: String) {
-    updateUserPicture(_id: $_id, picture: $picture) {
+  mutation UpdateUserPicture($picture: String) {
+    updateUserPicture(picture: $picture) {
       name
       title
     }
   }
 `
 
-const Avatar = ({ data, userId }) => {
+const Avatar = ({ data }) => {
   const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState<boolean>(false)
@@ -48,7 +48,7 @@ const Avatar = ({ data, userId }) => {
     formData.append('upload_preset', 'shoonya')
     await Axios.post('https://api.cloudinary.com/v1_1/dbbunxz2o/upload', formData).then((response) => {
       updateUserPicture({
-        variables: { _id: userId, picture: response.data.secure_url },
+        variables: { picture: response.data.secure_url },
       })
       setPicture(response.data.secure_url)
       setEdit(false)
@@ -64,7 +64,7 @@ const Avatar = ({ data, userId }) => {
 
   const handleDelete = async () => {
     await updateUserPicture({
-      variables: { _id: userId, picture: null },
+      variables: { picture: null },
     })
     setEdit(true)
     closePopUp()
