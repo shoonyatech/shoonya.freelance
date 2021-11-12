@@ -6,7 +6,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import GetApolloClient from '../../apis/apollo.client'
-import Projects from '../../components/projects/Projects'
+import Projects from '../../src/components/projects/Projects'
 import { Project } from '../../src/interfaces/project'
 
 const GET_PROJECTS = gql`

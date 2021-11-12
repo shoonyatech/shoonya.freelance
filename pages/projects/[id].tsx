@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next'
 import React from 'react'
 
 import GetApolloClient from '../../apis/apollo.client'
-import ManageProject from '../../components/manageProject/ManageProject'
+import ManageProject from '../../src/components/manageProject/ManageProject'
 import { Project as ProjectProps } from '../../src/interfaces/project'
 
 const GET_PROJECT = gql`

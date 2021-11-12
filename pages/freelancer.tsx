@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import React from 'react'
 
-import FreelancerCard from '../components/profile/FreelancerCard'
+import FreelancerCard from '../src/components/profile/FreelancerCard'
 
 const GET_FREELANCER = gql`
   query Freelancer {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DashboardItems from '../components/dashboard/DashBoardItems'
+import DashboardItems from '../src/components/dashboard/DashBoardItems'
 
 export default function Dashboard() {
   return (
