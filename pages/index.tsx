@@ -1,8 +1,8 @@
 import { useUser } from '@auth0/nextjs-auth0'
 import React from 'react'
 
-import Loader from '../components/common/Loader'
-import MainContent from '../components/home/MainContent'
+import Loader from '../src/components/common/Loader'
+import MainContent from '../src/components/home/MainContent'
 
 export default function Home() {
   // user

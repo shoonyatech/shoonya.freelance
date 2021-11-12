@@ -20,7 +20,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "lib/client-side-rendering/index.js",
+    "src/lib/client-side-rendering/index.js",
     "pages/api/graphql.js"
   ],
   "exclude": ["node_modules"]

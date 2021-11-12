@@ -11,8 +11,8 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 
 import GetApolloClient from '../apis/apollo.client'
-import Layout from '../components/common/Layout'
-import * as ga from '../lib/ga'
+import Layout from '../src/components/common/Layout'
+import * as ga from '../src/lib/ga'
 import MaterialUiTheme from '../styles/material.ui.theme.provider'
 
 // Start the mocking conditionally.
