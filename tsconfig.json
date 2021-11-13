@@ -21,7 +21,8 @@
     "**/*.ts",
     "**/*.tsx",
     "src/lib/client-side-rendering/index.js",
-    "pages/api/graphql.js"
+    "pages/api/graphql.js",
+    "src/components/project/Project"
   ],
   "exclude": ["node_modules"]
 }
