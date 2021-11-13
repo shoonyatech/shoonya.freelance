@@ -1,5 +1,49 @@
 import { gql } from '@apollo/client'
 
+export const GET_PROJECTS = gql`
+  {
+    projects {
+      _id
+      owner
+      skills
+      budget {
+        type
+        amount
+      }
+      title
+      description
+      scope {
+        experience
+        size
+        size
+      }
+    }
+  }
+`
+
+export const GET_PROJECT = gql`
+  query Project($_id: ID!) {
+    project(_id: $_id) {
+      _id
+      owner
+      title
+      description
+      skills
+      scope {
+        size
+        duration
+        experience
+      }
+      budget {
+        type
+        currency
+        amount
+      }
+      isPublished
+    }
+  }
+`
+
 export const UPDATE_PROJECT_BUDGET = gql`
   mutation UpdateProjectBudget($_id: ID!, $budget: BudgetInput) {
     updateProjectBudget(_id: $_id, budget: $budget) {
