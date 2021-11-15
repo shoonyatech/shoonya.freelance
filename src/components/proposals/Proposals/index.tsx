@@ -27,11 +27,10 @@ const Proposals = ({ data }) => {
       _id: newId,
     })
   }
-
   if (loading || error) return <Loader open={loading} error={error} />
   return (
     <MasterDetailsLayout>
-      <ProposalList data={data} updateActiveProjectId={updateActiveProjectId} />
+      <ProposalList data={data} currency={d.project.budget.currency} updateActiveProjectId={updateActiveProjectId} />
       <ManageProject data={d.project} isReadOnly />
     </MasterDetailsLayout>
   )
