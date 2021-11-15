@@ -6,13 +6,15 @@ export const GET_USER_PROPOSALS = gql`
     proposals(proposser: $proposser) {
       coverLetter
       budget
+      projectId
     }
   }
 `
 
 export const ADD_NEW_PROPOSAL = gql`
-  mutation AddNewProposal($coverLetter: String, $budget: String) {
-    addNewProposal(coverLetter: $coverLetter, budget: $budget) {
+  mutation AddNewProposal($coverLetter: String, $budget: String, $projectId: ID!) {
+    addNewProposal(coverLetter: $coverLetter, budget: $budget, projectId: $projectId) {
+      projectId
       coverLetter
       budget
     }

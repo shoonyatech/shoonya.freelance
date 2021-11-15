@@ -3,10 +3,10 @@ import React from 'react'
 
 import ProposalCard from '../ProposalCard'
 
-const ProposalList = ({ data }) => (
-  <div>
+const ProposalList = ({ data, updateActiveProjectId }) => (
+  <div className="flex flex-col">
     {data.map((proposal, i) => (
-      <ProposalCard coverLetter={proposal.coverLetter} budget={proposal.budget} key={i} />
+      <ProposalCard updateActiveProjectId={updateActiveProjectId} data={proposal} key={i} />
     ))}
   </div>
 )
