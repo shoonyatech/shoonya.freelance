@@ -1,33 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 
+import { GET_PROJECT } from '../../../gql/project'
 import Loader from '../../common/Loader'
 import MasterDetailsLayout from '../../common/MasterDetailsLayout'
 import ManageProject from '../../manageProject/ManageProject'
 import ProjectList from '../ProjectList'
-
-const GET_PROJECT = gql`
-  query Project($_id: ID!) {
-    project(_id: $_id) {
-      owner
-      title
-      skills
-      description
-      scope {
-        size
-        duration
-        experience
-      }
-      budget {
-        type
-        currency
-        amount
-      }
-      isPublished
-    }
-  }
-`
 
 const Projects = ({ data }) => {
   const [activeProjectId, setActiveProjectId] = useState(data[0]._id)

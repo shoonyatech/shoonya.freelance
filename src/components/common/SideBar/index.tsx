@@ -3,6 +3,7 @@ import { useUser } from '@auth0/nextjs-auth0'
 import { Divider, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import DescriptionIcon from '@material-ui/icons/Description'
 import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp'
 import HomeIcon from '@material-ui/icons/Home'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -89,6 +90,17 @@ export default function MiniDrawer() {
                 <HomeIcon color="secondary" />
               </ListItemIcon>
               <ListItemText primary="dashboard" />
+            </ListItem>
+          </Link>
+        </List>
+        <List>
+          <Link href="/my-proposals" passHref>
+            <ListItem button className={classes.list} key="my proposals">
+              <ListItemIcon>
+                <DescriptionIcon color="secondary" />
+              </ListItemIcon>
+
+              <ListItemText primary="my proposals" />
             </ListItem>
           </Link>
         </List>
