@@ -4,7 +4,7 @@ import Header from '../components/homepage/Header/index'
 
 function Homepage() {
   return (
-    <div style={{ background: '#E5E5E5' }}>
+    <div className="h-screen bg-gray-200">
       <Header />
     </div>
   )

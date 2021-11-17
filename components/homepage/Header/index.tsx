@@ -1,246 +1,163 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-hooks/rules-of-hooks */
-import {
-  AppBar,
-  Box,
-  Button,
-  Drawer,
-  IconButton,
-  InputBase,
-  List,
-  ListItem,
-  makeStyles,
-  Toolbar,
-  Typography,
-  withStyles,
-} from '@material-ui/core'
-import { Menu, Search } from '@material-ui/icons'
-import ExpandMore from '@mui/icons-material/ExpandMore'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import PersonIcon from '@mui/icons-material/Person'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Badge from '@mui/material/Badge'
+import Image from 'next/image'
 import React, { useState } from 'react'
 
-import DrawerButtons from './drawer'
-
-const useStyle = makeStyles((theme) => ({
-  header: {
-    width: '100%',
-    justifyContent: 'space-evenly',
-    display: 'flex',
-    color: 'black',
-  },
-  logo: {
-    color: '#002BF5',
-    fontWeight: 900,
-    fontSize: '22px',
-    textTransform: 'uppercase',
-  },
-  logo1: {
-    background: '#002BF5',
-    width: '30px',
-    height: '30px',
-    borderRadius: '50%',
-    display: 'inline',
-  },
-  categories: {
-    width: 94,
-    height: 17,
-    fontWeight: 500,
-    fontSize: 14,
-    color: '#0468DB',
-    // marginLeft: '60px'
-  },
-  component: {
-    background: '#FFFFFF',
-    marginBottom: '20px',
-  },
-  logoHead: {
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: '-220px',
-    },
-  },
-  categoriesHead: {
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  product: {
-    width: '99px',
-    height: '40px',
-    backgroundColor: '#B6C3D3',
-    fontSize: 12,
-    borderRadius: '12px 0px 0px 12px',
-  },
-  field: {
-    width: 350,
-    height: 40,
-    border: '1px solid #0468DB',
-  },
-  input: {
-    marginLeft: '15px',
-    fontSize: '12px',
-  },
-  search: {
-    width: '99px',
-    height: '40px',
-    borderRadius: '0px 12px 11px 0px',
-    backgroundColor: '#0468DB',
-    fontSize: 12,
-    color: '#FFFFFF',
-  },
-  request: {
-    width: '140px',
-    height: '40px',
-    color: '#0468DB',
-    fontSize: 12,
-  },
-  searchComponent: {
-    display: 'flex',
-    alignItems: 'center',
-    borderRadius: '5px',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  searchIcon: {
-    fontSize: '16px',
-    color: '#FFFFFF',
-    marginLeft: '5px',
-  },
-  requestButton: {
-    display: 'flex',
-    alignItems: 'center',
-    border: '1px solid #0468DB',
-    borderRadius: '10px',
-    marginLeft: '60px',
-  },
-  button1: {
-    fontSize: 14,
-    height: 15,
-    width: 32,
-    color: '#818898',
-    marginLeft: '5px',
-  },
-  button2: {
-    fontSize: 14,
-    height: 15,
-    width: 32,
-    color: '#818898',
-    marginLeft: '5px',
-  },
-  buttonComponent: {
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
-      position: 'absolute',
-      right: 12,
-    },
-  },
-  button: {
-    marginLeft: '30px',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  drawer: {
-    display: 'none',
-    [theme.breakpoints.down('sm')]: {
-      display: 'block',
-      marginLeft: '-20px',
-    },
-  },
-}))
-
-const ToolBar = withStyles({
-  root: {
-    minHeight: 100,
-  },
-})(Toolbar)
+import Categories from './drawer'
+import SearchBar from './searchBar'
 
 function Header() {
-  const classes = useStyle()
-  const [open, setOpen] = useState(false)
-
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
-  const list = () => (
-    <Box>
-      <List>
-        <ListItem button>
-          <DrawerButtons />
-        </ListItem>
-      </List>
-    </Box>
-  )
+  const [toggle, setToggle] = useState(false)
+  // <AppBar className={classes.component} position="fixed">
+  //   <ToolBar>
+  //     <IconButton className="hidden sm:block -ml-8" style={{ color: '#676E7E' }} color="inherit" onClick={handleOpen}>
+  //       <Menu />
+  //     </IconButton>
+  //     <Drawer open={open} onClose={handleClose}>
+  //       {list()}
+  //     </Drawer>
+  //     <div className="w-full justify-evenly flex text-black">
+  //       <Box className="flex items-center -ml-52 sm:ml-0">
+  //         <div className="bg-blue-900 w-8 h-8 rounded-full inline"></div>
+  //         <Typography className={classes.logo}>Tradyl</Typography>
+  //       </Box>
+  //       <Box className="hidden items-center sm:flex">
+  // {/* color: '#0468DB', */}
+  //         <Typography className="w-20 h-4 font-medium text-base">
+  //           Categories
+  //           <ExpandMore />
+  //         </Typography>
+  //       </Box>
+  //       <div className={classes.searchComponent}>
+  //         <Button className={classes.product} variant="contained">
+  //           Product
+  //           <ExpandMore />
+  //         </Button>
+  //         <InputBase
+  //           className={classes.field}
+  //           inputProps={{ className: classes.input }}
+  //           placeholder="Search for products"
+  //         />
+  //         <Button className={classes.search}>
+  //           Search
+  //           <Search className={classes.searchIcon} />
+  //         </Button>
+  //         <div className={classes.requestButton}>
+  //           <Button className={classes.request}>Request for quote</Button>
+  //         </div>
+  //       </div>
+  //       <Box className={classes.buttonComponent}>
+  //         <Button>
+  //           <PersonIcon />
+  //           <Typography className={classes.button1}>Login</Typography>
+  //         </Button>
+  //         <Button className={classes.button}>
+  //           <FavoriteBorderIcon />
+  //           <Typography className={classes.button2}>Saved</Typography>
+  //         </Button>
+  //         <Button className={classes.button}>
+  //           <Badge badgeContent={3} color="success">
+  //             <ShoppingCartIcon />
+  //           </Badge>
+  //           <Typography className={classes.button2}>Cart</Typography>
+  //         </Button>
+  //       </Box>
+  //     </div>
+  //   </ToolBar>
+  // </AppBar>
   return (
-    <AppBar className={classes.component} position="fixed">
-      <ToolBar>
-        <IconButton className={classes.drawer} style={{ color: '#676E7E' }} color="inherit" onClick={handleOpen}>
-          <Menu />
-        </IconButton>
-        <Drawer open={open} onClose={handleClose}>
-          {list()}
-        </Drawer>
-        <div className={classes.header}>
-          <Box className={classes.logoHead}>
-            <div className={classes.logo1}></div>
-            <Typography className={classes.logo}>Tradyl</Typography>
-          </Box>
-          <Box className={classes.categoriesHead}>
-            <Typography className={classes.categories}>
-              Categories
-              <ExpandMore />
-            </Typography>
-          </Box>
-          <div className={classes.searchComponent}>
-            <Button className={classes.product} variant="contained">
-              Product
-              <ExpandMore />
-            </Button>
-            <InputBase
-              className={classes.field}
-              inputProps={{ className: classes.input }}
-              placeholder="Search for products"
-            />
-            <Button className={classes.search}>
-              Search
-              <Search className={classes.searchIcon} />
-            </Button>
-            <div className={classes.requestButton}>
-              <Button className={classes.request}>Request for quote</Button>
+    <div>
+      <div className="fixed top-0 z-50 w-full bg-white shadow-lg max-w-screen-3xl">
+        <div>
+          <div className="mx-auto xl:mx-auto md:max-w-screen-2xl sm:max-w-md max-w-full flex justify-between shadow-xs py-3 md:pb-4 mt-2.5 px-4">
+            <div className="flex  items-center">
+              <div
+                className={`block md:hidden ${toggle ? 'hidden sm:block' : 'block'}`}
+                onClick={() => setToggle(!toggle)}
+              >
+                <Image src="/images/bar.svg" width={40} height={40} />
+              </div>
+              <div className="md:ml-8 ml-2 text-lg text-gray-700 w-full">
+                <Image src="/images/logo.svg" width={120} height={40} />
+              </div>
+            </div>
+            <div className="hidden mt-2 sm:block cursor-pointer w-1/10">
+              <p className="flex items-center lg:mx-5 xl:mx-14  text-center capitalize text-sm font-medium text-blue-700">
+                categories
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </p>
+            </div>
+            <div className="hidden sm:flex w-2/5 ">
+              <SearchBar />
+            </div>
+            <div className="hidden ml-24 sm:flex">
+              <p className="flex items-center capitalize text-sm font-medium border p-2 border-blue-700 rounded-md text-blue-700 whitespace-nowrap">
+                Request for quote
+              </p>
+            </div>
+            <div className="ml-36 mt-2 sm:ml-24 justify-evenly flex">
+              <div className={`${toggle ? 'flex items-center' : 'hidden'}`} onClick={() => setToggle(false)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <div onClick={(e) => e.stopPropagation()} className={`${toggle ? 'hidden md:flex' : 'flex '}`}>
+                <button className="flex" type="button">
+                  <PersonIcon />
+                  <p className="text-gray-500">Login</p>
+                </button>
+                <button className="hidden sm:flex ml-8" type="button">
+                  <FavoriteBorderIcon />
+                  <p className="text-gray-500">Saved</p>
+                </button>
+                <button className="hidden sm:flex ml-8" type="button">
+                  <Badge badgeContent={3} color="success">
+                    <ShoppingCartIcon />
+                  </Badge>
+                  <p className="text-gray-500">cart</p>
+                </button>
+              </div>
             </div>
           </div>
-          <Box className={classes.buttonComponent}>
-            <Button>
-              <PersonIcon />
-              <Typography className={classes.button1}>Login</Typography>
-            </Button>
-            <Button className={classes.button}>
-              <FavoriteBorderIcon />
-              <Typography className={classes.button2}>Saved</Typography>
-            </Button>
-            <Button className={classes.button}>
-              <Badge badgeContent={3} color="success">
-                <ShoppingCartIcon />
-              </Badge>
-              <Typography className={classes.button2}>Cart</Typography>
-            </Button>
-          </Box>
+          {!toggle ? (
+            <div className="block md:hidden mx-4 pb-3">
+              <SearchBar />
+            </div>
+          ) : (
+            ''
+          )}
         </div>
-      </ToolBar>
-    </AppBar>
+      </div>
+      <div>
+        {toggle ? (
+          <div className="mx-auto block sm:hidden pb-3">
+            <Categories />
+          </div>
+        ) : (
+          ''
+        )}
+      </div>
+    </div>
   )
 }
 
