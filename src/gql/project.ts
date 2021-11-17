@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_PROJECTS = gql`
-  {
-    projects {
+  query Projects($owner: ID) {
+    projects(owner: $owner) {
       _id
       owner
       skills
