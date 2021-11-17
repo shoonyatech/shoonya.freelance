@@ -6,6 +6,7 @@ import GetApolloClient from '../apis/apollo.client'
 import Proposals from '../src/components/proposals/Proposals'
 import { GET_USER_PROPOSALS } from '../src/gql/proposal'
 import { getUserId } from '../src/lib/user-helper'
+import { isArrayEmpty } from '../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
@@ -30,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
 
     const { proposals } = data
 
-    if (!proposals) {
+    if (isArrayEmpty(proposals)) {
       return {
         notFound: true,
       }
