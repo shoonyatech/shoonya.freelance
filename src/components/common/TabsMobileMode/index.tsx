@@ -2,6 +2,8 @@
 
 import { AppBar, Tab, Tabs } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
+import DescriptionIcon from '@material-ui/icons/Description'
 import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp'
 import HomeIcon from '@material-ui/icons/Home'
 import SettingsIcon from '@material-ui/icons/Settings'
@@ -43,6 +45,12 @@ export default function ScrollableTabsButtonForce() {
       >
         <Link href="/me" passHref>
           <Tab icon={<HomeIcon />} {...a11yProps(0)} label="" />
+        </Link>
+        <Link href="/my-proposals" passHref>
+          <Tab icon={<DescriptionIcon />} {...a11yProps(3)} label="Settings" />
+        </Link>
+        <Link href="/my-projects" passHref>
+          <Tab icon={<BusinessCenterIcon />} {...a11yProps(0)} label="" />
         </Link>
         <Link href="/settings" passHref>
           <Tab icon={<SettingsIcon />} {...a11yProps(3)} label="Settings" />
