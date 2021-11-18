@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 input {
-    border: 1px rgba(0, 0, 0, 0.23) solid ;
-    background : inherit;
+  border: 1px rgba(0, 0, 0, 0.23) solid;
+  background: inherit;
 }
