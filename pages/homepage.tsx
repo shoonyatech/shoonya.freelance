@@ -4,7 +4,7 @@ import Content from '../components/homepage/Content/index'
 
 function Homepage() {
   return (
-    <div style={{ background: '#E5E5E5' }}>
+    <div className="bg-gray-200">
       <Content />
     </div>
   )
