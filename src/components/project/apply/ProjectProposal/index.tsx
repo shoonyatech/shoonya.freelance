@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectProposal = () => {
+const ProjectProposal = ({ closeSlider }) => {
   const classes = useStyles()
   const [proposal, setProposal] = useState({
     coverLetter: '',
@@ -28,20 +28,21 @@ const ProjectProposal = () => {
     setProposal({ ...proposal, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const { coverLetter, budget } = proposal
     // todo : remove the hard coded string
-    addNewProposal({
+    await addNewProposal({
       variables: { coverLetter, budget, projectId: '6195d220206cf557204dbffa' },
     })
+    closeSlider()
   }
 
   if (loading) return <Loader open={loading} error={error} />
 
   return (
-    <div className="p-4 md:p-6">
-      <h3 className="text-black text-5xl">Project proposal</h3>
+    <div className="p-2 md:p-3">
+      <h3 className="text-black text-2xl">Project proposal</h3>
       <form onSubmit={handleSubmit} className="py-8">
         <TextField
           className={classes.textField}
@@ -64,11 +65,12 @@ const ProjectProposal = () => {
           variant="outlined"
           label="budget"
           type="number"
+          fullWidth
           required
         />
         <div>
           <Button type="submit" variant="contained" color="primary">
-            Submit
+            Apply
           </Button>
         </div>
       </form>
