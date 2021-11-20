@@ -11,13 +11,13 @@ export const GET_USER_PROPOSALS = gql`
   }
 `
 export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
-  query Proposals($proposser: ID, $projectId: ID, $_id: ID!) {
-    proposals(proposser: $proposser, projectId: $projectId) {
+  query GetProposals($projectId: ID!) {
+    getProposals(projectId: $projectId) {
       coverLetter
       budget
       projectId
     }
-    project(_id: $_id) {
+    project(_id: $projectId) {
       owner
     }
   }
