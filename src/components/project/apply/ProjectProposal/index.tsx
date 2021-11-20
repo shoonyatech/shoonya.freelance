@@ -31,8 +31,9 @@ const ProjectProposal = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const { coverLetter, budget } = proposal
+    // todo : remove the hard coded string
     addNewProposal({
-      variables: { coverLetter, budget },
+      variables: { coverLetter, budget, projectId: '6195d220206cf557204dbffa' },
     })
   }
 

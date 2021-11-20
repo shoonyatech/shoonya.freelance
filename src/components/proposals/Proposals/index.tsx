@@ -2,13 +2,14 @@ import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 
 import { GET_PROJECT } from '../../../gql/project'
+import { isArrayEmpty } from '../../../lib/utils'
 import Loader from '../../common/Loader'
 import MasterDetailsLayout from '../../common/MasterDetailsLayout'
 import ManageProject from '../../manageProject/ManageProject'
 import ProposalList from '../ProposalList'
 
 const Proposals = ({ data }) => {
-  const [activeProjectId, setActiveProjectId] = useState(data[0].projectId)
+  const [activeProjectId, setActiveProjectId] = useState(data[0]?.projectId)
 
   const {
     error,
@@ -27,6 +28,7 @@ const Proposals = ({ data }) => {
       _id: newId,
     })
   }
+  if (isArrayEmpty(data)) return <p>No proposals</p>
   if (loading || error) return <Loader open={loading} error={error} />
   return (
     <MasterDetailsLayout>

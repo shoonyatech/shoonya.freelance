@@ -6,7 +6,6 @@ import GetApolloClient from '../../../apis/apollo.client'
 import Proposals from '../../../src/components/proposals/Proposals'
 import { GET_USER_PROPOSALS_AND_PROJECT_OWNER } from '../../../src/gql/proposal'
 import { getUserId } from '../../../src/lib/user-helper'
-import { isArrayEmpty } from '../../../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
@@ -24,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
     const userId = getUserId(session?.user.sub)
     const { data } = await client.query({
       query: GET_USER_PROPOSALS_AND_PROJECT_OWNER,
-      variables: { projectId: context.query.id, _id: context.query.id },
+      variables: { projectId: context.query.id },
       errorPolicy: 'ignore',
     })
 
@@ -34,16 +33,10 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
         notFound: true,
       }
     }
-    const { proposals } = data
-
-    if (isArrayEmpty(proposals)) {
-      return {
-        notFound: true,
-      }
-    }
+    const { getProposals } = data
     return {
       props: {
-        data: data.proposals,
+        data: getProposals,
       },
     }
   },
