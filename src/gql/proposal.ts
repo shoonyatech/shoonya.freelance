@@ -2,14 +2,16 @@
 import { gql } from '@apollo/client'
 
 export const GET_USER_PROPOSALS = gql`
-  query Proposals($proposser: ID, $projectId: ID) {
-    proposals(proposser: $proposser, projectId: $projectId) {
+  query GetProposalsByUser($proposser: ID!) {
+    getProposalsByUser(proposser: $proposser) {
       coverLetter
       budget
       projectId
+      proposser
     }
   }
 `
+
 export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
   query GetProposals($projectId: ID!) {
     getProposals(projectId: $projectId) {
