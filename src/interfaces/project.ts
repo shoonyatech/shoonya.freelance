@@ -1,14 +1,12 @@
 export interface Project {
-  data: {
-    isPublished: boolean
-    _id: string
-    owner: string
-    title: string
-    description: string
-    scope: Scope
-    budget: Budget
-    skills: Array<string>
-  }
+  isPublished: boolean
+  _id: string
+  owner: string
+  title: string
+  description: string
+  scope: Scope
+  budget: Budget
+  skills: Array<string>
 }
 
 export interface Budget {
