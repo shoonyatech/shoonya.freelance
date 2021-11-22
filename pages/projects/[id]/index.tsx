@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { getSession } from '@auth0/nextjs-auth0'
+import Button from '@material-ui/core/Button'
 import { GetServerSideProps } from 'next'
-import React from 'react'
+import React, { useState } from 'react'
 
 import GetApolloClient from '../../../apis/apollo.client'
 import ManageProjectWrapper from '../../../src/components/manageProject/ManageProjectWrapper'
@@ -12,14 +13,27 @@ import { getUserId } from '../../../src/lib/user-helper'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-const Project = ({ data, isOwner }: { data: ProjectProps; isOwner: boolean }) => (
-  <div>
-    <div className="flex justify-end py-2">
-      <SeeProposals projectId={data._id} />
+const Project = ({ data, isOwner }: { data: ProjectProps; isOwner: boolean }) => {
+  const [slider, setSlider] = useState(false)
+  const closeSlider = () => {
+    setSlider(false)
+  }
+
+  return (
+    <div>
+      <div className="flex justify-end py-2">
+        {isOwner ? (
+          <SeeProposals projectId={data._id} />
+        ) : (
+          <Button onClick={() => setSlider(true)} variant="contained" color="primary">
+            Send Proposal
+          </Button>
+        )}
+      </div>
+      <ManageProjectWrapper data={data} isOwner={isOwner} slider={slider} closeSlider={closeSlider} />
     </div>
-    <ManageProjectWrapper data={data} isOwner={isOwner} />
-  </div>
-)
+  )
+}
 export default Project
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
