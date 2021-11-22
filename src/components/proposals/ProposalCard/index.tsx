@@ -1,17 +1,10 @@
 import React from 'react'
 
-const ProposalCard = ({ data, currency, updateActiveProjectId }) => {
-  const { projectId, coverLetter, budget } = data
+const ProposalCard = ({ data }) => {
+  const { coverLetter } = data
   return (
-    <button
-      type="button"
-      onClick={() => updateActiveProjectId(projectId)}
-      className="flex flex-col border-solid border-2 border-primary m-4 p-4"
-    >
+    <button type="button" className="flex flex-col border-solid border-2 border-primary m-4 p-4">
       <p>{coverLetter}</p>
-      <p className="py-2">
-        Budget :{currency} {budget}
-      </p>
     </button>
   )
 }
