@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Link from 'next/link'
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
+import React from 'react'
 
 import { GET_PROJECT } from '../../../gql/project'
 import Loader from '../../common/Loader'
@@ -17,9 +17,8 @@ const useStyles = makeStyles(() =>
     },
   })
 )
-const ProjectsPageWrapper = ({ data }) => {
+const ProjectsPageWrapper = ({ data, activeProjectId, updateActiveProjectId }) => {
   const classes = useStyles()
-  const [activeProjectId, setActiveProjectId] = useState(data[0]._id)
   const {
     error,
     loading,
@@ -30,8 +29,8 @@ const ProjectsPageWrapper = ({ data }) => {
       _id: activeProjectId,
     },
   })
-  const updateActiveProjectId = (newId) => {
-    setActiveProjectId(newId)
+  const updateActiveProject = (newId) => {
+    updateActiveProjectId(newId)
     refetch({
       _id: newId,
     })
@@ -56,7 +55,7 @@ const ProjectsPageWrapper = ({ data }) => {
         data={data}
         activeProjectId={activeProjectId}
         projectData={d.project}
-        updateActiveProjectId={updateActiveProjectId}
+        updateActiveProjectId={updateActiveProject}
       />
     </>
   )
