@@ -1,9 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import { getSession } from '@auth0/nextjs-auth0'
 import { GetServerSideProps } from 'next'
 import React from 'react'
 
 import GetApolloClient from '../../../apis/apollo.client'
 import ManageProjectWrapper from '../../../src/components/manageProject/ManageProjectWrapper'
+import SeeProposals from '../../../src/components/project/actionBtns/SeeProposals'
 import { GET_PROJECT } from '../../../src/gql/project'
 import { Project as ProjectProps } from '../../../src/interfaces/project'
 import { getUserId } from '../../../src/lib/user-helper'
@@ -12,6 +14,9 @@ const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 const Project = ({ data, isOwner }: { data: ProjectProps; isOwner: boolean }) => (
   <div>
+    <div className="flex justify-end py-2">
+      <SeeProposals projectId={data._id} />
+    </div>
     <ManageProjectWrapper data={data} isOwner={isOwner} />
   </div>
 )
@@ -34,7 +39,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
   const isOwner = project.owner === userId
-
   return {
     props: {
       data: project,
