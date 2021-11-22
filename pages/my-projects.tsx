@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next'
 import React, { useState } from 'react'
 
 import GetApolloClient from '../apis/apollo.client'
+import SeeProposals from '../src/components/project/actionBtns/SeeProposals'
 import ProjectsPageWrapper from '../src/components/projects/ProjectsPageWrapper'
 import { GET_PROJECTS } from '../src/gql/project'
 import { Project } from '../src/interfaces/project'
@@ -18,6 +19,9 @@ export default function MyProjects({ data }: { data: Project[] }) {
 
   return (
     <div style={{ marginLeft: '57px' }}>
+      <div className="flex justify-end py-2">
+        <SeeProposals projectId={activeProjectId} />
+      </div>
       <ProjectsPageWrapper
         data={data}
         activeProjectId={activeProjectId}
