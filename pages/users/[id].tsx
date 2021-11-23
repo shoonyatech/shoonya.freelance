@@ -7,8 +7,8 @@ import { GET_USER } from '../../src/gql/user'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-function UserPage({ data, countries }) {
-  return <Profile countries={countries} data={data} isReadOnly />
+function UserPage({ data }) {
+  return <Profile data={data} isReadOnly />
 }
 
 export default UserPage

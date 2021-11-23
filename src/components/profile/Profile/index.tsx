@@ -8,11 +8,12 @@ import ProfileSidebar from '../ProfileSidebar'
 interface Props {
   isReadOnly?: any
   data: any
-  countries: any
+  countries?: any
 }
 
 const defaultProps = {
   isReadOnly: false,
+  countries: null,
 }
 
 const Profile = ({ countries, data, isReadOnly }: Props) => (
