@@ -4,11 +4,11 @@ import { isArrayEmpty } from '../../../lib/utils'
 import MasterDetailsLayout from '../../common/MasterDetailsLayout'
 import ProposalList from '../ProposalList'
 
-const Proposals = ({ data }) => {
-  if (isArrayEmpty(data)) return <p>No proposals</p>
+const Proposals = ({ freelancers }) => {
+  if (isArrayEmpty(freelancers)) return <p>No proposals</p>
   return (
     <MasterDetailsLayout>
-      <ProposalList data={data} />
+      <ProposalList freelancers={freelancers} />
     </MasterDetailsLayout>
   )
 }

@@ -18,6 +18,7 @@ export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
       coverLetter
       budget
       projectId
+      proposser
     }
     project(_id: $projectId) {
       owner

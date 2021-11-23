@@ -48,6 +48,20 @@ export const GET_USER = gql`
   }
 `
 
+export const GET_FREELANCER_CARDS = gql`
+  query Freelancers($_id: [ID!]!) {
+    freelancers(_id: $_id) {
+      _id
+      name
+      title
+      picture
+      skills {
+        name
+      }
+    }
+  }
+`
+
 export const GET_USER_AND_COUNTRIES = gql`
   query User($_id: ID!) {
     user(_id: $_id) {
