@@ -1,0 +1,36 @@
+import Chip from '@material-ui/core/Chip';
+import Image from 'next/image'
+import React from 'react'
+
+const FreelancerStrip = ({ freelancer }) => {
+    const { picture, name, title, skills } = freelancer
+    return (
+        <div className='flex p-3 m-4 border-2 border-solid'>
+            <div className='flex flex-col items-center'>
+                {picture ? <Image
+                    height={68}
+                    width={68}
+                    src={picture}
+                    className='rounded-full' />
+                    : null}
+                <p>
+                    $60/hr
+                </p>
+            </div>
+            <div className='flex flex-col pl-4'>
+                <div className='flex-1'>
+                    <p>
+                        {name}
+                    </p>
+                    <p className='font-semibold'>
+                        {title}
+                    </p>
+                </div>
+                <div>{skills.map(a => (
+                    <Chip label={a.name} />
+                ))}</div>
+            </div>
+        </div>
+    )
+}
+export default FreelancerStrip

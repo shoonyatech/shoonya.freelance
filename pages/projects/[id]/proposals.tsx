@@ -5,14 +5,15 @@ import React from 'react'
 import GetApolloClient from '../../../apis/apollo.client'
 import Proposals from '../../../src/components/proposals/Proposals'
 import { GET_USER_PROPOSALS_AND_PROJECT_OWNER } from '../../../src/gql/proposal'
+import { GET_FREELANCER_CARDS } from '../../../src/gql/user'
 import { getUserId } from '../../../src/lib/user-helper'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function MyProposal({ data }) {
+export default function MyProposal({ data, freelancers }) {
   return (
     <div style={{ marginLeft: '57px' }}>
-      <Proposals data={data} />
+      <Proposals data={data} freelancers={freelancers} />
     </div>
   )
 }
@@ -34,9 +35,18 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       }
     }
     const { getProposals } = data
+    const propossers = getProposals.map(proposal => proposal.proposser)
+
+    const { data: d } = await client.query({
+      query: GET_FREELANCER_CARDS,
+      variables: { _id: propossers },
+      errorPolicy: 'ignore',
+    })
+    const { freelancers } = d
     return {
       props: {
         data: getProposals,
+        freelancers
       },
     }
   },
