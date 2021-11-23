@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       }
     }
     const { getProposals } = data
-    const propossers = getProposals.map(proposal => proposal.proposser)
+    const propossers = getProposals.map((proposal) => proposal.proposser)
 
     const { data: d } = await client.query({
       query: GET_FREELANCER_CARDS,
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
     return {
       props: {
         data: getProposals,
-        freelancers
+        freelancers,
       },
     }
   },

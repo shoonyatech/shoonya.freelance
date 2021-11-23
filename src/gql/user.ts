@@ -55,9 +55,43 @@ export const GET_FREELANCER_CARDS = gql`
       name
       title
       picture
+      bio
+      contact {
+        location
+        phone
+        mail
+        linkedin
+        github
+        twitter
+      }
+      professionalExperience {
+        company
+        jobTitle
+        location
+        startYear
+        endYear
+        description
+        currentJob
+        techStack
+      }
       skills {
         name
+        scale
       }
+      education {
+        degree
+        school
+        startYear
+        endYear
+      }
+      developerCommunityInvolement {
+        title
+        description
+      }
+      languages
+      hobbies
+      sports
+      countriesICanWork
     }
   }
 `
