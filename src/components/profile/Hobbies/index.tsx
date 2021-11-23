@@ -92,7 +92,7 @@ const Hobbies = ({ data }) => {
       {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           {hobbies
-            ? hobbies.map((hobby, i): any => (
+            ? hobbies?.map((hobby, i): any => (
                 <TextFieldAndDeleteBtn
                   key={i}
                   handleChange={handleChange}
@@ -125,7 +125,7 @@ const Hobbies = ({ data }) => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            {hobbies.map((hobby) => (
+            {hobbies?.map((hobby) => (
               <div key={hobby} className="uppercase">
                 {hobby}
               </div>

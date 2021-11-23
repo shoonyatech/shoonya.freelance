@@ -92,7 +92,7 @@ const Sport = ({ data }) => {
       {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           {sports
-            ? sports.map((sport, i): any => (
+            ? sports?.map((sport, i): any => (
                 <TextFieldAndDeleteBtn
                   key={i}
                   handleChange={handleChange}
@@ -125,7 +125,7 @@ const Sport = ({ data }) => {
       ) : (
         <>
           <div className="flex flex-col whitespace-nowrap">
-            {sports.map((sport) => (
+            {sports?.map((sport) => (
               <div key={sport} className="uppercase">
                 {sport}
               </div>
