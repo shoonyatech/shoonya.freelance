@@ -1,11 +1,7 @@
 /* eslint-disable no-underscore-dangle */
+import Chip from '@material-ui/core/Chip'
 import React from 'react'
 
-/* const range = {
-  low: '$',
-  medium: '$$',
-  high: '$$$',
-} */
 const range = ['$', '$$', '$$$']
 
 const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
@@ -20,7 +16,11 @@ const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
         }`}
       >
         <div className="text-xl font-bold">{project.title}</div>
-        <div>{project.description}</div>
+        <div>
+          {project.skills.map((skill) => (
+            <Chip label={skill} />
+          ))}
+        </div>
         <div className="self-end">{range[Math.floor(Math.random() * range.length)]} </div>
       </button>
     ))}
