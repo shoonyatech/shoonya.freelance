@@ -20,6 +20,26 @@ export const GET_PROJECTS = gql`
     }
   }
 `
+export const FILTER_OWNER_PROJECTS = gql`
+  query FilterOwnerProjects($owner: ID) {
+    filterOwnerProjects(owner: $owner) {
+      _id
+      owner
+      skills
+      budget {
+        type
+        amount
+      }
+      title
+      description
+      scope {
+        experience
+        size
+        size
+      }
+    }
+  }
+`
 
 export const GET_PROJECT = gql`
   query Project($_id: ID!) {
