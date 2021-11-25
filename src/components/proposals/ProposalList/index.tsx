@@ -4,10 +4,16 @@ import React from 'react'
 
 import FreelancerStrip from '../../freelancer/FreelancerStrip'
 
-const ProposalList = ({ data, freelancers }) => (
+const ProposalList = ({ data, freelancers, updateActiveProject }) => (
   <div className="flex flex-col">
     {freelancers.map((freelancer, i) => (
-      <FreelancerStrip rate={data[i].budget} key={freelancer._id} freelancer={freelancer} />
+      <FreelancerStrip
+        rate={data[i].budget}
+        key={freelancer._id}
+        freelancer={freelancer}
+        updateFreelancerIndex={updateActiveProject}
+        index={i}
+      />
     ))}
   </div>
 )

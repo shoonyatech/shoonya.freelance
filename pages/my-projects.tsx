@@ -13,7 +13,7 @@ import { getUserId } from '../src/lib/user-helper'
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 export default function MyProjects({ data }: { data: Project[] }) {
-  const [activeProjectId, setActiveProjectId] = useState<string>(data[0]._id)
+  const [activeProjectId, setActiveProjectId] = useState<string>(data[0]?._id)
 
   const updateActiveProjectId = (newId) => setActiveProjectId(newId)
 

@@ -2,10 +2,10 @@ import Chip from '@material-ui/core/Chip'
 import Image from 'next/image'
 import React from 'react'
 
-const FreelancerStrip = ({ freelancer, rate }) => {
+const FreelancerStrip = ({ freelancer, rate, updateFreelancerIndex, index }) => {
   const { picture, name, title, skills } = freelancer
   return (
-    <div className="flex p-3 m-4 border-2 border-solid">
+    <button type="button" onClick={() => updateFreelancerIndex(index)} className="flex p-3 m-4 border-2 border-solid">
       <div className="flex flex-col items-center">
         {picture ? <Image height={68} width={68} src={picture} className="rounded-full" /> : null}
         <p>${rate}/hr</p>
@@ -21,7 +21,7 @@ const FreelancerStrip = ({ freelancer, rate }) => {
           ))}
         </div>
       </div>
-    </div>
+    </button>
   )
 }
 export default FreelancerStrip
