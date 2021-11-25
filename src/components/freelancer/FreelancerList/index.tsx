@@ -2,11 +2,11 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react'
 
-import FreelancerStrip from '../../freelancer/FreelancerStrip'
+import FreelancerStrip from '../FreelancerStrip'
 
-const ProposalList = ({ data, freelancers, updateActiveProject }) => (
+const FreelancerList = ({ data, freelancers, updateActiveProject }) => (
   <div className="flex flex-col">
-    {freelancers.map((freelancer, i) => (
+    {freelancers?.map((freelancer, i) => (
       <FreelancerStrip
         rate={data[i].budget}
         key={freelancer._id}
@@ -18,4 +18,4 @@ const ProposalList = ({ data, freelancers, updateActiveProject }) => (
   </div>
 )
 
-export default ProposalList
+export default FreelancerList

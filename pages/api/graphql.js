@@ -6,7 +6,7 @@ export default async (req, res) => {
   const session = await getSession(req, res)
 
   await axios
-    .post(url, req.body, { headers: { Authorization: `Bearer ${session.accessToken}` } })
+    .post(url, req.body, { headers: { Authorization: `Bearer ${session?.accessToken}` } })
     .then(({ data }) => {
       res.status(200).json({ ...data })
     })

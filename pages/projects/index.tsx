@@ -47,7 +47,7 @@ export default function ProjectsPage({ data }: { data: Project[] }) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = getSession(context.req, context.res)
-  const userId = getUserId(session?.user.sub)
+  const userId = getUserId(session?.user?.sub)
   const { data } = await client.query({
     query: FILTER_OWNER_PROJECTS,
     variables: { owner: userId },
