@@ -38,7 +38,7 @@ export default function ProjectsPage({ data }: { data: Project[] }) {
       />
       {slider ? (
         <SliderContainer closeSlider={closeSlider} openOrCloseSlider={slider}>
-          <ProjectProposal closeSlider={closeSlider} />
+          <ProjectProposal closeSlider={closeSlider} projectId={activeProjectId} />
         </SliderContainer>
       ) : null}
     </div>

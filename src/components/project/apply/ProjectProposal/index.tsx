@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectProposal = ({ closeSlider }) => {
+const ProjectProposal = ({ closeSlider, projectId }) => {
   const classes = useStyles()
   const [proposal, setProposal] = useState({
     coverLetter: '',
@@ -31,9 +31,8 @@ const ProjectProposal = ({ closeSlider }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { coverLetter, budget } = proposal
-    // todo : remove the hard coded string
     await addNewProposal({
-      variables: { coverLetter, budget, projectId: '6195d220206cf557204dbffa' },
+      variables: { coverLetter, budget, projectId },
     })
     closeSlider()
   }
