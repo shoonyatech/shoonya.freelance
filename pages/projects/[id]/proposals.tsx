@@ -10,10 +10,13 @@ import Proposals from '../../../src/components/proposals/Proposals'
 import { GET_USER_PROPOSALS_AND_PROJECT_OWNER } from '../../../src/gql/proposal'
 import { GET_FREELANCER_CARDS, GET_USER } from '../../../src/gql/user'
 import { getUserId } from '../../../src/lib/user-helper'
+import { isArrayEmpty } from '../../../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function MyProposal({ data, freelancers }) {
+export default function MyProposal({ data, freelancers, isProposalsEmpty }) {
+  const _id = freelancers ? freelancers[0]?._id : null
+
   const {
     error,
     loading,
@@ -21,8 +24,9 @@ export default function MyProposal({ data, freelancers }) {
     refetch,
   } = useQuery(GET_USER, {
     variables: {
-      _id: freelancers[0]._id,
+      _id,
     },
+    skip: isProposalsEmpty,
   })
 
   const updateActiveProject = (newId) => {
@@ -31,6 +35,7 @@ export default function MyProposal({ data, freelancers }) {
     })
   }
 
+  if (isProposalsEmpty) return <div> No one has send proposal to this project.</div>
   if (loading) return <Loader open={loading} error={error} />
 
   return (
@@ -62,6 +67,12 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       }
     }
     const { getProposals } = data
+    if (isArrayEmpty(getProposals))
+      return {
+        props: {
+          isProposalsEmpty: true,
+        },
+      }
     const propossers = getProposals.map((proposal) => proposal.proposser)
 
     const { data: d } = await client.query({
