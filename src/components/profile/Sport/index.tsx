@@ -29,7 +29,7 @@ const Sport = ({ data }) => {
   const [popUp, setPopup] = useState({ show: false, index: null })
   const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  const [sports, setSports] = useState(data)
+  const [sports, setSports] = useState(data || [])
   const [updatedSports, setUpdatedSports] = useState(null)
 
   const [updateUserSports, { loading, error }] = useMutation(UPDATE_USER_SPORTS, {
