@@ -1,9 +1,22 @@
 /* eslint-disable import/prefer-default-export */
 import { gql } from '@apollo/client'
 
+export const GET_PROPOSAL_BY_ID = gql`
+  query GetProposalsById($_id: ID!) {
+    getProposalsById(_id: $_id) {
+      _id
+      coverLetter
+      budget
+      proposser
+      projectId
+    }
+  }
+`
+
 export const GET_USER_PROPOSALS = gql`
   query GetProposalsByUser($proposser: ID!) {
     getProposalsByUser(proposser: $proposser) {
+      _id
       coverLetter
       budget
       projectId

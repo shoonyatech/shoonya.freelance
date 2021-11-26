@@ -4,7 +4,7 @@ import React from 'react'
 
 const range = ['$', '$$', '$$$']
 
-const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
+const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
   <div className="flex flex-col overflow-y-auto max-h-screen">
     {data.map((project: any) => (
       <button
@@ -26,4 +26,4 @@ const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
     ))}
   </div>
 )
-export default ProjectList
+export default ProjectsList
