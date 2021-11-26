@@ -29,7 +29,7 @@ const Hobbies = ({ data }) => {
   const [popUp, setPopup] = useState({ show: false, index: null })
   const isReadOnly = useContext(UserIsReadOnlyContext)
 
-  const [hobbies, setHobbies] = useState<any>(data)
+  const [hobbies, setHobbies] = useState<any>(data || [])
   const [updatedHobbies, setUpdatedHobbies] = useState(null)
 
   const [updateUserHobbies, { loading, error }] = useMutation(UPDATE_USER_HOBBIES, {
@@ -78,7 +78,6 @@ const Hobbies = ({ data }) => {
   }
 
   if (loading) return <Loader open={loading} error={error} />
-
   return (
     <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
       <div className="flex justify-between pb-3">
