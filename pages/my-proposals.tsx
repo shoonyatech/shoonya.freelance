@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next'
 import React from 'react'
 
 import GetApolloClient from '../apis/apollo.client'
-import Proposals from '../src/components/proposals/Proposals'
+import MyProposals from '../src/components/proposals/MyProposals'
 import { GET_USER_PROPOSALS } from '../src/gql/proposal'
 import { getUserId } from '../src/lib/user-helper'
 
@@ -12,7 +12,7 @@ const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 export default function MyProposal({ data }) {
   return (
     <div style={{ marginLeft: '57px' }}>
-      <Proposals data={data} />
+      <MyProposals data={data} />
     </div>
   )
 }
