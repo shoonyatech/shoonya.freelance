@@ -19,7 +19,7 @@ const ProjectProposal = ({ closeSlider, projectId }) => {
   const classes = useStyles()
   const [proposal, setProposal] = useState({
     coverLetter: '',
-    budget: 0,
+    proposedRate: 0,
   })
 
   const [addNewProposal, { loading, error }] = useMutation(ADD_NEW_PROPOSAL)
@@ -30,9 +30,9 @@ const ProjectProposal = ({ closeSlider, projectId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { coverLetter, budget } = proposal
+    const { coverLetter, proposedRate } = proposal
     await addNewProposal({
-      variables: { coverLetter, budget, projectId },
+      variables: { coverLetter, proposedRate, projectId },
     })
     closeSlider()
   }
@@ -59,10 +59,10 @@ const ProjectProposal = ({ closeSlider, projectId }) => {
         <TextField
           onChange={handleChange}
           className={classes.textField}
-          value={proposal.budget}
-          name="budget"
+          value={proposal.proposedRate}
+          name="proposedRate"
           variant="outlined"
-          label="budget"
+          label="proposedRate"
           type="number"
           fullWidth
           required
