@@ -90,7 +90,7 @@ export default function MiniDrawer() {
               <ListItemIcon>
                 <HomeIcon color="secondary" />
               </ListItemIcon>
-              <ListItemText primary="dashboard" />
+              <ListItemText primary="Dashboard" />
             </ListItem>
           </Link>
         </List>
@@ -101,7 +101,7 @@ export default function MiniDrawer() {
                 <DescriptionIcon color="secondary" />
               </ListItemIcon>
 
-              <ListItemText primary="my proposals" />
+              <ListItemText primary="My Proposals" />
             </ListItem>
           </Link>
         </List>
@@ -112,7 +112,7 @@ export default function MiniDrawer() {
                 <BusinessCenterIcon color="secondary" />
               </ListItemIcon>
 
-              <ListItemText primary="my projects" />
+              <ListItemText primary="My Projects" />
             </ListItem>
           </Link>
         </List>
@@ -126,7 +126,7 @@ export default function MiniDrawer() {
                     <Image className="rounded-full" src={user?.picture} alt="avatar" height="28" width="28" />
                   ) : null}
                 </ListItemIcon>
-                <ListItemText primary="profile" />
+                <ListItemText primary="Profile" />
               </ListItem>
             </Link>
           </List>
@@ -144,7 +144,7 @@ export default function MiniDrawer() {
               <ListItemIcon>
                 <ExitToAppSharpIcon color="secondary" />
               </ListItemIcon>
-              <ListItemText primary="Sign out" />
+              <ListItemText primary="Sign Out" />
             </ListItem>
           </Link>
         </List>
