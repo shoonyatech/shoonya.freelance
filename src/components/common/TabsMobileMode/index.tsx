@@ -1,64 +1,86 @@
 /* eslint-disable react/jsx-props-no-spreading */
-
-import { AppBar, Tab, Tabs } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import BottomNavigation from '@material-ui/core/BottomNavigation'
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
 import DescriptionIcon from '@material-ui/icons/Description'
 import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp'
 import HomeIcon from '@material-ui/icons/Home'
 import SettingsIcon from '@material-ui/icons/Settings'
-import clsx from 'clsx'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '@media (min-width:640px)': { display: 'none' },
+    background: theme.palette.primary.main,
+  },
+  wrapper: {
+    color: '#fff',
   },
 }))
 
-function a11yProps(index: any) {
-  return {
-    id: `scrollable-force-tab-${index}`,
-    'aria-controls': `scrollable-force-tabpanel-${index}`,
-  }
-}
-
 export default function ScrollableTabsButtonForce() {
   const classes = useStyles()
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = useState(0)
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
     setValue(newValue)
   }
 
   return (
-    <AppBar position="sticky" className={clsx(classes.root)} color="secondary">
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        variant="scrollable"
-        scrollButtons="on"
-        indicatorColor="primary"
-        textColor="primary"
-        aria-label="scrollable force tabs example"
-      >
-        <Link href="/me" passHref>
-          <Tab icon={<HomeIcon />} {...a11yProps(0)} label="" />
-        </Link>
-        <Link href="/my-proposals" passHref>
-          <Tab icon={<DescriptionIcon />} {...a11yProps(3)} label="Settings" />
-        </Link>
-        <Link href="/my-projects" passHref>
-          <Tab icon={<BusinessCenterIcon />} {...a11yProps(0)} label="" />
-        </Link>
-        <Link href="/settings" passHref>
-          <Tab icon={<SettingsIcon />} {...a11yProps(3)} label="Settings" />
-        </Link>
-        <Link href="/api/auth/logout" passHref>
-          <Tab icon={<ExitToAppSharpIcon />} {...a11yProps(4)} label="Sign out" />
-        </Link>
-      </Tabs>
-    </AppBar>
+    <BottomNavigation
+      value={value}
+      // todo: add component='nav' ,gives ts error
+      className={classes.root}
+      onChange={handleChange}
+    >
+      <Link href="/dashboard" passHref>
+        <BottomNavigationAction
+          className={classes.wrapper}
+          showLabel
+          value="Dashboard"
+          label="Dashboard"
+          icon={<HomeIcon />}
+        />
+      </Link>
+
+      <Link href="my-proposals" passHref>
+        <BottomNavigationAction
+          className={classes.wrapper}
+          showLabel
+          value="My Proposals"
+          label="My Proposals"
+          icon={<DescriptionIcon />}
+        />
+      </Link>
+      <Link href="/my-projects" passHref>
+        <BottomNavigationAction
+          className={classes.wrapper}
+          showLabel
+          label="My Projects"
+          value="My Projects"
+          icon={<BusinessCenterIcon />}
+        />
+      </Link>
+      <Link href="/" passHref>
+        <BottomNavigationAction
+          className={classes.wrapper}
+          showLabel
+          value="Settings"
+          label="Settings"
+          icon={<SettingsIcon />}
+        />
+      </Link>
+      <Link href="/api/auth/logout" passHref>
+        <BottomNavigationAction
+          className={classes.wrapper}
+          showLabel
+          value="Sign out"
+          label="Sign out"
+          icon={<ExitToAppSharpIcon />}
+        />
+      </Link>
+    </BottomNavigation>
   )
 }
