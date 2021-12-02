@@ -14,13 +14,13 @@ export const GET_PROPOSAL_BY_ID = gql`
 `
 
 export const GET_USER_PROPOSALS = gql`
-  query GetProposalsByUser($proposser: ID!) {
-    getProposalsByUser(proposser: $proposser) {
-      _id
+  query GetUserProposals($_id: ID!) {
+    getUserProposals(_id: $_id) {
+      propossedRate
       coverLetter
-      budget
       projectId
-      proposser
+      projectTitle
+      _id
     }
   }
 `
