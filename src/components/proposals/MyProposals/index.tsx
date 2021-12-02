@@ -1,28 +1,31 @@
 import { useQuery } from '@apollo/client'
 import React from 'react'
 
-import { GET_PROJECT } from '../../../gql/project'
+import { GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID } from '../../../gql/proposal'
 import Loader from '../../common/Loader'
 import MasterDetailsLayout from '../../common/MasterDetailsLayout'
 import ManageProject from '../../manageProject/ManageProject'
 import ProjectList from '../../project/ProjectList'
+import ProposalCard from '../ProposalCard'
 
-const MyProposals = ({ data, activeProjectId, updateActiveProjectId }) => {
+const MyProposals = ({ data, updateActiveId, activeId }) => {
   const {
     error,
     loading,
-    data: projectData,
+    data: rightPanelData,
     refetch,
-  } = useQuery(GET_PROJECT, {
+  } = useQuery(GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID, {
     variables: {
-      _id: activeProjectId,
+      _id: activeId.project,
+      proposalId: activeId.proposal,
     },
   })
 
-  const updateActiveProject = (newId) => {
-    updateActiveProjectId(newId)
+  const updateActiveProject = (newActiveId) => {
+    updateActiveId(newActiveId)
     refetch({
-      _id: newId,
+      _id: newActiveId.project,
+      proposalId: newActiveId.proposal,
     })
   }
 
@@ -30,9 +33,10 @@ const MyProposals = ({ data, activeProjectId, updateActiveProjectId }) => {
 
   return (
     <MasterDetailsLayout>
-      <ProjectList data={data} updateActiveProject={updateActiveProject} activeProjectId={activeProjectId} />
+      <ProjectList data={data} updateActiveProject={updateActiveProject} activeId={activeId} />
       <div>
-        <ManageProject data={projectData.project} isReadOnly />
+        <ProposalCard data={rightPanelData.getProposalsById} />
+        <ManageProject data={rightPanelData.project} isReadOnly />
       </div>
     </MasterDetailsLayout>
   )
