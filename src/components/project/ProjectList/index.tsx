@@ -12,8 +12,8 @@ const ProjectList = ({ data, updateActiveProposalId, activeProjectId }: any) => 
           proposal._id === activeProjectId ? 'border-4 ' : ' border-2'
         }`}
       >
-        <div className="text-xl font-bold">{proposal?.title}</div>
-        <div className="self-end">{proposal?.budget} </div>
+        <p className="text-xl font-bold">{proposal?.projectTitle}</p>
+        <p className="self-end">{proposal?.propossedRate} </p>
       </button>
     ))}
   </div>
