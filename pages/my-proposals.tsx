@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { GetServerSideProps } from 'next'
-import React from 'react'
+import React, { useState } from 'react'
 
 import GetApolloClient from '../apis/apollo.client'
 import MyProposals from '../src/components/proposals/MyProposals'
@@ -11,9 +11,12 @@ import { getUserId } from '../src/lib/user-helper'
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 export default function MyProposal({ data }) {
+  const [activeProjectId, setActiveProjectId] = useState<string>(data[0]?.projectId)
+  const updateActiveProjectId = (newId) => setActiveProjectId(newId)
+
   return (
     <div style={{ marginLeft: '57px' }}>
-      <MyProposals data={data} />
+      <MyProposals data={data} activeProjectId={activeProjectId} updateActiveProjectId={updateActiveProjectId} />
     </div>
   )
 }
