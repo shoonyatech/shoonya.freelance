@@ -6,7 +6,7 @@ const ProjectList = ({ data, updateActiveProject, activeProjectId }: any) => (
     {data.map((proposal: any) => (
       <button
         key={proposal._id}
-        onClick={() => updateActiveProject(proposal.projectId)}
+        onClick={() => updateActiveProject({ project: proposal.projectId, proposal: proposal._id })}
         type="button"
         className={`flex flex-col border-2 border-solid m-4 p-4 ${
           proposal.projectId === activeProjectId ? 'border-4 ' : ' border-2'

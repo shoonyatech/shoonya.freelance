@@ -12,6 +12,35 @@ export const GET_PROPOSAL_BY_ID = gql`
     }
   }
 `
+export const GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID = gql`
+  query getProjectByIdAndProposalById($_id: ID!, $proposalId: ID!) {
+    project(_id: $_id) {
+      _id
+      owner
+      title
+      description
+      skills
+      scope {
+        size
+        duration
+        experience
+      }
+      budget {
+        type
+        currency
+        amount
+      }
+      isPublished
+    }
+    getProposalsById(_id: $proposalId) {
+      _id
+      coverLetter
+      projectTitle
+      propossedRate
+      projectId
+    }
+  }
+`
 
 export const GET_USER_PROPOSALS = gql`
   query GetUserProposals($_id: ID!) {
