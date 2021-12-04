@@ -9,6 +9,7 @@ export const GET_PROPOSAL_BY_ID = gql`
       budget
       proposser
       projectId
+      currency
     }
   }
 `
@@ -38,6 +39,7 @@ export const GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID = gql`
       projectTitle
       proposedRate
       projectId
+      currency
     }
   }
 `
@@ -50,6 +52,7 @@ export const GET_USER_PROPOSALS = gql`
       projectId
       projectTitle
       _id
+      currency
     }
   }
 `
@@ -69,19 +72,26 @@ export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
 `
 
 export const ADD_NEW_PROPOSAL = gql`
-  mutation AddNewProposal($coverLetter: String!, $proposedRate: String!, $projectId: ID!, $projectTitle: String) {
+  mutation AddNewProposal(
+    $coverLetter: String!
+    $proposedRate: String!
+    $projectId: ID!
+    $projectTitle: String!
+    $currency: String!
+  ) {
     addNewProposal(
       coverLetter: $coverLetter
       proposedRate: $proposedRate
       projectId: $projectId
       projectTitle: $projectTitle
+      currency: $currency
     ) {
-      proposals {
-        _id
-        proposedRate
-        projectId
-        coverLetter
-      }
+      _id
+      coverLetter
+      proposedRate
+      projectTitle
+      currency
+      projectId
     }
   }
 `

@@ -13,7 +13,10 @@ const ProjectList = ({ data, updateActiveProject, activeId }: any) => (
         }`}
       >
         <p className="text-xl font-bold">{proposal?.projectTitle}</p>
-        <p className="self-end">{proposal?.proposedRate} </p>
+        <p className="self-end">
+          {proposal?.currency}
+          {proposal?.proposedRate}{' '}
+        </p>
       </button>
     ))}
   </div>
