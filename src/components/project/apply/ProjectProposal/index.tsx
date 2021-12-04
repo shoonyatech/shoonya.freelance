@@ -35,7 +35,7 @@ const ProjectProposal = ({ closeSlider, projectId, projectTitle, currency }) => 
     e.preventDefault()
     const { coverLetter, proposedRate } = proposal
     await addNewProposal({
-      variables: { coverLetter, proposedRate, projectId, projectTitle },
+      variables: { coverLetter, proposedRate, projectId, projectTitle, currency },
     })
     closeSlider()
   }
