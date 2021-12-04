@@ -36,7 +36,7 @@ export const GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID = gql`
       _id
       coverLetter
       projectTitle
-      propossedRate
+      proposedRate
       projectId
     }
   }
@@ -45,7 +45,7 @@ export const GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID = gql`
 export const GET_USER_PROPOSALS = gql`
   query GetUserProposals($_id: ID!) {
     getUserProposals(_id: $_id) {
-      propossedRate
+      proposedRate
       coverLetter
       projectId
       projectTitle
@@ -69,11 +69,19 @@ export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
 `
 
 export const ADD_NEW_PROPOSAL = gql`
-  mutation AddNewProposal($coverLetter: String, $budget: String, $projectId: ID!) {
-    addNewProposal(coverLetter: $coverLetter, budget: $budget, projectId: $projectId) {
-      projectId
-      coverLetter
-      budget
+  mutation AddNewProposal($coverLetter: String!, $proposedRate: String!, $projectId: ID!, $projectTitle: String) {
+    addNewProposal(
+      coverLetter: $coverLetter
+      proposedRate: $proposedRate
+      projectId: $projectId
+      projectTitle: $projectTitle
+    ) {
+      proposals {
+        _id
+        proposedRate
+        projectId
+        coverLetter
+      }
     }
   }
 `

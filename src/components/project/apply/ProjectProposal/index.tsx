@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectProposal = ({ closeSlider, projectId }) => {
+const ProjectProposal = ({ closeSlider, projectId, projectTitle }) => {
   const classes = useStyles()
   const [proposal, setProposal] = useState({
     coverLetter: '',
@@ -32,7 +32,7 @@ const ProjectProposal = ({ closeSlider, projectId }) => {
     e.preventDefault()
     const { coverLetter, proposedRate } = proposal
     await addNewProposal({
-      variables: { coverLetter, proposedRate, projectId },
+      variables: { coverLetter, proposedRate, projectId, projectTitle },
     })
     closeSlider()
   }
