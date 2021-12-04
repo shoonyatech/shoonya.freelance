@@ -1,26 +1,41 @@
 /* eslint-disable no-underscore-dangle */
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { GetServerSideProps } from 'next'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 import GetApolloClient from '../apis/apollo.client'
 import MyProposals from '../src/components/proposals/MyProposals'
 import { GET_USER_PROPOSALS } from '../src/gql/proposal'
 import { getUserId } from '../src/lib/user-helper'
+import { isArrayEmpty } from '../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function MyProposal({ data }) {
-  const [activeId, setActiveId] = useState({
-    proposal: data[0]?._id,
-    project: data[0]?.projectId,
-  })
+export default function MyProposal({ initialData, initialIsUserHasNoProposals }) {
+  const router = useRouter()
+  const [data, setData] = useState(initialData)
+  const [isRefreshing, setIsRefreshing] = React.useState(false)
+  // Call this function whenever you want to
+  // refresh props!
+  const refreshData = () => {
+    router.replace(router.asPath)
+    setIsRefreshing(true)
+  }
 
-  const updateActiveId = (newActiveId) => setActiveId(newActiveId)
+  useEffect(() => {
+    setData(initialData)
+    setIsRefreshing(false)
+  }, [initialData])
 
   return (
     <div style={{ marginLeft: '57px' }}>
-      <MyProposals data={data} activeId={activeId} updateActiveId={updateActiveId} />
+      <MyProposals
+        data={data}
+        refreshData={refreshData}
+        isRefreshing={isRefreshing}
+        initialIsUserHasNoProposals={initialIsUserHasNoProposals}
+      />
     </div>
   )
 }
@@ -34,12 +49,19 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       query: GET_USER_PROPOSALS,
       variables: { _id: userId },
       errorPolicy: 'ignore',
+      fetchPolicy: 'no-cache',
     })
 
     const { getUserProposals } = data
+    if (isArrayEmpty(getUserProposals))
+      return {
+        props: {
+          initialIsUserHasNoProposals: true,
+        },
+      }
     return {
       props: {
-        data: getUserProposals,
+        initialData: getUserProposals,
       },
     }
   },
