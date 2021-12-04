@@ -77,3 +77,11 @@ export const ADD_NEW_PROPOSAL = gql`
     }
   }
 `
+
+export const DELETE_PROPOSAL = gql`
+  mutation DeleteProposal($_id: ID!) {
+    deleteProposal(_id: $_id) {
+      _id
+    }
+  }
+`
