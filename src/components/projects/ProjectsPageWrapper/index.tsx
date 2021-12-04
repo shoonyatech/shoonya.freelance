@@ -48,7 +48,12 @@ const ProjectsPageWrapper = ({ data, activeProjectId, updateActiveProjectId }) =
       />
       {slider ? (
         <SliderContainer closeSlider={closeSlider} openOrCloseSlider={slider}>
-          <ProjectProposal closeSlider={closeSlider} projectId={activeProjectId} projectTitle={d.project.title} />
+          <ProjectProposal
+            closeSlider={closeSlider}
+            projectId={activeProjectId}
+            projectTitle={d.project.title}
+            currency={d.project.budget.currency}
+          />
         </SliderContainer>
       ) : null}
     </>

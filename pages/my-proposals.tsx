@@ -16,8 +16,7 @@ export default function MyProposal({ initialData, initialIsUserHasNoProposals })
   const router = useRouter()
   const [data, setData] = useState(initialData)
   const [isRefreshing, setIsRefreshing] = React.useState(false)
-  // Call this function whenever you want to
-  // refresh props!
+
   const refreshData = () => {
     router.replace(router.asPath)
     setIsRefreshing(true)

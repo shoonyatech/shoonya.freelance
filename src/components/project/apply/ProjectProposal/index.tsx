@@ -1,5 +1,8 @@
 import { useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
+import Input from '@material-ui/core/Input'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import InputLabel from '@material-ui/core/InputLabel'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import React, { useState } from 'react'
@@ -15,7 +18,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectProposal = ({ closeSlider, projectId, projectTitle }) => {
+const ProjectProposal = ({ closeSlider, projectId, projectTitle, currency }) => {
   const classes = useStyles()
   const [proposal, setProposal] = useState({
     coverLetter: '',
@@ -55,17 +58,16 @@ const ProjectProposal = ({ closeSlider, projectId, projectTitle }) => {
           label="Cover Letter"
           required
         />
-
-        <TextField
-          onChange={handleChange}
+        <InputLabel>proposedRate</InputLabel>
+        <Input
           className={classes.textField}
-          value={proposal.proposedRate}
-          name="proposedRate"
-          variant="outlined"
-          label="proposedRate"
           type="number"
-          fullWidth
+          name="proposedRate"
+          onChange={handleChange}
+          value={proposal.proposedRate}
           required
+          fullWidth
+          startAdornment={<InputAdornment position="start">{currency}</InputAdornment>}
         />
         <div>
           <Button type="submit" variant="contained" color="primary">
