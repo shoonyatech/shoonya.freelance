@@ -146,6 +146,20 @@ export const GET_USER_AND_COUNTRIES = gql`
   }
 `
 
+export const GET_PROPOSALS_BY_PROJECT = gql`
+  query GetProposalsByProject($_id: ID!) {
+    getProposalsByProject(_id: $_id) {
+      _id
+      name
+      title
+      skills {
+        name
+      }
+      picture
+    }
+  }
+`
+
 export const UPDATE_USER_BIO = gql`
   mutation UpdateUserBio($bio: String) {
     updateUserBio(bio: $bio) {

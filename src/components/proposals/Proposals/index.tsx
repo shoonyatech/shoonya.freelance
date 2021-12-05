@@ -5,12 +5,12 @@ import MasterDetailsLayout from '../../common/MasterDetailsLayout'
 import FreelancerList from '../../freelancer/FreelancerList'
 import Profile from '../../profile/Profile'
 
-const Proposals = ({ data, freelancers, updateActiveProject, activeFreelancer }) => {
-  if (isArrayEmpty(freelancers)) return <p>No proposals</p>
+const Proposals = ({ data, updateActiveProject, activeFreelancer }) => {
+  if (isArrayEmpty(data)) return <p>No proposals</p>
 
   return (
     <MasterDetailsLayout>
-      <FreelancerList data={data} freelancers={freelancers} updateActiveProject={updateActiveProject} />
+      <FreelancerList data={data} updateActiveProject={updateActiveProject} />
       <Profile data={activeFreelancer} isReadOnly />
     </MasterDetailsLayout>
   )

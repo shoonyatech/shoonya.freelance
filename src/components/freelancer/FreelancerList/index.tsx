@@ -4,9 +4,9 @@ import React from 'react'
 
 import FreelancerStrip from '../FreelancerStrip'
 
-const FreelancerList = ({ data, freelancers, updateActiveProject }) => (
+const FreelancerList = ({ data, updateActiveProject }) => (
   <div className="flex flex-col">
-    {freelancers?.map((freelancer, i) => (
+    {data?.map((freelancer, i) => (
       <FreelancerStrip
         rate={data[i].budget}
         key={freelancer._id}
