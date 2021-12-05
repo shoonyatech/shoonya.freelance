@@ -7,16 +7,13 @@ import React from 'react'
 import GetApolloClient from '../../../apis/apollo.client'
 import Loader from '../../../src/components/common/Loader'
 import Proposals from '../../../src/components/proposals/Proposals'
-import { GET_USER_PROPOSALS_AND_PROJECT_OWNER } from '../../../src/gql/proposal'
-import { GET_FREELANCER_CARDS, GET_USER } from '../../../src/gql/user'
+import { GET_PROPOSALS_BY_PROJECT, GET_USER } from '../../../src/gql/user'
 import { getUserId } from '../../../src/lib/user-helper'
 import { isArrayEmpty } from '../../../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function MyProposal({ data, freelancers, isProposalsEmpty }) {
-  const _id = freelancers ? freelancers[0]?._id : null
-
+export default function MyProposal({ data, isProposalsEmpty }) {
   const {
     error,
     loading,
@@ -24,14 +21,14 @@ export default function MyProposal({ data, freelancers, isProposalsEmpty }) {
     refetch,
   } = useQuery(GET_USER, {
     variables: {
-      _id,
+      _id: data?.[0]?._id,
     },
     skip: isProposalsEmpty,
   })
 
   const updateActiveProject = (newId) => {
     refetch({
-      _id: freelancers[newId]._id,
+      _id: data[newId]._id,
     })
   }
 
@@ -40,12 +37,7 @@ export default function MyProposal({ data, freelancers, isProposalsEmpty }) {
 
   return (
     <div style={{ marginLeft: '57px' }}>
-      <Proposals
-        data={data}
-        freelancers={freelancers}
-        activeFreelancer={d?.user}
-        updateActiveProject={updateActiveProject}
-      />
+      <Proposals data={data} activeFreelancer={d?.user} updateActiveProject={updateActiveProject} />
     </div>
   )
 }
@@ -55,8 +47,8 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
     const session = getSession(context.req, context.res)
     const userId = getUserId(session?.user.sub)
     const { data } = await client.query({
-      query: GET_USER_PROPOSALS_AND_PROJECT_OWNER,
-      variables: { projectId: context.query.id },
+      query: GET_PROPOSALS_BY_PROJECT,
+      variables: { _id: context.query.id },
       errorPolicy: 'ignore',
     })
 
@@ -66,25 +58,17 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
         notFound: true,
       }
     }
-    const { getProposals } = data
-    if (isArrayEmpty(getProposals))
+
+    const { getProposalsByProject } = data
+    if (isArrayEmpty(getProposalsByProject))
       return {
         props: {
           isProposalsEmpty: true,
         },
       }
-    const propossers = getProposals.map((proposal) => proposal.proposser)
-
-    const { data: d } = await client.query({
-      query: GET_FREELANCER_CARDS,
-      variables: { _id: propossers },
-      errorPolicy: 'ignore',
-    })
-    const { freelancers } = d
     return {
       props: {
-        data: getProposals,
-        freelancers,
+        data: getProposalsByProject,
       },
     }
   },

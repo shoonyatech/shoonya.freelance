@@ -61,9 +61,12 @@ export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
   query GetProposals($projectId: ID!) {
     getProposals(projectId: $projectId) {
       coverLetter
-      budget
+      proposedRate
       projectId
-      proposser
+      projectTitle
+      _id
+      currency
+      projectId
     }
     project(_id: $projectId) {
       owner
