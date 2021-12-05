@@ -5,8 +5,10 @@ import { GetServerSideProps } from 'next'
 import React, { useState } from 'react'
 
 import GetApolloClient from '../../../apis/apollo.client'
-import ManageProjectWrapper from '../../../src/components/manageProject/ManageProjectWrapper'
+import SliderContainer from '../../../src/components/common/Slider'
+import ManageProject from '../../../src/components/manageProject/ManageProject'
 import SeeProposals from '../../../src/components/project/actionBtns/SeeProposals'
+import ProjectProposal from '../../../src/components/project/apply/ProjectProposal'
 import { GET_PROJECT } from '../../../src/gql/project'
 import { Project as ProjectProps } from '../../../src/interfaces/project'
 import { getUserId } from '../../../src/lib/user-helper'
@@ -30,7 +32,17 @@ const Project = ({ data, isOwner }: { data: ProjectProps; isOwner: boolean }) =>
           </Button>
         )}
       </div>
-      <ManageProjectWrapper data={data} isOwner={isOwner} slider={slider} closeSlider={closeSlider} />
+      <ManageProject data={data} isReadOnly={!isOwner} />
+      {slider ? (
+        <SliderContainer closeSlider={closeSlider} openOrCloseSlider={slider}>
+          <ProjectProposal
+            closeSlider={closeSlider}
+            projectId={data._id}
+            projectTitle={data.title}
+            currency={data.budget.currency}
+          />
+        </SliderContainer>
+      ) : null}
     </div>
   )
 }
