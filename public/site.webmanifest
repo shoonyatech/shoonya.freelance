@@ -1,0 +1,19 @@
+{
+    "name": "Shoonya",
+    "short_name": "Shoonya",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffb74d",
+    "background_color": "#ffb74d",
+    "display": "standalone"
+}
