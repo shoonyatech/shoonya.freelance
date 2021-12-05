@@ -11,7 +11,7 @@ const WizardWrapper = () => {
   const decrStep = () => setSteps(step - 1)
 
   return (
-    <div className="min-h-screen w-full max-w-5xl mx-auto w-full flex">
+    <div className="min-h-screen max-w-5xl mx-auto w-full flex">
       <WizardInfo step={step} />
       <WizardFlow step={step} incrStep={incrStep} decrStep={decrStep} />
     </div>
