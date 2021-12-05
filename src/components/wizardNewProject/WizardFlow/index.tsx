@@ -1,10 +1,11 @@
 /* eslint-disable consistent-return */
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { useRouter } from 'next/router'
 import React, { useReducer } from 'react'
 
+import { ADD_PROJECT } from '../../../gql/project'
 import { isArrayEmpty, isBlank, isObjEmpty } from '../../../lib/utils'
 import WizardBudgetFlow from '../wizardBudget/WizardBudgetFlow'
 import WizardHeadlineFlow from '../wizardHeadline/WizardHeadlineFlow'
@@ -18,14 +19,6 @@ const useStyles = makeStyles(() =>
     },
   })
 )
-
-const ADD_PROJECT = gql`
-  mutation AddProject($title: String, $scope: ScopeInput, $budget: BudgetInput, $skills: [String]) {
-    addProject(title: $title, scope: $scope, budget: $budget, skills: $skills) {
-      _id
-    }
-  }
-`
 
 const initialValue = {
   title: '',

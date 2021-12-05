@@ -6,10 +6,10 @@ const range = ['$', '$$', '$$$']
 
 const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
   <div className="flex flex-col overflow-y-auto max-h-screen">
-    {data.map((project: any) => (
+    {data.map((project: any, i: number) => (
       <button
         key={project._id}
-        onClick={() => updateActiveProjectId(project._id)}
+        onClick={() => updateActiveProjectId(project._id, i)}
         type="button"
         className={`flex flex-col border-solid border-primary m-4 p-4 ${
           project._id === activeProjectId ? 'border-4 ' : ' border-2'

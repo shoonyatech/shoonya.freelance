@@ -8,7 +8,15 @@ export const ADD_PROJECT = gql`
   }
 `
 
-export const GET_USER_PROJECTS=gql`
+export const DELETE_PROJECT = gql`
+  mutation DeleteProject($_id: ID!) {
+    deleteProject(_id: $_id) {
+      _id
+    }
+  }
+`
+
+export const GET_USER_PROJECTS = gql`
   query GetUserProjects($_id: ID!) {
     getUserProjects(_id: $_id) {
       _id

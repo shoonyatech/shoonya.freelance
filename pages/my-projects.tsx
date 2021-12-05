@@ -13,13 +13,17 @@ import { isArrayEmpty } from '../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function MyProjects({ initialData, initialUserHasNoProjects }: { initialData: Project[]; initialUserHasNoProjects: boolean }) {
+export default function MyProjects({
+  initialData,
+  initialUserHasNoProjects,
+}: {
+  initialData: Project[]
+  initialUserHasNoProjects: boolean
+}) {
   const router = useRouter()
   const [data, setData] = useState(initialData)
   const [isRefreshing, setIsRefreshing] = React.useState(false)
-  const [activeProjectId, setActiveProjectId] = useState<string>(data?.[0]?._id)
 
-  const updateActiveProjectId = (newId) => setActiveProjectId(newId)
   const refreshData = () => {
     router.replace(router.asPath)
     setIsRefreshing(true)
@@ -33,8 +37,6 @@ export default function MyProjects({ initialData, initialUserHasNoProjects }: { 
     <div style={{ marginLeft: '57px' }}>
       <MyProjectsWrapper
         data={data}
-        activeProjectId={activeProjectId}
-        updateActiveProjectId={updateActiveProjectId}
         refreshData={refreshData}
         isRefreshing={isRefreshing}
         initialUserHasNoProjects={initialUserHasNoProjects}
@@ -60,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       return {
         props: {
           initialUserHasNoProjects: true,
-        }
+        },
       }
     }
     return {
