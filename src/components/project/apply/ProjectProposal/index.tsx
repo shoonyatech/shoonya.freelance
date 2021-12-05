@@ -71,7 +71,7 @@ const ProjectProposal = ({ closeSlider, projectId, projectTitle, currency }) => 
         />
         <div>
           <Button type="submit" variant="contained" color="primary">
-            Apply
+            Send Proposal
           </Button>
         </div>
       </form>
