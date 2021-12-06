@@ -46,20 +46,21 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
   async getServerSideProps(context) {
     const session = getSession(context.req, context.res)
     const userId = getUserId(session?.user.sub)
+
     const { data } = await client.query({
       query: GET_PROPOSALS_BY_PROJECT,
       variables: { _id: context.query.id },
       errorPolicy: 'ignore',
     })
 
+    const { getProposalsByProject, getProjectOwner } = data
     // temporary show 404 if user is not the owner of this project
-    if (data.project.owner !== userId) {
+    if (getProjectOwner.owner !== userId) {
       return {
         notFound: true,
       }
     }
 
-    const { getProposalsByProject } = data
     if (isArrayEmpty(getProposalsByProject))
       return {
         props: {
