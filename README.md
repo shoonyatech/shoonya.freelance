@@ -1,22 +1,14 @@
-# wallora.com
-
-Wallora webapp recreated using React
-
 # Contributors
 
 - Souvik Basu (@souvikbasu)
-- Victor Rajkumar (@vctc)
-- Priyanka Jayaswal (@priyankajayaswal1)
-- Aryaman Todkar (@aryamantodkar)
 - Mohammed Hussam Khatib (@hussamkhatib)
-- Kit So (@Kit486759)
 - Syed Rasheduddin (@SyedRashed007)
 
 # Getting Started
 
 ## To fork the repo
 
-- Go to https://github.com/shoonyatech/wallora.com
+- Go to https://github.com/shoonyatech/shoonya.freelance.git
 - Click on Fork button in top right
 - This will fork the repo into your profile in GitHub
 
@@ -34,7 +26,7 @@ git clone <your git url>
 - Create a reference to the upstream repo to be able to create Pull Requests
 
 ```
-git remote add upstream git@github.com:shoonyatech/wallora.com.git
+git remote add upstream git@github.com:shoonyatech/shoonya.freelance.git
 ```
 
 ## To run the project
@@ -65,17 +57,6 @@ npm run storybook
 - After this when you run the dev server and try to login you should be able to see the auth0 login flow.
 
 Reference: https://auth0.com/docs/quickstart/webapp/nextjs
-
-### To use Google Analytics
-
-- Use `wallora.test@gmail.com` to login to google analytics [website](https://analytics.google.com/) using google.
-- Download two extensions [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger/jnkmfdileelhofjcijamephohjechhna) and [Tag Assistant companion](https://chrome.google.com/webstore/detail/tag-assistant-companion/jmekfmbnaedfebfnmakmokmlfpblbfdm/related)
-- Populate `.env.local` `NEXT_PUBLIC_GOOGLE_ANALYTICS` variable with `Measurement Id` poperty which can be found on GA portal [here](https://analytics.google.com/analytics/web/?authuser=3#/a196586595p271760400/admin/streams/table/2605551675) (accessible post login to GA).
-- After this run the dev server and enable the Google Analytics Debugger extension, then you should be able to see your activity flowing to GA homepage.
-
-References:
-
-- https://mariestarck.com/add-google-analytics-to-your-next-js-application-in-5-easy-steps/
 
 ## To create a commit and raise a Pull Request (PR)
 
