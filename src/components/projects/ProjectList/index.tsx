@@ -2,9 +2,8 @@
 import Chip from '@material-ui/core/Chip'
 import React from 'react'
 
+import { getBudgetLevel } from '../../../lib/currency'
 import { icons } from '../../../lib/icon'
-
-const range = ['$', '$$', '$$$']
 
 const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
   <div className="flex flex-col overflow-y-auto max-h-screen">
@@ -13,8 +12,9 @@ const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => 
         key={project._id}
         onClick={() => updateActiveProjectId(project._id, i)}
         type="button"
-        className={`flex flex-col border-solid border-gray-200 m-4 p-4 border-2 rounded-lg ${project._id === activeProjectId && 'shadow-lg'
-          }`}
+        className={`flex flex-col border-solid border-gray-200 m-4 p-4 border-2 rounded-lg ${
+          project._id === activeProjectId && 'shadow-lg'
+        }`}
       >
         <div className="h-16 text-xl font-bold">{project.title}</div>
         <div className="flex justify-between w-full">
@@ -23,7 +23,7 @@ const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => 
               <Chip variant="outlined" label={skill} icon={icons[`${skill}`]} />
             ))}
           </div>
-          <div>{range[Math.floor(Math.random() * range.length)]} </div>
+          <div>{getBudgetLevel('$', 3, project.budget.amount, 50)}</div>
         </div>
       </button>
     ))}
