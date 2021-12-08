@@ -11,8 +11,8 @@ const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => 
         key={project._id}
         onClick={() => updateActiveProjectId(project._id, i)}
         type="button"
-        className={`flex flex-col border-solid border-primary m-4 p-4 ${
-          project._id === activeProjectId ? 'border-4 ' : ' border-2'
+        className={`flex flex-col border-solid border-gray-200 m-4 p-4 border-2 rounded-lg ${
+          project._id === activeProjectId && 'shadow-lg'
         }`}
       >
         <div className="text-xl font-bold">{project.title}</div>
