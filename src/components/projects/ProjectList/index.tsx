@@ -2,6 +2,8 @@
 import Chip from '@material-ui/core/Chip'
 import React from 'react'
 
+import { icons } from '../../../lib/icon'
+
 const range = ['$', '$$', '$$$']
 
 const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
@@ -11,17 +13,18 @@ const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => 
         key={project._id}
         onClick={() => updateActiveProjectId(project._id, i)}
         type="button"
-        className={`flex flex-col border-solid border-gray-200 m-4 p-4 border-2 rounded-lg ${
-          project._id === activeProjectId && 'shadow-lg'
-        }`}
+        className={`flex flex-col border-solid border-gray-200 m-4 p-4 border-2 rounded-lg ${project._id === activeProjectId && 'shadow-lg'
+          }`}
       >
-        <div className="text-xl font-bold">{project.title}</div>
-        <div>
-          {project.skills.map((skill) => (
-            <Chip label={skill} />
-          ))}
+        <div className="h-16 text-xl font-bold">{project.title}</div>
+        <div className="flex justify-between w-full">
+          <div>
+            {project.skills.map((skill) => (
+              <Chip variant="outlined" label={skill} icon={icons[`${skill}`]} />
+            ))}
+          </div>
+          <div>{range[Math.floor(Math.random() * range.length)]} </div>
         </div>
-        <div className="self-end">{range[Math.floor(Math.random() * range.length)]} </div>
       </button>
     ))}
   </div>
