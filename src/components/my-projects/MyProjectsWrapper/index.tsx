@@ -55,9 +55,9 @@ const MyProjectsWrapper = ({ data, initialUserHasNoProjects, refreshData, isRefr
     <div>
       <div className="flex justify-end py-2">
         <SeeProposals projectId={activeProjectId} />
-
+        {/* todo : check if proposals are deleted for the project */}
         <Button onClick={() => deleteProjectHandler()} variant="contained" color="primary">
-          Delete Proposal
+          Delete Project
         </Button>
       </div>
       <Projects

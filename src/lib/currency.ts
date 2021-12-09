@@ -9,5 +9,3 @@ export const getBudgetLevel = (currencySymbol:string,maxLevel:number,rate:number
   else 
   return currencySymbol.repeat(maxLevel-1)
 }
-
-console.log(getBudgetLevel("$",3,10,50))
