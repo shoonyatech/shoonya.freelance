@@ -157,9 +157,6 @@ export const GET_PROPOSALS_BY_PROJECT = gql`
       }
       picture
     }
-    getProjectOwner(_id: $_id) {
-      owner
-    }
   }
 `
 
