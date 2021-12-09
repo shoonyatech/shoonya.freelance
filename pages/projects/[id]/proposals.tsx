@@ -1,42 +1,35 @@
 /* eslint-disable no-underscore-dangle */
-import { useQuery } from '@apollo/client'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { GetServerSideProps } from 'next'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import GetApolloClient from '../../../apis/apollo.client'
-import Loader from '../../../src/components/common/Loader'
 import Proposals from '../../../src/components/proposals/Proposals'
-import { GET_PROPOSALS_BY_PROJECT, GET_USER } from '../../../src/gql/user'
+import { GET_PROPOSALS_BY_PROJECT } from '../../../src/gql/user'
 import { isArrayEmpty } from '../../../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function MyProposal({ data, isProposalsEmpty }) {
-  const {
-    error,
-    loading,
-    data: d,
-    refetch,
-  } = useQuery(GET_USER, {
-    variables: {
-      _id: data?.[0]?._id,
-    },
-    skip: isProposalsEmpty,
-  })
+export default function MyProposal({ initialData, initialProposals, initialIsProposalsEmpty }) {
+  const [data, setData] = useState(initialData)
+  const [proposals, setProposals] = useState(initialProposals)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const updateActiveProject = (newId) => {
-    refetch({
-      _id: data[newId]._id,
-    })
-  }
+  useEffect(() => {
+    setData(initialData)
+    setProposals(initialProposals)
+    setIsRefreshing(false)
+  }, [initialData, initialProposals])
 
-  if (isProposalsEmpty) return <div> No one has send proposal to this project.</div>
-  if (loading) return <Loader open={loading} error={error} />
-
+  // console.log(d)
   return (
     <div style={{ marginLeft: '57px' }}>
-      <Proposals data={data} activeFreelancer={d?.user} updateActiveProject={updateActiveProject} />
+      <Proposals
+        data={data}
+        proposals={proposals}
+        isRefreshing={isRefreshing}
+        initialIsProposalsEmpty={initialIsProposalsEmpty}
+      />
     </div>
   )
 }
@@ -49,17 +42,17 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       errorPolicy: 'ignore',
     })
 
-    const { getProposalsByProject } = data
-
+    const { getProposalsByProject, getProposalsByProject2 } = data
     if (isArrayEmpty(getProposalsByProject))
       return {
         props: {
-          isProposalsEmpty: true,
+          initialIsProposalsEmpty: true,
         },
       }
     return {
       props: {
-        data: getProposalsByProject,
+        initialData: getProposalsByProject,
+        initialProposals: getProposalsByProject2,
       },
     }
   },
