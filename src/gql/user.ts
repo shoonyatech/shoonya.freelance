@@ -157,6 +157,64 @@ export const GET_PROPOSALS_BY_PROJECT = gql`
       }
       picture
     }
+    getProposalsByProject2(_id: $_id) {
+      _id
+    }
+  }
+`
+
+export const GET_USER_AND_PROPOSAL = gql`
+  query User($_id: ID!, $proposalId: ID!) {
+    user(_id: $_id) {
+      name
+      title
+      picture
+      bio
+      contact {
+        location
+        phone
+        mail
+        linkedin
+        github
+        twitter
+      }
+      professionalExperience {
+        company
+        jobTitle
+        location
+        startYear
+        endYear
+        description
+        currentJob
+        techStack
+      }
+      skills {
+        name
+        scale
+      }
+      education {
+        degree
+        school
+        startYear
+        endYear
+      }
+      developerCommunityInvolement {
+        title
+        description
+      }
+      languages
+      hobbies
+      sports
+      countriesICanWork
+    }
+    getProposalsById(_id: $proposalId) {
+      _id
+      coverLetter
+      projectTitle
+      proposedRate
+      projectId
+      currency
+    }
   }
 `
 
