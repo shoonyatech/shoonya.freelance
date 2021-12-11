@@ -20,45 +20,25 @@ export const GET_USER_PROJECTS = gql`
   query GetUserProjects($_id: ID!) {
     getUserProjects(_id: $_id) {
       _id
-      owner
-      title
+      budget {
+        amount
+        currency
+        type
+      }
       description
-      skills
+      isPublished
+      owner
       scope {
-        size
         duration
         experience
+        size
       }
-      budget {
-        type
-        currency
-        amount
-      }
-      isPublished
+      skills
+      title
     }
   }
 `
 
-export const GET_PROJECTS = gql`
-  query Projects($owner: ID) {
-    projects(owner: $owner) {
-      _id
-      owner
-      skills
-      budget {
-        type
-        amount
-      }
-      title
-      description
-      scope {
-        experience
-        size
-        size
-      }
-    }
-  }
-`
 export const FILTER_OWNER_PROJECTS = gql`
   query FilterOwnerProjects($owner: ID) {
     filterOwnerProjects(owner: $owner) {
