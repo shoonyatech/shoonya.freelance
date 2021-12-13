@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@apollo/client'
-import Button from '@material-ui/core/Button'
 import InputBase from '@material-ui/core/InputBase'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -10,7 +9,7 @@ import { GET_PROJECT } from '../../../gql/project'
 import Loader from '../../common/Loader'
 import SliderContainer from '../../common/Slider'
 import ProjectProposal from '../../project/apply/ProjectProposal'
-import Projects from '../Projects'
+import ProjectsMain from '../ProjectsMain'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -28,14 +27,16 @@ const useStyles = makeStyles(() =>
 
 const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId }) => {
   const classes = useStyles()
-  const [data, setData] = useState(initialData)
-  const [filters, setUpdateFilter] = useState<any>({
+  const [data] = useState(initialData)
+  // todo: re add setData
+  // todo: re add filters
+  const [setUpdateFilter] = useState<any>({
     title: undefined
   });
 
   const [slider, setSlider] = useState(false)
-  const closeSlider = () => {
-    setSlider(false)
+  const toggleSlider = () => {
+    setSlider(state => !state)
   }
   const {
     error,
@@ -57,9 +58,6 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     setUpdateFilter({
       [filterType]: value,
     });
-    console.log({
-      [filterType]: value,
-    })
   };
 
 
@@ -72,21 +70,17 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
         placeholder="Search Projects"
         inputProps={{ 'aria-label': 'search projects' }}
       />
-      <div className="flex justify-end py-2">
-        <Button onClick={() => setSlider(true)} variant="contained" color="primary">
-          Send Proposal
-        </Button>
-      </div>
-      <Projects
+      <ProjectsMain
         data={data}
         activeProjectId={activeProjectId}
         projectData={d.project}
         updateActiveProjectId={updateActiveProject}
+        toggleSlider={toggleSlider}
       />
       {slider ? (
-        <SliderContainer closeSlider={closeSlider} openOrCloseSlider={slider}>
+        <SliderContainer closeSlider={toggleSlider} openOrCloseSlider={slider}>
           <ProjectProposal
-            closeSlider={closeSlider}
+            closeSlider={toggleSlider}
             projectId={activeProjectId}
             projectTitle={d.project.title}
             currency={d.project.budget.currency}
