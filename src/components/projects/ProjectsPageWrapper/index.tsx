@@ -26,8 +26,13 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectsPageWrapper = ({ data, activeProjectId, updateActiveProjectId }) => {
+const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId }) => {
   const classes = useStyles()
+  const [data, setData] = useState(initialData)
+  const [filters, setUpdateFilter] = useState<any>({
+    title: undefined
+  });
+
   const [slider, setSlider] = useState(false)
   const closeSlider = () => {
     setSlider(false)
@@ -48,11 +53,21 @@ const ProjectsPageWrapper = ({ data, activeProjectId, updateActiveProjectId }) =
       _id: newId,
     })
   }
+  const updateFilter = (filterType, value) => {
+    setUpdateFilter({
+      [filterType]: value,
+    });
+    console.log({
+      [filterType]: value,
+    })
+  };
+
 
   if (loading) return <Loader open={loading} error={error} />
   return (
     <>
       <InputBase
+        onChange={(e) => updateFilter("title", e.target.value)}
         className={`${classes.root} ${classes.input}`}
         placeholder="Search Projects"
         inputProps={{ 'aria-label': 'search projects' }}

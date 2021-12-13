@@ -6,15 +6,15 @@ import React, { useState } from 'react'
 
 import GetApolloClient from '../../apis/apollo.client'
 import ProjectsPageWrapper from '../../src/components/projects/ProjectsPageWrapper'
-import { FILTER_OWNER_PROJECTS } from '../../src/gql/project'
+import { GET_PROJECTS } from '../../src/gql/project'
 import { Project } from '../../src/interfaces/project'
 import { getUserId } from '../../src/lib/user-helper'
 import { isArrayEmpty } from '../../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function ProjectsPage({ data, noProjects }: { data: Project[]; noProjects: boolean }) {
-  const [activeProjectId, setActiveProjectId] = useState<string>(data?.[0]?._id)
+export default function ProjectsPage({ initialData, noProjects }: { initialData: Project[]; noProjects: boolean }) {
+  const [activeProjectId, setActiveProjectId] = useState<string>(initialData?.[0]?._id)
 
   const updateActiveProjectId = (newId) => setActiveProjectId(newId)
 
@@ -23,7 +23,7 @@ export default function ProjectsPage({ data, noProjects }: { data: Project[]; no
   return (
     <div style={{ marginLeft: '57px' }}>
       <ProjectsPageWrapper
-        data={data}
+        initialData={initialData}
         activeProjectId={activeProjectId}
         updateActiveProjectId={updateActiveProjectId}
       />
@@ -35,11 +35,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = getSession(context.req, context.res)
   const userId = getUserId(session?.user?.sub)
   const { data } = await client.query({
-    query: FILTER_OWNER_PROJECTS,
+    query: GET_PROJECTS,
     variables: { owner: userId },
     errorPolicy: 'ignore',
   })
-  if (isArrayEmpty(data.filterOwnerProjects))
+  if (isArrayEmpty(data.projects))
     return {
       props: {
         noProjects: true,
@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   return {
     props: {
-      data: data.filterOwnerProjects,
+      initialData: data.projects,
     },
   }
 }
