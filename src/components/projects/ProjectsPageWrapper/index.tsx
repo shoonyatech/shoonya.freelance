@@ -31,12 +31,12 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
   // todo: re add setData
   // todo: re add filters
   const [setUpdateFilter] = useState<any>({
-    title: undefined
-  });
+    title: undefined,
+  })
 
   const [slider, setSlider] = useState(false)
   const toggleSlider = () => {
-    setSlider(state => !state)
+    setSlider((state) => !state)
   }
   const {
     error,
@@ -57,15 +57,14 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
   const updateFilter = (filterType, value) => {
     setUpdateFilter({
       [filterType]: value,
-    });
-  };
-
+    })
+  }
 
   if (loading) return <Loader open={loading} error={error} />
   return (
     <>
       <InputBase
-        onChange={(e) => updateFilter("title", e.target.value)}
+        onChange={(e) => updateFilter('title', e.target.value)}
         className={`${classes.root} ${classes.input}`}
         placeholder="Search Projects"
         inputProps={{ 'aria-label': 'search projects' }}
