@@ -1,12 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@apollo/client'
+import IconButton from '@material-ui/core/IconButton'
 import InputBase from '@material-ui/core/InputBase'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react'
 
 import { GET_PROJECT } from '../../../gql/project'
+import IconList from '../../common/IconList'
 import Loader from '../../common/Loader'
+import SkilliconPickor from '../../common/SkillIconPickor'
 import SliderContainer from '../../common/Slider'
 import ProjectProposal from '../../project/apply/ProjectProposal'
 import ProjectsMain from '../ProjectsMain'
@@ -28,9 +32,14 @@ const useStyles = makeStyles(() =>
 const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId }) => {
   const classes = useStyles()
   const [data] = useState(initialData)
+  const [isIconPickorActive, setIsIconPickorActive] = useState<boolean>(false)
+  const toggleIconPickor = () => {
+    setIsIconPickorActive((state) => !state)
+  }
   // todo: re add setData
   // todo: re add filters
-  const [setUpdateFilter] = useState<any>({
+  const [filters, setFilter] = useState<any>({
+    skills: [],
     title: undefined,
   })
 
@@ -55,8 +64,15 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     })
   }
   const updateFilter = (filterType, value) => {
-    setUpdateFilter({
+    setFilter({
       [filterType]: value,
+    })
+  }
+
+  const updateSkillFilter = (icon) => {
+    setFilter({
+      ...filters,
+      skills: icon
     })
   }
 
@@ -68,6 +84,20 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
         className={`${classes.root} ${classes.input}`}
         placeholder="Search Projects"
         inputProps={{ 'aria-label': 'search projects' }}
+      />
+      <div className="flex">
+        <div>Skills </div>
+        <IconButton onClick={() => toggleIconPickor()} aria-label="add skill filter" size="small">
+          <ArrowDropDownIcon />
+        </IconButton>
+        <IconList iconArr={filters.skills} displayIcon />
+      </div>
+      <SkilliconPickor
+        isActive={isIconPickorActive}
+        displayIcon
+        closeIconPickor={toggleIconPickor}
+        selectedIcons={filters.skills}
+        handleSkillChange={updateSkillFilter}
       />
       <ProjectsMain
         data={data}

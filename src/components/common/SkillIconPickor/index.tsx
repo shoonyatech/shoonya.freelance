@@ -43,12 +43,13 @@ const SkilliconPickor = ({ isActive, displayIcon, closeIconPickor, selectedIcons
     const updateTechStack = selectedIcons.includes(icon)
       ? selectedIcons.filter((b) => b !== icon)
       : [...selectedIcons, icon]
+    console.log(updateTechStack)
     handleSkillChange(updateTechStack)
   }
   return (
     <>
       {isActive ? (
-        <div className='relative max-h-80 w-96'>
+        <div className="relative max-h-80 w-96">
           <div className="flex flex-col overflow-y-auto  max-w-full bg-white shadow-lg rounded absolute z-20">
             <div className="flex pb-2">
               <SearchBar list={iconsList} label="search icons" handleFilter={handleSkillsFilter} />
