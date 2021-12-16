@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: 'flex',
-      margin: '1em',
+      margin: '1em 0',
       border: 'solid 1px #E5E7EB',
       borderRadius: '8px',
     },
@@ -62,7 +62,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   if (loading) return <Loader open={loading} error={error} />
   return (
-    <>
+    <div className="px-4">
       <InputBase
         onChange={(e) => updateFilter('title', e.target.value)}
         className={`${classes.root} ${classes.input}`}
@@ -86,7 +86,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
           />
         </SliderContainer>
       ) : null}
-    </>
+    </div>
   )
 }
 

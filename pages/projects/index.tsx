@@ -40,8 +40,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       input: {
         title: null,
         skills: null,
-        owner: userId
-      }
+        owner: userId,
+      },
     },
     errorPolicy: 'ignore',
   })
