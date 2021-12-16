@@ -43,7 +43,6 @@ const SkilliconPickor = ({ isActive, displayIcon, closeIconPickor, selectedIcons
     const updateTechStack = selectedIcons.includes(icon)
       ? selectedIcons.filter((b) => b !== icon)
       : [...selectedIcons, icon]
-    console.log(updateTechStack)
     handleSkillChange(updateTechStack)
   }
   return (

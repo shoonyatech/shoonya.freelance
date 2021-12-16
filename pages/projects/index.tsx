@@ -13,7 +13,15 @@ import { isArrayEmpty } from '../../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function ProjectsPage({ initialData, noProjects }: { initialData: Project[]; noProjects: boolean }) {
+export default function ProjectsPage({
+  initialData,
+  noProjects,
+  userId,
+}: {
+  initialData: Project[]
+  noProjects: boolean
+  userId: string
+}) {
   const [activeProjectId, setActiveProjectId] = useState<string>(initialData?.[0]?._id)
 
   const updateActiveProjectId = (newId) => setActiveProjectId(newId)
@@ -26,6 +34,7 @@ export default function ProjectsPage({ initialData, noProjects }: { initialData:
         initialData={initialData}
         activeProjectId={activeProjectId}
         updateActiveProjectId={updateActiveProjectId}
+        userId={userId}
       />
     </div>
   )
@@ -49,11 +58,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         noProjects: true,
+        userId,
       },
     }
   return {
     props: {
       initialData: data.projects,
+      userId,
     },
   }
 }
