@@ -48,27 +48,29 @@ const SkilliconPickor = ({ isActive, displayIcon, closeIconPickor, selectedIcons
   return (
     <>
       {isActive ? (
-        <div className="flex flex-col max-h-80 overflow-y-auto w-96 max-w-full bg-white shadow-lg rounded absolute top-10 z-20">
-          <div className="flex pb-2">
-            <SearchBar list={iconsList} label="search icons" handleFilter={handleSkillsFilter} />
-            <IconButton onClick={() => closeIconPickor()} className={classes.btn}>
-              <CancelIcon />
-            </IconButton>
+        <div className='relative max-h-80 w-96'>
+          <div className="flex flex-col overflow-y-auto  max-w-full bg-white shadow-lg rounded absolute z-20">
+            <div className="flex pb-2">
+              <SearchBar list={iconsList} label="search icons" handleFilter={handleSkillsFilter} />
+              <IconButton onClick={() => closeIconPickor()} className={classes.btn}>
+                <CancelIcon />
+              </IconButton>
+            </div>
+            <ul className="flex flex-wrap p-2">
+              {activeIcons?.map((icon) => (
+                <li key={icon}>
+                  <Chip
+                    onClick={() => onSelectedSkillChange(icon)}
+                    className={`${classes.iconbtn} ${selectedIcons.includes(icon) && classes.active}`}
+                    icon={displayIcon ? icons[`${icon}`] : undefined}
+                    label={icon}
+                    color="primary"
+                    variant={selectedIcons.includes(icon) ? 'default' : 'outlined'}
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="flex flex-wrap p-2">
-            {activeIcons?.map((icon) => (
-              <li key={icon}>
-                <Chip
-                  onClick={() => onSelectedSkillChange(icon)}
-                  className={`${classes.iconbtn} ${selectedIcons.includes(icon) && classes.active}`}
-                  icon={displayIcon ? icons[`${icon}`] : undefined}
-                  label={icon}
-                  color="primary"
-                  variant={selectedIcons.includes(icon) ? 'default' : 'outlined'}
-                />
-              </li>
-            ))}
-          </ul>
         </div>
       ) : null}
     </>

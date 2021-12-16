@@ -25,37 +25,40 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
   }
 
   return (
-    <div className="pb-4 relative h-10">
+    <div className="pb-4 h-10">
       <div className="flex items-center">
-        <div className="flex items-center">
-          <p className="mr-2 whitespace-nowrap">Tech stack : </p>
-          <ul className="flex flex-wrap">
-            {techStack.map((icon) => {
-              if (isIconName) {
+        <div className="flex flex-col ">
+          <div>
+            <p className="mr-2 whitespace-nowrap">Tech stack : </p>
+            <ul className="flex flex-wrap">
+              {techStack.map((icon) => {
+                if (isIconName) {
+                  return (
+                    <li key={icon} className="px-0.5">
+                      <Chip icon={icons[`${icon}`]} label={icon} color="primary" variant="outlined" />
+                    </li>
+                  )
+                }
                 return (
                   <li key={icon} className="px-0.5">
-                    <Chip icon={icons[`${icon}`]} label={icon} color="primary" variant="outlined" />
+                    {icons[`${icon}`]}
                   </li>
                 )
-              }
-              return (
-                <li key={icon} className="px-0.5">
-                  {icons[`${icon}`]}
-                </li>
-              )
-            })}
-          </ul>
+              })}
+            </ul>
+            <Button onClick={() => toggleIconPickor()}>
+              <AddIcon />
+            </Button>
+          </div>
+
+          <SkilliconPickor
+            isActive={isIconPickorActive}
+            displayIcon
+            closeIconPickor={toggleIconPickor}
+            selectedIcons={techStack}
+            handleSkillChange={handleSkillChange}
+          />
         </div>
-        <Button onClick={() => toggleIconPickor()}>
-          <AddIcon />
-        </Button>
-        <SkilliconPickor
-          isActive={isIconPickorActive}
-          displayIcon
-          closeIconPickor={toggleIconPickor}
-          selectedIcons={techStack}
-          handleSkillChange={handleSkillChange}
-        />
       </div>
     </div>
   )
