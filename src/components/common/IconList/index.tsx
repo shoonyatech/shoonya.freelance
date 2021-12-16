@@ -5,43 +5,44 @@ import React from 'react'
 import { icons } from '../../../lib/icon'
 
 interface Props {
-    iconArr: any
-    displayIcon?: boolean
+  iconArr: any
+  displayIcon?: boolean
 }
 
 const defaultProps = {
-    displayIcon: false,
+  displayIcon: false,
 }
 
 const useStyles = makeStyles(() =>
-    createStyles({
-        btn: {
-            alignSelf: 'flex-end',
-        },
-        iconbtn: {
-            margin: '0.25rem 0.5rem ',
-            borderRadius: '1rem',
-        },
-        active: {
-            border: '1px solid',
-        },
-    })
+  createStyles({
+    btn: {
+      alignSelf: 'flex-end',
+    },
+    iconbtn: {
+      margin: '0.25rem 0.5rem ',
+      borderRadius: '1rem',
+    },
+    active: {
+      border: '1px solid',
+    },
+  })
 )
 
 const IconList = ({ iconArr, displayIcon }: Props) => {
-    const classes = useStyles()
+  const classes = useStyles()
 
-    return (
-        <>
-            {iconArr?.map(icon => (
-                <Chip label={icon}
-                    variant='outlined'
-                    icon={displayIcon ? icons[`${icon}`] : undefined}
-                    className={`${classes.iconbtn} `}
-                />
-            ))}
-        </>
-    )
+  return (
+    <>
+      {iconArr?.map((icon) => (
+        <Chip
+          label={icon}
+          variant="outlined"
+          icon={displayIcon ? icons[`${icon}`] : undefined}
+          className={`${classes.iconbtn} `}
+        />
+      ))}
+    </>
+  )
 }
 export default IconList
 

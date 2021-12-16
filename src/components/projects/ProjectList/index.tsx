@@ -7,7 +7,7 @@ import { icons } from '../../../lib/icon'
 
 const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
   <div className="flex flex-col overflow-y-auto max-h-screen">
-    {data.map((project: any, i: number) => (
+    {data?.map((project: any, i: number) => (
       <button
         key={project._id}
         onClick={() => updateActiveProjectId(project._id, i)}

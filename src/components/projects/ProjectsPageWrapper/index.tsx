@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import IconButton from '@material-ui/core/IconButton'
 import InputBase from '@material-ui/core/InputBase'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -7,7 +7,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react'
 
-import { GET_PROJECT } from '../../../gql/project'
+import { GET_PROJECT, GET_PROJECTS } from '../../../gql/project'
 import IconList from '../../common/IconList'
 import Loader from '../../common/Loader'
 import SkilliconPickor from '../../common/SkillIconPickor'
@@ -29,18 +29,17 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId }) => {
+const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId, userId }) => {
   const classes = useStyles()
-  const [data] = useState(initialData)
+  const [data, setData] = useState(initialData)
   const [isIconPickorActive, setIsIconPickorActive] = useState<boolean>(false)
   const toggleIconPickor = () => {
     setIsIconPickorActive((state) => !state)
   }
-  // todo: re add setData
-  // todo: re add filters
   const [filters, setFilter] = useState<any>({
     skills: [],
     title: undefined,
+    owner: userId,
   })
 
   const [slider, setSlider] = useState(false)
@@ -57,6 +56,14 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       _id: activeProjectId,
     },
   })
+
+  const [refetchProjects, { loading: loadingProjects, error: errorProjects }] = useLazyQuery(GET_PROJECTS, {
+    fetchPolicy: 'no-cache',
+    onCompleted(val) {
+      setData(val.projects)
+    },
+  })
+
   const updateActiveProject = (newId) => {
     updateActiveProjectId(newId)
     refetch({
@@ -70,13 +77,21 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
   }
 
   const updateSkillFilter = (icon) => {
-    setFilter({
+    const newFilter = {
       ...filters,
-      skills: icon
+      skills: icon,
+    }
+    setFilter(newFilter)
+    refetchProjects({
+      variables: {
+        input: newFilter,
+      },
     })
   }
 
   if (loading) return <Loader open={loading} error={error} />
+  if (errorProjects || loadingProjects) return <Loader open={loading} error={errorProjects} />
+
   return (
     <div className="px-4">
       <InputBase
@@ -106,6 +121,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
         updateActiveProjectId={updateActiveProject}
         toggleSlider={toggleSlider}
       />
+
       {slider ? (
         <SliderContainer closeSlider={toggleSlider} openOrCloseSlider={slider}>
           <ProjectProposal
