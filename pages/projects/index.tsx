@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     variables: {
       input: {
         title: null,
-        skills: null,
+        skills: [],
         owner: userId,
       },
     },
