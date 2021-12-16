@@ -40,25 +40,25 @@ export const GET_USER_PROJECTS = gql`
 `
 
 export const GET_PROJECTS = gql`
-  query Projects($_id: ID) {
-    projects(_id: $_id) {
+  query Projects($input: ProjectsInputFilter) {
+    projects(input: $input) {
       _id
-      owner
-      title
+      budget {
+        amount
+        currency
+        type
+      }
       description
-      skills
+      isPublished
+      owner
+      proposers
       scope {
-        size
         duration
         experience
+        size
       }
-      budget {
-        type
-        currency
-        amount
-      }
-      isPublished
-      proposers
+      skills
+      title
     }
   }
 `

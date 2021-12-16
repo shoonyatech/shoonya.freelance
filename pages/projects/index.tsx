@@ -36,7 +36,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const userId = getUserId(session?.user?.sub)
   const { data } = await client.query({
     query: GET_PROJECTS,
-    variables: { owner: userId },
+    variables: {
+      input: {
+        title: null,
+        skills: null,
+        owner: userId
+      }
+    },
     errorPolicy: 'ignore',
   })
   if (isArrayEmpty(data.projects))
