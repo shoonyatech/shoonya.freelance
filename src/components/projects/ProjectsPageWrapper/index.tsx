@@ -59,8 +59,13 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   const [refetchProjects, { loading: loadingProjects, error: errorProjects }] = useLazyQuery(GET_PROJECTS, {
     fetchPolicy: 'no-cache',
-    onCompleted(val) {
-      setData(val.projects)
+    onCompleted({ projects }) {
+      setData(projects)
+      const newId = projects?.[0]?._id
+      updateActiveProjectId(newId)
+      refetch({
+        _id: newId,
+      })
     },
   })
 
