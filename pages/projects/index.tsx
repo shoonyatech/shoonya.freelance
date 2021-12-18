@@ -9,25 +9,20 @@ import ProjectsPageWrapper from '../../src/components/projects/ProjectsPageWrapp
 import { GET_PROJECTS } from '../../src/gql/project'
 import { Project } from '../../src/interfaces/project'
 import { getUserId } from '../../src/lib/user-helper'
-import { isArrayEmpty } from '../../src/lib/utils'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 export default function ProjectsPage({
   initialData,
-  noProjects,
   userId,
 }: {
   initialData: Project[]
-  noProjects: boolean
   userId: string
 }) {
   const [activeProjectId, setActiveProjectId] = useState<string>(initialData?.[0]?._id)
 
   const updateActiveProjectId = (newId) => setActiveProjectId(newId)
 
-  if (noProjects)
-    return <div style={{ marginLeft: '57px' }}>Nothing to show , come back when there are active projects!</div>
   return (
     <div style={{ marginLeft: '57px' }}>
       <ProjectsPageWrapper
@@ -54,13 +49,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     errorPolicy: 'ignore',
   })
-  if (isArrayEmpty(data.projects))
-    return {
-      props: {
-        noProjects: true,
-        userId,
-      },
-    }
   return {
     props: {
       initialData: data.projects,
