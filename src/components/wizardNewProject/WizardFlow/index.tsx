@@ -92,12 +92,15 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
       payload: { icon },
     })
   const reviewJobPost = () => {
-    if (!isObjEmpty(state.budget) && state.budget.amount !== 0)
+    if (!isObjEmpty(state.budget) && +state.budget.amount !== 0)
       addNewProject({
         variables: {
           title: state.title,
           scope: state.scope,
-          budget: state.budget,
+          budget: {
+            ...state.budget,
+            amount: +state.budget.amount
+          },
           skills: state.skills,
         },
       })
