@@ -8,6 +8,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import React, { useState } from 'react'
 
 import { GET_PROJECT, GET_PROJECTS } from '../../../gql/project'
+import { isArrayEmpty } from '../../../lib/utils'
 import IconList from '../../common/IconList'
 import Loader from '../../common/Loader'
 import SkilliconPickor from '../../common/SkillIconPickor'
@@ -96,6 +97,8 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   if (loading) return <Loader open={loading} error={error} />
   if (errorProjects || loadingProjects) return <Loader open={loading} error={errorProjects} />
+  if (isArrayEmpty(data))
+    return <div style={{ marginLeft: '57px' }}>Nothing to show , come back when there are active projects!</div>
 
   return (
     <div className="px-4">
