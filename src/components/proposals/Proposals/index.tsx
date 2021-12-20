@@ -10,25 +10,39 @@ import FreelancerList from '../../freelancer/FreelancerList'
 import Profile from '../../profile/Profile'
 import ProposalCard from '../ProposalCard'
 
-const Proposals = ({ data, proposals, isRefreshing, initialIsProposalsEmpty }) => {
+
+const Proposals = ({ data, proposals }) => {
   const [activeId, setactiveId] = useState({
     _id: data?.[0]?._id,
-    proposalId: proposals[0]._id,
+    proposalId: proposals[0]?._id,
   })
-
   const {
     error,
     loading,
     data: d,
+    // refetch
   } = useQuery(GET_USER_AND_PROPOSAL, {
     variables: {
-      _id: activeId._id,
-      proposalId: activeId.proposalId,
+      _id: activeId?._id,
+      proposalId: activeId?.proposalId,
     },
     // remove no-cache
     fetchPolicy: 'no-cache',
-    skip: initialIsProposalsEmpty,
+    skip: isArrayEmpty(data),
   })
+
+  // const [refetchProposals, { loading: loadingProposals, error: errorProposals }] = useLazyQuery(GET_PROPOSALS_BY_PROJECT, {
+  //   fetchPolicy: 'no-cache',
+  //   onCompleted({  }) {
+  //     setData()
+  //     const newId = projects?.[0]?._id
+  //     refetch({
+  //       _id: activeId?._id,
+  //       proposalId: activeId?.proposalId,
+  //     })
+  //   },
+  // })
+
 
   const updateActiveProject = (newId) => {
     setactiveId({
@@ -36,7 +50,8 @@ const Proposals = ({ data, proposals, isRefreshing, initialIsProposalsEmpty }) =
       proposalId: proposals[newId]._id,
     })
   }
-  if (loading || error || isRefreshing) return <Loader open={loading} error={error} />
+  if (loading || error) return <Loader open={loading} error={error} />
+  // if (loadingProposals || errorProposals) return <Loader open={loading} error={errorProposals} />
 
   if (isArrayEmpty(data)) return <p>No proposals</p>
   return (
