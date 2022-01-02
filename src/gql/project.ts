@@ -51,7 +51,6 @@ export const GET_PROJECTS = gql`
       description
       isPublished
       owner
-      proposers
       scope {
         duration
         experience
