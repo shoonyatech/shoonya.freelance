@@ -41,6 +41,18 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     skills: [],
     title: undefined,
     owner: userId,
+    fixed: {
+      max: null,
+      min: null,
+      currency: null,
+      checked: null,
+    },
+    hourly: {
+      max: null,
+      min: null,
+      currency: null,
+      checked: null,
+    },
   })
 
   const [slider, setSlider] = useState(false)
@@ -76,11 +88,10 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       _id: newId,
     })
   }
-  const updateFilter = (filterType, value) => {
+  const updateFilter = (filterType, value) =>
     setFilter({
       [filterType]: value,
     })
-  }
 
   const updateSkillFilter = (icon) => {
     const newFilter = {
