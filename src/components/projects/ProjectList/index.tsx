@@ -20,7 +20,7 @@ const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => 
         <div className="flex justify-between w-full">
           <div>
             {project.skills.map((skill) => (
-              <Chip variant="outlined" label={skill} icon={icons[`${skill}`]} />
+              <Chip key={skill} variant="outlined" label={skill} icon={icons[`${skill}`]} />
             ))}
           </div>
           <div>{getBudgetLevel('$', 3, project.budget.amount, 50)}</div>

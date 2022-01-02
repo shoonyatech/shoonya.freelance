@@ -13,7 +13,7 @@ const ProjectFullDescription = ({ data, toggleSlider }) => (
       </Button>
     </div>
     {data.skills.map((skill) => (
-      <Chip variant="outlined" label={skill} icon={icons[`${skill}`]} />
+      <Chip key={skill} variant="outlined" label={skill} icon={icons[`${skill}`]} />
     ))}
     <div className="flex justify-evenly text-gray-500 py-6 text-lg">
       <p>{data?.scope?.duration}</p>

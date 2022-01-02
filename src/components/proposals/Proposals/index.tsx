@@ -10,7 +10,6 @@ import FreelancerList from '../../freelancer/FreelancerList'
 import Profile from '../../profile/Profile'
 import ProposalCard from '../ProposalCard'
 
-
 const Proposals = ({ data, proposals }) => {
   const [activeId, setactiveId] = useState({
     _id: data?.[0]?._id,
@@ -42,7 +41,6 @@ const Proposals = ({ data, proposals }) => {
   //     })
   //   },
   // })
-
 
   const updateActiveProject = (newId) => {
     setactiveId({
