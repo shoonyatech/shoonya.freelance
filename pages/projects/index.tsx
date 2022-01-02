@@ -12,13 +12,7 @@ import { getUserId } from '../../src/lib/user-helper'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function ProjectsPage({
-  initialData,
-  userId,
-}: {
-  initialData: Project[]
-  userId: string
-}) {
+export default function ProjectsPage({ initialData, userId }: { initialData: Project[]; userId: string }) {
   const [activeProjectId, setActiveProjectId] = useState<string>(initialData?.[0]?._id)
 
   const updateActiveProjectId = (newId) => setActiveProjectId(newId)
@@ -38,13 +32,26 @@ export default function ProjectsPage({
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = getSession(context.req, context.res)
   const userId = getUserId(session?.user?.sub)
+
   const { data } = await client.query({
     query: GET_PROJECTS,
     variables: {
       input: {
         title: null,
-        skills: [],
+        skills: null,
         owner: userId,
+        fixed: {
+          max: null,
+          min: null,
+          currency: null,
+          checked: null,
+        },
+        hourly: {
+          max: null,
+          min: null,
+          currency: null,
+          checked: null,
+        },
       },
     },
     errorPolicy: 'ignore',
