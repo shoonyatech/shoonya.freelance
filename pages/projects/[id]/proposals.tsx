@@ -12,10 +12,7 @@ const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 export default function MyProposal({ initialData, initialProposals }) {
   return (
     <div style={{ marginLeft: '57px' }}>
-      <Proposals
-        data={initialData}
-        proposals={initialProposals}
-      />
+      <Proposals data={initialData} proposals={initialProposals} />
     </div>
   )
 }

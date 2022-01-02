@@ -99,7 +99,7 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
           scope: state.scope,
           budget: {
             ...state.budget,
-            amount: +state.budget.amount
+            amount: +state.budget.amount,
           },
           skills: state.skills,
         },
