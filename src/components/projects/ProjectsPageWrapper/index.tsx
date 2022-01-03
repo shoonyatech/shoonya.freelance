@@ -72,13 +72,18 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   const [refetchProjects, { loading: loadingProjects, error: errorProjects }] = useLazyQuery(GET_PROJECTS, {
     fetchPolicy: 'no-cache',
-    onCompleted({ projects }) {
-      setData(projects)
+    async onCompleted({ projects }) {
+      if (isArrayEmpty(projects)) {
+        updateActiveProjectId(null)
+        setData([])
+        return
+      }
       const newId = projects?.[0]?._id
       updateActiveProjectId(newId)
-      refetch({
+      await refetch({
         _id: newId,
       })
+      setData(projects)
     },
   })
 
@@ -88,10 +93,18 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       _id: newId,
     })
   }
-  const updateFilter = (filterType, value) =>
-    setFilter({
+  const updateFilter = (filterType, value) => {
+    const newFilter = {
+      ...filters,
       [filterType]: value,
+    }
+    refetchProjects({
+      variables: {
+        input: newFilter,
+      },
     })
+    setFilter(newFilter)
+  }
 
   const updateSkillFilter = (icon) => {
     const newFilter = {
@@ -108,8 +121,6 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   if (loading) return <Loader open={loading} error={error} />
   if (errorProjects || loadingProjects) return <Loader open={loading} error={errorProjects} />
-  if (isArrayEmpty(data))
-    return <div style={{ marginLeft: '57px' }}>Nothing to show , come back when there are active projects!</div>
 
   return (
     <div className="px-4">
@@ -117,6 +128,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
         onChange={(e) => updateFilter('title', e.target.value)}
         className={`${classes.root} ${classes.input}`}
         placeholder="Search Projects"
+        value={filters.title}
         inputProps={{ 'aria-label': 'search projects' }}
       />
       <div className="flex">
@@ -133,13 +145,17 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
         selectedIcons={filters.skills}
         handleSkillChange={updateSkillFilter}
       />
-      <ProjectsMain
-        data={data}
-        activeProjectId={activeProjectId}
-        projectData={d.project}
-        updateActiveProjectId={updateActiveProject}
-        toggleSlider={toggleSlider}
-      />
+      {isArrayEmpty(data) ? (
+        <div style={{ marginLeft: '57px' }}>Nothing to show , come back when there are active projects!</div>
+      ) : (
+        <ProjectsMain
+          data={data}
+          activeProjectId={activeProjectId}
+          projectData={d.project}
+          updateActiveProjectId={updateActiveProject}
+          toggleSlider={toggleSlider}
+        />
+      )}
 
       {slider ? (
         <SliderContainer closeSlider={toggleSlider} openOrCloseSlider={slider}>
