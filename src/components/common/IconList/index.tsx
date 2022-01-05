@@ -32,7 +32,7 @@ const IconList = ({ iconArr, displayIcon }: Props) => {
   const classes = useStyles()
 
   return (
-    <>
+    <div className="flex flex-wrap">
       {iconArr?.map((icon) => (
         <Chip
           label={icon}
@@ -41,7 +41,7 @@ const IconList = ({ iconArr, displayIcon }: Props) => {
           className={`${classes.iconbtn} `}
         />
       ))}
-    </>
+    </div>
   )
 }
 export default IconList

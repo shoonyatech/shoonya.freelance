@@ -137,15 +137,8 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       />
 
       <div className="flex flex-wrap gap-x-16">
-        <div className="flex">
+        <div className="flex flex-col">
           <div>Skills </div>
-          <SkilliconPickor
-            isActive={isIconPickorActive}
-            displayIcon
-            closeIconPickor={toggleIconPickor}
-            selectedIcons={filters.skills}
-            handleSkillChange={updateSkillFilter}
-          />
           <IconButton
             className={classes.iconBtn}
             onClick={() => toggleIconPickor()}
@@ -154,6 +147,14 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
           >
             <ArrowDropDownIcon />
           </IconButton>
+          <SkilliconPickor
+            isActive={isIconPickorActive}
+            displayIcon
+            closeIconPickor={toggleIconPickor}
+            selectedIcons={filters.skills}
+            handleSkillChange={updateSkillFilter}
+          />
+
           <IconList iconArr={filters.skills} displayIcon />
         </div>
         <BudegtFilter label="hourly rate" name="checked" checked={false} />
