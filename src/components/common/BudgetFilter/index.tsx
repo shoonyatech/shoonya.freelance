@@ -15,27 +15,33 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const BudegtFilter = ({ label, name, checked }) => {
+const BudegtFilter = ({ label, name, state, updateFilter }) => {
   const classes = useStyles()
+
+  const handleChange = (e) => {
+    updateFilter([e.target.checked, e.target.name])
+  }
+
+
   return (
     <div>
       <div className="flex">
         <FormControlLabel
           control={
             <Checkbox
-              checked={checked}
-              // onChange={handleChange}
+              checked={state.checked}
+              onChange={handleChange}
               name={name}
               color="primary"
             />
           }
           label={label}
         />
-        <Currency />
+        <Currency currency={state.currency} />
       </div>
       <div className="flex">
-        <TextField label="min" type="number" className={classes.input} />
-        <TextField label="max" type="number" className={classes.input} />
+        <TextField label="min" value={state.min} type="number" className={classes.input} />
+        <TextField label="max" value={state.max} type="number" className={classes.input} />
       </div>
     </div>
   )
