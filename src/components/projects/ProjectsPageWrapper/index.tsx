@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 
 import { GET_PROJECT, GET_PROJECTS } from '../../../gql/project'
 import { isArrayEmpty } from '../../../lib/utils'
-import BudegtFilter from '../../common/BudgetFilter'
+import BudgetFilter from '../../common/BudgetFilter'
 import IconList from '../../common/IconList'
 import Loader from '../../common/Loader'
 import SkilliconPickor from '../../common/SkillIconPickor'
@@ -46,16 +46,16 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     title: undefined,
     owner: userId,
     fixed: {
-      max: null,
-      min: null,
+      max: "",
+      min: "",
       currency: null,
-      checked: null,
+      checked: false,
     },
     hourly: {
-      max: null,
-      min: null,
+      max: "",
+      min: "",
       currency: null,
-      checked: null,
+      checked: false,
     },
   })
 
@@ -97,18 +97,34 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       _id: newId,
     })
   }
+
+
   const updateFilter = (filterType, value) => {
-    const newFilter = {
-      ...filters,
-      [filterType]: value,
-    }
-    refetchProjects({
-      variables: {
-        input: newFilter,
-      },
-    })
+    // console.log(value)
+    const newFilter = Array.isArray(value) ?
+      {
+        ...filters,
+        [filterType]: {
+          ...filters[filterType],
+          [value[1]]: value[0]
+        }
+      }
+      :
+      {
+        ...filters,
+        [filterType]: value,
+      }
+
+
+    console.log({ newFilter })
+    // refetchProjects({
+    //   variables: {
+    //     input: newFilter,
+    //   },
+    // })
     setFilter(newFilter)
   }
+
 
   const updateSkillFilter = (icon) => {
     const newFilter = {
@@ -157,8 +173,8 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
           <IconList iconArr={filters.skills} displayIcon />
         </div>
-        <BudegtFilter label="hourly rate" name="checked" checked={false} />
-        <BudegtFilter label="fixed rate" name="checked" checked={false} />
+        <BudgetFilter updateFilter={(val) => updateFilter('hourly', val)} label="hourly rate" name="checked" state={filters.hourly} />
+        <BudgetFilter updateFilter={(val) => updateFilter('fixed', val)} label="fixed rate" name="checked" state={filters.fixed} />
       </div>
 
       {isArrayEmpty(data) ? (
