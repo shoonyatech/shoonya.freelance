@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 
 import { GET_PROJECT, GET_PROJECTS } from '../../../gql/project'
 import { isArrayEmpty } from '../../../lib/utils'
+import BudegtFilter from '../../common/BudgetFilter'
 import IconList from '../../common/IconList'
 import Loader from '../../common/Loader'
 import SkilliconPickor from '../../common/SkillIconPickor'
@@ -26,6 +27,9 @@ const useStyles = makeStyles(() =>
     },
     input: {
       padding: '0 1em',
+    },
+    iconBtn: {
+      alignSelf: 'self-start',
     },
   })
 )
@@ -131,20 +135,31 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
         value={filters.title}
         inputProps={{ 'aria-label': 'search projects' }}
       />
-      <div className="flex">
-        <div>Skills </div>
-        <IconButton onClick={() => toggleIconPickor()} aria-label="add skill filter" size="small">
-          <ArrowDropDownIcon />
-        </IconButton>
-        <IconList iconArr={filters.skills} displayIcon />
+
+      <div className="flex flex-wrap gap-x-16">
+        <div className="flex">
+          <div>Skills </div>
+          <SkilliconPickor
+            isActive={isIconPickorActive}
+            displayIcon
+            closeIconPickor={toggleIconPickor}
+            selectedIcons={filters.skills}
+            handleSkillChange={updateSkillFilter}
+          />
+          <IconButton
+            className={classes.iconBtn}
+            onClick={() => toggleIconPickor()}
+            aria-label="add skill filter"
+            size="small"
+          >
+            <ArrowDropDownIcon />
+          </IconButton>
+          <IconList iconArr={filters.skills} displayIcon />
+        </div>
+        <BudegtFilter label="hourly rate" name="checked" checked={false} />
+        <BudegtFilter label="fixed rate" name="checked" checked={false} />
       </div>
-      <SkilliconPickor
-        isActive={isIconPickorActive}
-        displayIcon
-        closeIconPickor={toggleIconPickor}
-        selectedIcons={filters.skills}
-        handleSkillChange={updateSkillFilter}
-      />
+
       {isArrayEmpty(data) ? (
         <div style={{ marginLeft: '57px' }}>Nothing to show , come back when there are active projects!</div>
       ) : (
