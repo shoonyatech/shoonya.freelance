@@ -19,32 +19,36 @@ const BudegtFilter = ({ label, name, state, updateFilter }) => {
   const classes = useStyles()
 
   const handleChange = (e) => {
-    if (e.target.name === 'checked')
-      updateFilter([e.target.checked, e.target.name])
-    else
-      updateFilter([e.target.value, e.target.name])
+    if (e.target.name === 'checked') updateFilter([e.target.checked, e.target.name])
+    else updateFilter([e.target.value, e.target.name])
   }
-
 
   return (
     <div>
       <div className="flex">
         <FormControlLabel
-          control={
-            <Checkbox
-              checked={state.checked}
-              onChange={handleChange}
-              name={name}
-              color="primary"
-            />
-          }
+          control={<Checkbox checked={state.checked} onChange={handleChange} name={name} color="primary" />}
           label={label}
         />
-        <Currency currency={state.currency} />
+        <Currency handleChange={handleChange} currency={state.currency} />
       </div>
       <div className="flex">
-        <TextField onChange={handleChange} name="min" label="min" value={state.min} type="number" className={classes.input} />
-        <TextField onChange={handleChange} name="max" label="max" value={state.max} type="number" className={classes.input} />
+        <TextField
+          onChange={handleChange}
+          name="min"
+          label="min"
+          value={state.min}
+          type="number"
+          className={classes.input}
+        />
+        <TextField
+          onChange={handleChange}
+          name="max"
+          label="max"
+          value={state.max}
+          type="number"
+          className={classes.input}
+        />
       </div>
     </div>
   )

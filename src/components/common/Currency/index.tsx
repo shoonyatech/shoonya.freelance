@@ -14,34 +14,20 @@ const GET_CURRENCIES = gql`
   }
 `
 
-const Currency = () => {
+const Currency = ({ currency, handleChange }) => {
   const { error, loading, data } = useQuery(GET_CURRENCIES)
 
   if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div>
-      <div>
-        <Select
-          // value={state.budget.currency}
-          // onChange={(e) => handleOptionChange(parentkey, 'currency', e.target.value)}
-          fullWidth
-        >
-          {data.countries.map((country) => (
-            <MenuItem key={country.name} value={country.currency}>
-              {country.currency}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      {/* <TextField
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                onChange={(e) => handleOptionChange(parentkey, 'amount', e.target.value)}
-                value={state.budget.amount}
-            /> */}
+      <Select value={currency} name="currency" onChange={handleChange} fullWidth>
+        {data.countries.map((country) => (
+          <MenuItem key={country.name} value={country.currency}>
+            {country.currency}
+          </MenuItem>
+        ))}
+      </Select>
     </div>
   )
 }

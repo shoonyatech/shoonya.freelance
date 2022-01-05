@@ -46,14 +46,14 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     title: undefined,
     owner: userId,
     fixed: {
-      max: "",
-      min: "",
+      max: '',
+      min: '',
       currency: null,
       checked: false,
     },
     hourly: {
-      max: "",
-      min: "",
+      max: '',
+      min: '',
       currency: null,
       checked: false,
     },
@@ -98,25 +98,19 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     })
   }
 
-
   const updateFilter = (filterType, value) => {
-    // console.log(value)
-    const newFilter = Array.isArray(value) ?
-      {
-        ...filters,
-        [filterType]: {
-          ...filters[filterType],
-          [value[1]]: value[0]
+    const newFilter = Array.isArray(value)
+      ? {
+          ...filters,
+          [filterType]: {
+            ...filters[filterType],
+            [value[1]]: value[0],
+          },
         }
-      }
-      :
-      {
-        ...filters,
-        [filterType]: value,
-      }
-
-
-    console.log({ newFilter })
+      : {
+          ...filters,
+          [filterType]: value,
+        }
     // refetchProjects({
     //   variables: {
     //     input: newFilter,
@@ -124,7 +118,6 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     // })
     setFilter(newFilter)
   }
-
 
   const updateSkillFilter = (icon) => {
     const newFilter = {
@@ -173,8 +166,18 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
           <IconList iconArr={filters.skills} displayIcon />
         </div>
-        <BudgetFilter updateFilter={(val) => updateFilter('hourly', val)} label="hourly rate" name="checked" state={filters.hourly} />
-        <BudgetFilter updateFilter={(val) => updateFilter('fixed', val)} label="fixed rate" name="checked" state={filters.fixed} />
+        <BudgetFilter
+          updateFilter={(val) => updateFilter('hourly', val)}
+          label="hourly rate"
+          name="checked"
+          state={filters.hourly}
+        />
+        <BudgetFilter
+          updateFilter={(val) => updateFilter('fixed', val)}
+          label="fixed rate"
+          name="checked"
+          state={filters.fixed}
+        />
       </div>
 
       {isArrayEmpty(data) ? (
