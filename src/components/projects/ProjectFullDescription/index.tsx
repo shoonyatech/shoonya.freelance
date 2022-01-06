@@ -1,28 +1,39 @@
+/* eslint-disable no-underscore-dangle */
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
+import Link from 'next/link'
 import React from 'react'
 
 import { icons } from '../../../lib/icon'
 
 const ProjectFullDescription = ({ data, toggleSlider }) => (
-  <div className="border-solid border-gray-200 border-2 my-4 px-6 py-2 rounded-lg">
-    <div className="flex justify-between py-2 pb-2">
-      <h2 className="text-2xl font-medium">{data.title}</h2>
+  <div className="border-solid my-4 px-6 py-2 rounded-lg">
+    <div className="flex gap-4 mb-4">
       <Button onClick={() => toggleSlider()} variant="contained" color="primary">
         Apply
       </Button>
+      <Link href={`/projects/${data._id}`} passHref>
+        <Button variant="contained" color="primary">
+          Details
+        </Button>
+      </Link>
     </div>
+    <h2 className="text-2xl font-medium">{data.title}</h2>
     {data.skills.map((skill) => (
       <Chip key={skill} variant="outlined" label={skill} icon={icons[`${skill}`]} />
     ))}
-    <div className="flex justify-evenly text-gray-500 py-6 text-lg">
-      <p>{data?.scope?.duration}</p>
-      <p>
+    <div className="flex gap-4 text-gray-600 py-6 ">
+      <p className="bg-gray-100 text-center p-2 rounded">
         {data?.budget?.currency}
         {data?.budget?.amount}
-        <span className="block text-center">{data?.budget?.type}</span>
+        <span className="block text-gray-400 text-lg">{data?.budget?.type}</span>
+      </p>
+      <p className="bg-gray-100 text-center p-2 rounded">
+        Duration
+        <span className="block text-gray-400 text-lg">{data?.scope?.duration}</span>
       </p>
     </div>
+    <h3 className="text-2xl mb-2">Project Description</h3>
     <p>{data?.description}</p>
   </div>
 )
