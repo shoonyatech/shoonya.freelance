@@ -1,38 +1,50 @@
 /* eslint-disable no-underscore-dangle */
 import { getSession } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { GetServerSideProps } from 'next'
 import React, { useState } from 'react'
 
 import GetApolloClient from '../../../apis/apollo.client'
 import SliderContainer from '../../../src/components/common/Slider'
-import ManageProject from '../../../src/components/manageProject/ManageProject'
 import SeeProposals from '../../../src/components/project/actionBtns/SeeProposals'
+// import SeeProposals from '../../../src/components/project/actionBtns/SeeProposals'
 import ProjectProposal from '../../../src/components/project/apply/ProjectProposal'
+import ProjectFullDescription from '../../../src/components/projects/ProjectFullDescription'
 import { GET_PROJECT } from '../../../src/gql/project'
 import { Project as ProjectProps } from '../../../src/interfaces/project'
 import { getUserId } from '../../../src/lib/user-helper'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    btn: {
+      marginBottom: '1em',
+    },
+  })
+)
+
 const Project = ({ data, isOwner }: { data: ProjectProps; isOwner: boolean }) => {
+  const classes = useStyles()
   const [slider, setSlider] = useState(false)
   const closeSlider = () => {
     setSlider(false)
   }
-
   return (
-    <div>
-      <div className="flex justify-end py-2">
+    <div style={{ marginLeft: '57px' }}>
+      <div className="my-4 px-6 py-2">
         {isOwner ? (
+          // todo : add margin bottom on see proposals btn
           <SeeProposals projectId={data._id} />
         ) : (
-          <Button onClick={() => setSlider(true)} variant="contained" color="primary">
-            Send Proposal
+          <Button className={classes.btn} variant="contained" color="primary">
+            Apply
           </Button>
         )}
+
+        <ProjectFullDescription data={data} />
       </div>
-      <ManageProject data={data} isReadOnly={!isOwner} />
       {slider ? (
         <SliderContainer closeSlider={closeSlider} openOrCloseSlider={slider}>
           <ProjectProposal
