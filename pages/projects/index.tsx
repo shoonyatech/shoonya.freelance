@@ -14,7 +14,6 @@ const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 export default function ProjectsPage({ initialData, userId }: { initialData: Project[]; userId: string }) {
   const [activeProjectId, setActiveProjectId] = useState<string>(initialData?.[0]?._id)
-
   const updateActiveProjectId = (newId) => setActiveProjectId(newId)
 
   return (
@@ -32,7 +31,6 @@ export default function ProjectsPage({ initialData, userId }: { initialData: Pro
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = getSession(context.req, context.res)
   const userId = getUserId(session?.user?.sub)
-
   const { data } = await client.query({
     query: GET_PROJECTS,
     variables: {
@@ -59,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       initialData: data.projects,
-      userId,
+      userId: userId || null,
     },
   }
 }
