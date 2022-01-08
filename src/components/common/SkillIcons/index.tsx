@@ -25,10 +25,10 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
   }
 
   return (
-    <div className="pb-4 h-10">
+    <div className="pb-4  min-h-10">
       <div className="flex items-center">
         <div className="flex flex-col ">
-          <div>
+          <div className="flex">
             <p className="mr-2 whitespace-nowrap">Tech stack : </p>
             <ul className="flex flex-wrap">
               {techStack.map((icon) => {

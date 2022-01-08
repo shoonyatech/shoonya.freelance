@@ -66,6 +66,9 @@ module.exports = {
         '3/4': '75%',
         '4/4': '100%',
       },
+      minHeight: {
+        10: '2.5rem',
+      },
     },
   },
   variants: {
