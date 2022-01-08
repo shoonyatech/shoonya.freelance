@@ -46,14 +46,14 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     title: undefined,
     owner: userId,
     fixed: {
-      max: '',
-      min: '',
+      max: null,
+      min: null,
       currency: null,
       checked: false,
     },
     hourly: {
-      max: '',
-      min: '',
+      max: null,
+      min: null,
       currency: null,
       checked: false,
     },
@@ -104,18 +104,18 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
           ...filters,
           [filterType]: {
             ...filters[filterType],
-            [value[1]]: value[0],
+            [value[1]]: Number.isInteger(Number(value[0])) && value[1] !== 'checked' ? +value[0] : value[0],
           },
         }
       : {
           ...filters,
           [filterType]: value,
         }
-    // refetchProjects({
-    //   variables: {
-    //     input: newFilter,
-    //   },
-    // })
+    refetchProjects({
+      variables: {
+        input: newFilter,
+      },
+    })
     setFilter(newFilter)
   }
 
