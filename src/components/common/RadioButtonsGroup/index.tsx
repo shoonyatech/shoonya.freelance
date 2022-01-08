@@ -10,7 +10,7 @@ const RadioButtonsGroup = ({ formLabel, selectedValue, options, handleChange, ar
     <FormLabel component="legend">{formLabel}</FormLabel>
     <RadioGroup aria-label={ariaLabel} name={name} value={selectedValue} onChange={handleChange}>
       {options.map((option: string) => (
-        <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
+        <FormControlLabel key={option} value={option} control={<Radio color="primary" />} label={option} />
       ))}
     </RadioGroup>
   </FormControl>
