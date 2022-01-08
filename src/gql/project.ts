@@ -16,6 +16,29 @@ export const DELETE_PROJECT = gql`
   }
 `
 
+export const UPDATE_PROJECT = gql`
+  mutation UpdateProject($project: ProjectInput) {
+    updateProject(project: $project) {
+      _id
+      owner
+      title
+      description
+      scope {
+        size
+        duration
+        experience
+      }
+      skills
+      budget {
+        type
+        currency
+        amount
+      }
+      isPublished
+    }
+  }
+`
+
 export const GET_USER_PROJECTS = gql`
   query GetUserProjects($_id: ID!) {
     getUserProjects(_id: $_id) {
