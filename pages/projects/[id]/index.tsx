@@ -1,9 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { getSession } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 import GetApolloClient from '../../../apis/apollo.client'
@@ -13,7 +14,7 @@ import SeeProposals from '../../../src/components/project/actionBtns/SeeProposal
 import ProjectProposal from '../../../src/components/project/apply/ProjectProposal'
 import EditProject from '../../../src/components/project/EditProject'
 import ProjectFullDescription from '../../../src/components/projects/ProjectFullDescription'
-import { GET_PROJECT } from '../../../src/gql/project'
+import { DELETE_PROJECT, GET_PROJECT } from '../../../src/gql/project'
 import { Project as ProjectProps } from '../../../src/interfaces/project'
 import { getUserId } from '../../../src/lib/user-helper'
 
@@ -29,9 +30,16 @@ const useStyles = makeStyles(() =>
 
 const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner: boolean }) => {
   const classes = useStyles()
+  const router = useRouter()
   const [edit, setEdit] = useState(false)
   const [slider, setSlider] = useState(false)
   const [data, setData] = useState(initialData)
+  const [deleteProject, { loading: delLoad, error: delErr }] = useMutation(DELETE_PROJECT, {
+    async onCompleted() {
+      router.push('/dashboard')
+    },
+  })
+
   const closeSlider = () => {
     setSlider(false)
   }
@@ -48,21 +56,33 @@ const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner:
     })
   }
 
-  if (loading) return <Loader open={loading} error={error} />
+  const deleteProjectHandler = () => {
+    deleteProject({
+      variables: {
+        _id: data._id,
+      },
+    })
+  }
 
   const cancelEdit = () => setEdit(false)
+
+  if (loading) return <Loader open={loading} error={error} />
+  if (delLoad) return <Loader open={delLoad} error={delErr} />
 
   return (
     <div style={{ marginLeft: '57px' }}>
       <div className="my-4 px-6 py-2">
         {isOwner && !edit ? (
           // todo : add margin bottom on see proposals btn
-          <>
-            <SeeProposals projectId={data._id} />
+          <div className="flex gap-x-4 ">
             <Button onClick={() => setEdit(true)} variant="contained" color="primary">
               Edit
             </Button>
-          </>
+            <Button onClick={() => deleteProjectHandler()} variant="contained" color="primary">
+              Delete
+            </Button>
+            <SeeProposals projectId={data._id} />
+          </div>
         ) : null}
         {!isOwner ? (
           <Button className={classes.btn} variant="contained" color="primary">
