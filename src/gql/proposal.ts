@@ -6,10 +6,10 @@ export const GET_PROPOSAL_BY_ID = gql`
     getProposalsById(_id: $_id) {
       _id
       coverLetter
-      budget
-      proposser
       projectId
       currency
+      proposedRate
+      projectTitle
     }
   }
 `
