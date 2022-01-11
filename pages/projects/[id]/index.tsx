@@ -85,7 +85,7 @@ const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner:
           </div>
         ) : null}
         {!isOwner ? (
-          <Button className={classes.btn} variant="contained" color="primary">
+          <Button onClick={() => setSlider(true)} className={classes.btn} variant="contained" color="primary">
             Apply
           </Button>
         ) : null}
