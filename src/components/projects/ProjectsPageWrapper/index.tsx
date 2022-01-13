@@ -168,13 +168,13 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
         </div>
         <BudgetFilter
           updateFilter={(val) => updateFilter('hourly', val)}
-          label="hourly rate"
+          label="Hourly rate"
           name="checked"
           state={filters.hourly}
         />
         <BudgetFilter
           updateFilter={(val) => updateFilter('fixed', val)}
-          label="fixed rate"
+          label="Fixed rate"
           name="checked"
           state={filters.fixed}
         />
