@@ -5,6 +5,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 import { ADD_NEW_PROPOSAL } from '../../../../gql/proposal'
@@ -19,13 +20,18 @@ const useStyles = makeStyles(() =>
 )
 
 const ProjectProposal = ({ closeSlider, projectId, projectTitle, currency }) => {
+  const router = useRouter()
   const classes = useStyles()
   const [proposal, setProposal] = useState({
     coverLetter: '',
     proposedRate: 0,
   })
 
-  const [addNewProposal, { loading, error }] = useMutation(ADD_NEW_PROPOSAL)
+  const [addNewProposal, { loading, error }] = useMutation(ADD_NEW_PROPOSAL, {
+    onCompleted({ addNewProposal: { _id } }) {
+      router.push(`proposals/${_id}`)
+    },
+  })
 
   const handleChange = (e) => {
     setProposal({ ...proposal, [e.target.name]: e.target.value })
