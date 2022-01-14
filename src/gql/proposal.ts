@@ -90,11 +90,6 @@ export const ADD_NEW_PROPOSAL = gql`
       currency: $currency
     ) {
       _id
-      coverLetter
-      proposedRate
-      projectTitle
-      currency
-      projectId
     }
   }
 `
