@@ -10,6 +10,7 @@ export const GET_PROPOSAL_BY_ID = gql`
       currency
       proposedRate
       projectTitle
+      proposserId
     }
   }
 `
@@ -95,8 +96,8 @@ export const ADD_NEW_PROPOSAL = gql`
 `
 
 export const DELETE_PROPOSAL = gql`
-  mutation DeleteProposal($_id: ID!) {
-    deleteProposal(_id: $_id) {
+  mutation DeleteProposal($id: ID!, $projectId: ID!) {
+    deleteProposal(_id: $id, projectId: $projectId) {
       _id
     }
   }
