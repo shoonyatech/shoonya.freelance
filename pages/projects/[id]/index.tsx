@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-underscore-dangle */
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { getSession } from '@auth0/nextjs-auth0'
 import Button from '@material-ui/core/Button'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
@@ -15,7 +17,7 @@ import ProjectProposal from '../../../src/components/project/apply/ProjectPropos
 import EditProject from '../../../src/components/project/EditProject'
 import ProjectFullDescription from '../../../src/components/projects/ProjectFullDescription'
 import { DELETE_PROJECT, GET_PROJECT } from '../../../src/gql/project'
-import { ADD_NEW_PROPOSAL } from '../../../src/gql/proposal'
+import { ADD_NEW_PROPOSAL, HAS_USER_APPLIED_FOR_PROJECT } from '../../../src/gql/proposal'
 import { Project as ProjectProps } from '../../../src/interfaces/project'
 import { getUserId } from '../../../src/lib/user-helper'
 
@@ -29,7 +31,15 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner: boolean }) => {
+const Project = ({
+  initialData,
+  isOwner,
+  hasUserAppliedForProject,
+}: {
+  initialData: ProjectProps
+  isOwner: boolean
+  hasUserAppliedForProject: boolean
+}) => {
   const classes = useStyles()
   const router = useRouter()
   const [edit, setEdit] = useState(false)
@@ -106,11 +116,19 @@ const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner:
             <SeeProposals projectId={data._id} />
           </div>
         ) : null}
-        {!isOwner ? (
-          <Button onClick={() => setSlider(true)} className={classes.btn} variant="contained" color="primary">
-            Apply
-          </Button>
-        ) : null}
+        {!isOwner &&
+          (!hasUserAppliedForProject ? (
+            <Button onClick={() => setSlider(true)} className={classes.btn} variant="contained" color="primary">
+              Apply
+            </Button>
+          ) : (
+            <Link href={`/proposals/${hasUserAppliedForProject}`} passHref>
+              <Button className={classes.btn} variant="contained" color="primary">
+                See My Proposal
+              </Button>
+            </Link>
+          ))}
+
         {edit ? (
           <EditProject data={data} cancelEdit={cancelEdit} getUpdatedProjectDetails={getUpdatedProjectDetails} />
         ) : (
@@ -142,6 +160,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     variables: { _id: context.query.id },
     errorPolicy: 'ignore',
   })
+
+  const { data: d } = await client.query({
+    query: HAS_USER_APPLIED_FOR_PROJECT,
+    variables: {
+      projectId: context.query.id,
+      proposserId: userId,
+    },
+    errorPolicy: 'ignore',
+  })
+  const hasUserAppliedForProject = d?.hasUserAppliedForProject?._id
   const { project } = data
 
   if (!project) {
@@ -153,6 +181,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       initialData: project,
+      hasUserAppliedForProject,
       isOwner,
     },
   }

@@ -75,6 +75,14 @@ export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
   }
 `
 
+export const HAS_USER_APPLIED_FOR_PROJECT = gql`
+  query HasUserAppliedForProject($projectId: ID!, $proposserId: ID!) {
+    hasUserAppliedForProject(projectId: $projectId, proposserId: $proposserId) {
+      _id
+    }
+  }
+`
+
 export const ADD_NEW_PROPOSAL = gql`
   mutation AddNewProposal(
     $coverLetter: String!
