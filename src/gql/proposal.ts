@@ -102,3 +102,17 @@ export const DELETE_PROPOSAL = gql`
     }
   }
 `
+
+export const UPDATE_PROPOSAL = gql`
+  mutation UpdateProposal($id: ID!, $coverLetter: String!, $proposedRate: String!) {
+    updateProposal(_id: $id, coverLetter: $coverLetter, proposedRate: $proposedRate) {
+      _id
+      coverLetter
+      projectId
+      currency
+      proposedRate
+      projectTitle
+      proposserId
+    }
+  }
+`

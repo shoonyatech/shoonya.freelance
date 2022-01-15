@@ -17,7 +17,7 @@ const useStyles = makeStyles(() =>
 const SaveCancelBtn = ({ cancelEdit }) => {
   const classes = useStyles()
   return (
-    <div className="self-end pt-2">
+    <div className="pt-2">
       <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
         Save
       </Button>
