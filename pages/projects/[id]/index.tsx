@@ -15,6 +15,7 @@ import ProjectProposal from '../../../src/components/project/apply/ProjectPropos
 import EditProject from '../../../src/components/project/EditProject'
 import ProjectFullDescription from '../../../src/components/projects/ProjectFullDescription'
 import { DELETE_PROJECT, GET_PROJECT } from '../../../src/gql/project'
+import { ADD_NEW_PROPOSAL } from '../../../src/gql/proposal'
 import { Project as ProjectProps } from '../../../src/interfaces/project'
 import { getUserId } from '../../../src/lib/user-helper'
 
@@ -40,9 +41,16 @@ const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner:
     },
   })
 
-  const closeSlider = () => {
-    setSlider(false)
-  }
+  const closeSlider = () => setSlider(false)
+  const [proposal, setProposal] = useState({
+    coverLetter: '',
+    proposedRate: 0,
+  })
+  const handleChange = (key, newValue) =>
+    setProposal({
+      ...proposal,
+      [key]: newValue,
+    })
 
   const [refetchProject, { loading, error }] = useLazyQuery(GET_PROJECT, {
     async onCompleted({ project }) {
@@ -64,9 +72,23 @@ const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner:
     })
   }
 
+  const [addNewProposal, { loading: loadAddNewProposal, error: errAddNewProposal }] = useMutation(ADD_NEW_PROPOSAL, {
+    variables: {
+      coverLetter: proposal.coverLetter,
+      proposedRate: proposal.proposedRate,
+      projectId: initialData._id,
+      projectTitle: data.title,
+      currency: data.budget.currency,
+    },
+    onCompleted({ addNewProposal: { _id } }) {
+      router.push(`/proposals/${_id}`)
+    },
+  })
+
   const cancelEdit = () => setEdit(false)
 
   if (loading) return <Loader open={loading} error={error} />
+  if (loadAddNewProposal) return <Loader open={loadAddNewProposal} error={errAddNewProposal} />
   if (delLoad) return <Loader open={delLoad} error={delErr} />
 
   return (
@@ -96,11 +118,12 @@ const Project = ({ initialData, isOwner }: { initialData: ProjectProps; isOwner:
         )}
       </div>
       {slider ? (
-        <SliderContainer closeSlider={closeSlider} openOrCloseSlider={slider}>
+        <SliderContainer openOrCloseSlider={slider}>
           <ProjectProposal
-            closeSlider={closeSlider}
-            projectId={data._id}
-            projectTitle={data.title}
+            submitProposal={addNewProposal}
+            cancelProposal={closeSlider}
+            data={proposal}
+            handleChange={handleChange}
             currency={data.budget.currency}
           />
         </SliderContainer>

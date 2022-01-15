@@ -1,13 +1,15 @@
 /* eslint-disable no-underscore-dangle */
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import IconButton from '@material-ui/core/IconButton'
 import InputBase from '@material-ui/core/InputBase'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import { useRouter } from 'next/router'
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react'
 
 import { GET_PROJECT, GET_PROJECTS } from '../../../gql/project'
+import { ADD_NEW_PROPOSAL } from '../../../gql/proposal'
 import { isArrayEmpty } from '../../../lib/utils'
 import BudgetFilter from '../../common/BudgetFilter'
 import IconList from '../../common/IconList'
@@ -36,6 +38,7 @@ const useStyles = makeStyles(() =>
 
 const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId, userId }) => {
   const classes = useStyles()
+  const router = useRouter()
   const [data, setData] = useState(initialData)
   const [isIconPickorActive, setIsIconPickorActive] = useState<boolean>(false)
   const toggleIconPickor = () => {
@@ -60,9 +63,18 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
   })
 
   const [slider, setSlider] = useState(false)
-  const toggleSlider = () => {
-    setSlider((state) => !state)
-  }
+  const toggleSlider = () => setSlider((state) => !state)
+
+  const [proposal, setProposal] = useState({
+    coverLetter: '',
+    proposedRate: 0,
+  })
+  const handleChange = (key, newValue) =>
+    setProposal({
+      ...proposal,
+      [key]: newValue,
+    })
+
   const {
     error,
     loading,
@@ -132,8 +144,22 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     })
   }
 
+  const [addNewProposal, { loading: loadAddNewProposal, error: errAddNewProposal }] = useMutation(ADD_NEW_PROPOSAL, {
+    variables: {
+      coverLetter: proposal.coverLetter,
+      proposedRate: proposal.proposedRate,
+      projectId: activeProjectId,
+      projectTitle: d?.project.title,
+      currency: d?.project?.budget?.currency,
+    },
+    onCompleted({ addNewProposal: { _id } }) {
+      router.push(`/proposals/${_id}`)
+    },
+  })
+
   if (loading) return <Loader open={loading} error={error} />
   if (errorProjects || loadingProjects) return <Loader open={loading} error={errorProjects} />
+  if (loadAddNewProposal) return <Loader open={loadAddNewProposal} error={errAddNewProposal} />
 
   return (
     <div className="px-4">
@@ -193,12 +219,13 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       )}
 
       {slider ? (
-        <SliderContainer closeSlider={toggleSlider} openOrCloseSlider={slider}>
+        <SliderContainer openOrCloseSlider={slider}>
           <ProjectProposal
-            closeSlider={toggleSlider}
-            projectId={activeProjectId}
-            projectTitle={d.project.title}
             currency={d.project.budget.currency}
+            submitProposal={addNewProposal}
+            cancelProposal={toggleSlider}
+            data={proposal}
+            handleChange={handleChange}
           />
         </SliderContainer>
       ) : null}
