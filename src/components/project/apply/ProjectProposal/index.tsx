@@ -1,15 +1,10 @@
-import { useMutation } from '@apollo/client'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-
-import { ADD_NEW_PROPOSAL } from '../../../../gql/proposal'
-import Loader from '../../../common/Loader'
+import React from 'react'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -19,34 +14,17 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectProposal = ({ closeSlider, projectId, projectTitle, currency }) => {
-  const router = useRouter()
+const ProjectProposal = ({ currency, submitProposal, cancelProposal, data, handleChange }) => {
   const classes = useStyles()
-  const [proposal, setProposal] = useState({
-    coverLetter: '',
-    proposedRate: 0,
-  })
 
-  const [addNewProposal, { loading, error }] = useMutation(ADD_NEW_PROPOSAL, {
-    onCompleted({ addNewProposal: { _id } }) {
-      router.push(`proposals/${_id}`)
-    },
-  })
-
-  const handleChange = (e) => {
-    setProposal({ ...proposal, [e.target.name]: e.target.value })
+  const handleProposalChange = (e) => {
+    handleChange(e.target.name, e.target.value)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { coverLetter, proposedRate } = proposal
-    await addNewProposal({
-      variables: { coverLetter, proposedRate, projectId, projectTitle, currency },
-    })
-    closeSlider()
+    await submitProposal()
   }
-
-  if (loading) return <Loader open={loading} error={error} />
 
   return (
     <div className="p-2 md:p-3">
@@ -54,8 +32,8 @@ const ProjectProposal = ({ closeSlider, projectId, projectTitle, currency }) => 
       <form onSubmit={handleSubmit} className="py-8">
         <TextField
           className={classes.textField}
-          value={proposal.coverLetter}
-          onChange={handleChange}
+          value={data.coverLetter}
+          onChange={handleProposalChange}
           name="coverLetter"
           multiline
           rows={10}
@@ -69,13 +47,16 @@ const ProjectProposal = ({ closeSlider, projectId, projectTitle, currency }) => 
           className={classes.textField}
           type="number"
           name="proposedRate"
-          onChange={handleChange}
-          value={proposal.proposedRate}
+          onChange={handleProposalChange}
+          value={data.proposedRate}
           required
           fullWidth
           startAdornment={<InputAdornment position="start">{currency}</InputAdornment>}
         />
-        <div>
+        <div className="flex gap-x-4">
+          <Button onClick={() => cancelProposal()} variant="contained" color="secondary">
+            Cancel
+          </Button>
           <Button type="submit" variant="contained" color="primary">
             Send Proposal
           </Button>
