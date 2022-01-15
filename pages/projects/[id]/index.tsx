@@ -165,7 +165,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     query: HAS_USER_APPLIED_FOR_PROJECT,
     variables: {
       projectId: context.query.id,
-      proposserId: userId,
     },
     errorPolicy: 'ignore',
   })

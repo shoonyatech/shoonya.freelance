@@ -76,8 +76,8 @@ export const GET_USER_PROPOSALS_AND_PROJECT_OWNER = gql`
 `
 
 export const HAS_USER_APPLIED_FOR_PROJECT = gql`
-  query HasUserAppliedForProject($projectId: ID!, $proposserId: ID!) {
-    hasUserAppliedForProject(projectId: $projectId, proposserId: $proposserId) {
+  query HasUserAppliedForProject($projectId: ID!) {
+    hasUserAppliedForProject(projectId: $projectId) {
       _id
     }
   }
