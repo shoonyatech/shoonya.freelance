@@ -2,15 +2,21 @@
 import { gql } from '@apollo/client'
 
 export const GET_PROPOSAL_BY_ID = gql`
-  query GetProposalsById($_id: ID!) {
-    getProposalsById(_id: $_id) {
+  query GetProposalById($id: ID!) {
+    getProposalsById(_id: $id) {
       _id
       coverLetter
-      projectId
-      currency
       proposedRate
       projectTitle
-      proposserId
+      currency
+      proposser {
+        skills
+        avatar
+        name
+        _id
+        location
+      }
+      projectId
     }
   }
 `
@@ -84,7 +90,7 @@ export const HAS_USER_APPLIED_FOR_PROJECT = gql`
 `
 
 export const ADD_NEW_PROPOSAL = gql`
-  mutation AddNewProposal(
+  mutation addNewProposal(
     $coverLetter: String!
     $proposedRate: String!
     $projectId: ID!
@@ -99,6 +105,18 @@ export const ADD_NEW_PROPOSAL = gql`
       currency: $currency
     ) {
       _id
+      coverLetter
+      proposedRate
+      projectTitle
+      currency
+      projectId
+      proposser {
+        _id
+        name
+        avatar
+        skills
+        location
+      }
     }
   }
 `
@@ -120,7 +138,6 @@ export const UPDATE_PROPOSAL = gql`
       currency
       proposedRate
       projectTitle
-      proposserId
     }
   }
 `

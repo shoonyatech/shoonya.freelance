@@ -168,7 +168,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     errorPolicy: 'ignore',
   })
-  const hasUserAppliedForProject = d?.hasUserAppliedForProject?._id
+  const hasUserAppliedForProject = d?.hasUserAppliedForProject?._id || false
   const { project } = data
 
   if (!project) {

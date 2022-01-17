@@ -21,7 +21,7 @@ export default ProposalPage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { data } = await client.query({
     query: GET_PROPOSAL_BY_ID,
-    variables: { _id: context.query.id },
+    variables: { id: context.query.id },
     errorPolicy: 'ignore',
   })
 
