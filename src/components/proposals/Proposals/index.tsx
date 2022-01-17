@@ -13,10 +13,7 @@ const Proposals = ({ initialData }) => {
 
   return (
     <MasterDetailsLayout>
-      <FreelancerList
-        data={initialData}
-        updateActiveProject={updateActiveProject} //  updateActiveProject={updateActiveProject}
-      />
+      <FreelancerList data={initialData} updateActiveProject={updateActiveProject} />
       <div>
         <ProposalCard data={initialData[activeIndex]} />
       </div>
