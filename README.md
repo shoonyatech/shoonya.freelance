@@ -20,7 +20,7 @@
 - Open command prompt and run the following to fetch the code into your local box
 
 ```
-git clone <your git url>
+    git clone <your git url>
 ```
 
 - Create a reference to the upstream repo to be able to create Pull Requests
@@ -49,6 +49,9 @@ npm run dev
 ```
 npm run storybook
 ```
+
+- run the graphql playground
+  follow the steps mentioned in [Shoonya.freelance.graphql](https://github.com/shoonyatech/shoonya.freelance.graphql) repo
 
 ### To use Auth0
 
