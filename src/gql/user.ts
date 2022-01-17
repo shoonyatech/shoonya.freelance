@@ -146,23 +146,6 @@ export const GET_USER_AND_COUNTRIES = gql`
   }
 `
 
-export const GET_PROPOSALS_BY_PROJECT = gql`
-  query GetProposalsByProject($_id: ID!) {
-    getProposalsByProject(_id: $_id) {
-      _id
-      name
-      title
-      skills {
-        name
-      }
-      picture
-    }
-    getProposalsByProject2(_id: $_id) {
-      _id
-    }
-  }
-`
-
 export const GET_USER_AND_PROPOSAL = gql`
   query User($_id: ID!, $proposalId: ID!) {
     user(_id: $_id) {

@@ -5,14 +5,14 @@ import React from 'react'
 
 import GetApolloClient from '../../../apis/apollo.client'
 import Proposals from '../../../src/components/proposals/Proposals'
-import { GET_PROPOSALS_BY_PROJECT } from '../../../src/gql/user'
+import { GET_PROPOSALS_BY_PROJECT } from '../../../src/gql/proposal'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function MyProposal({ initialData, initialProposals }) {
+export default function MyProposal({ initialData }) {
   return (
     <div style={{ marginLeft: '57px' }}>
-      <Proposals data={initialData} proposals={initialProposals} />
+      <Proposals initialData={initialData} />
     </div>
   )
 }
@@ -21,16 +21,15 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
   async getServerSideProps(context) {
     const { data } = await client.query({
       query: GET_PROPOSALS_BY_PROJECT,
-      variables: { _id: context.query.id },
+      variables: { projectId: context.query.id },
       errorPolicy: 'ignore',
     })
 
-    const { getProposalsByProject, getProposalsByProject2 } = data
+    const { getProposalsByProject } = data
 
     return {
       props: {
         initialData: getProposalsByProject,
-        initialProposals: getProposalsByProject2,
       },
     }
   },
