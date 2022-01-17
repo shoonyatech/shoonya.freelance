@@ -89,6 +89,26 @@ export const HAS_USER_APPLIED_FOR_PROJECT = gql`
   }
 `
 
+export const GET_PROPOSALS_BY_PROJECT = gql`
+  query GetProposalsByProject($projectId: ID!) {
+    getProposalsByProject(projectId: $projectId) {
+      _id
+      coverLetter
+      proposedRate
+      projectTitle
+      currency
+      projectId
+      proposser {
+        _id
+        name
+        avatar
+        skills
+        location
+      }
+    }
+  }
+`
+
 export const ADD_NEW_PROPOSAL = gql`
   mutation addNewProposal(
     $coverLetter: String!
