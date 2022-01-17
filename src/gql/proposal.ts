@@ -11,7 +11,7 @@ export const GET_PROPOSAL_BY_ID = gql`
       currency
       proposser {
         skills
-        avatar
+        picture
         name
         _id
         location
@@ -101,7 +101,7 @@ export const GET_PROPOSALS_BY_PROJECT = gql`
       proposser {
         _id
         name
-        avatar
+        picture
         skills
         location
       }
@@ -133,7 +133,7 @@ export const ADD_NEW_PROPOSAL = gql`
       proposser {
         _id
         name
-        avatar
+        picture
         skills
         location
       }
