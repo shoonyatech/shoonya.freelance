@@ -27,7 +27,7 @@ const Proposals = ({ initialData }) => {
             Hire
           </Button>
           <Button variant="contained" color="primary">
-            Details
+            View Profile
           </Button>
         </div>
         <ProposalCard data={initialData[activeIndex]} />
