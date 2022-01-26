@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import Button from '@material-ui/core/Button'
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 import { isArrayEmpty } from '../../../lib/utils'
@@ -11,7 +12,6 @@ const Proposals = ({ initialData }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const updateActiveProject = (newId) => setActiveIndex(newId)
   if (isArrayEmpty(initialData)) return <p>No proposals</p>
-
   return (
     <MasterDetailsLayout>
       <FreelancerList data={initialData} updateActiveProject={updateActiveProject} />
@@ -26,9 +26,11 @@ const Proposals = ({ initialData }) => {
           <Button variant="contained" color="primary">
             Hire
           </Button>
-          <Button variant="contained" color="primary">
-            View Profile
-          </Button>
+          <Link href={`/users/${initialData[activeIndex]?.proposser?._id}`} passHref>
+            <Button variant="contained" color="primary">
+              View Profile
+            </Button>
+          </Link>
         </div>
         <ProposalCard data={initialData[activeIndex]} />
       </div>
