@@ -95,24 +95,24 @@ export default function MiniDrawer() {
           </Link>
         </List>
         <List>
-          <Link href="/my-proposals" passHref>
-            <ListItem button className={classes.list} key="my proposals">
+          <Link href="/projects" passHref>
+            <ListItem button className={classes.list} key="projects">
               <ListItemIcon>
                 <DescriptionIcon color="secondary" />
               </ListItemIcon>
 
-              <ListItemText primary="My Proposals" />
+              <ListItemText primary="Projects" />
             </ListItem>
           </Link>
         </List>
         <List>
-          <Link href="/my-projects" passHref>
-            <ListItem button className={classes.list} key="my projects">
+          <Link href="/freelancers" passHref>
+            <ListItem button className={classes.list} key="freelancers">
               <ListItemIcon>
                 <BusinessCenterIcon color="secondary" />
               </ListItemIcon>
 
-              <ListItemText primary="My Projects" />
+              <ListItemText primary="Freelancers" />
             </ListItem>
           </Link>
         </List>
