@@ -45,21 +45,21 @@ export default function ScrollableTabsButtonForce() {
         />
       </Link>
 
-      <Link href="my-proposals" passHref>
+      <Link href="/projects" passHref>
         <BottomNavigationAction
           className={classes.wrapper}
           showLabel
-          value="My Proposals"
-          label="My Proposals"
+          value="Projects"
+          label="Projects"
           icon={<DescriptionIcon />}
         />
       </Link>
-      <Link href="/my-projects" passHref>
+      <Link href="/freelancers" passHref>
         <BottomNavigationAction
           className={classes.wrapper}
           showLabel
-          label="My Projects"
-          value="My Projects"
+          label="Freelancers"
+          value="Freelancers"
           icon={<BusinessCenterIcon />}
         />
       </Link>
