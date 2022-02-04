@@ -3,16 +3,16 @@ import { useUser } from '@auth0/nextjs-auth0'
 import { Divider, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
-import DescriptionIcon from '@material-ui/icons/Description'
-import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp'
-import HomeIcon from '@material-ui/icons/Home'
 import MenuIcon from '@material-ui/icons/Menu'
-import SettingsIcon from '@material-ui/icons/Settings'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { BsPersonBoundingBox } from 'react-icons/bs'
+import { FaBriefcase } from 'react-icons/fa'
+import { FiLogOut } from 'react-icons/fi'
+import { IoBarChart } from 'react-icons/io5'
+import { RiSettings3Fill } from 'react-icons/ri'
 import { useToggle } from 'react-use'
 
 const drawerWidth = 240
@@ -88,7 +88,7 @@ export default function MiniDrawer() {
           <Link href="/dashboard" passHref>
             <ListItem button className={classes.list} key="dashboard">
               <ListItemIcon>
-                <HomeIcon color="secondary" />
+                <IoBarChart color="#E8D4B2" size="1.5em" />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
@@ -98,7 +98,7 @@ export default function MiniDrawer() {
           <Link href="/projects" passHref>
             <ListItem button className={classes.list} key="projects">
               <ListItemIcon>
-                <DescriptionIcon color="secondary" />
+                <FaBriefcase color="#E8D4B2" size="1.5em" />
               </ListItemIcon>
 
               <ListItemText primary="Projects" />
@@ -109,7 +109,7 @@ export default function MiniDrawer() {
           <Link href="/freelancers" passHref>
             <ListItem button className={classes.list} key="freelancers">
               <ListItemIcon>
-                <BusinessCenterIcon color="secondary" />
+                <BsPersonBoundingBox color="E8D4B2" size="1.5em" />
               </ListItemIcon>
 
               <ListItemText primary="Freelancers" />
@@ -123,7 +123,7 @@ export default function MiniDrawer() {
               <ListItem button className={classes.list} key="profile">
                 <ListItemIcon>
                   {user?.picture ? (
-                    <Image className="rounded-full" src={user?.picture} alt="avatar" height="28" width="28" />
+                    <Image className="rounded-full" src={user?.picture} alt="avatar" height="24" width="24" />
                   ) : null}
                 </ListItemIcon>
                 <ListItemText primary="Profile" />
@@ -134,7 +134,7 @@ export default function MiniDrawer() {
           <Link href="/settings" passHref>
             <ListItem button className={classes.list} key="Settings">
               <ListItemIcon>
-                <SettingsIcon color="secondary" />
+                <RiSettings3Fill color="#E8D4B2" size="1.5em" />
               </ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItem>
@@ -142,7 +142,7 @@ export default function MiniDrawer() {
           <Link href="/api/auth/logout" passHref>
             <ListItem button className={classes.list} key="Sign out">
               <ListItemIcon>
-                <ExitToAppSharpIcon color="secondary" />
+                <FiLogOut color="#E8D4B2" size="1.5em" />
               </ListItemIcon>
               <ListItemText primary="Sign Out" />
             </ListItem>
