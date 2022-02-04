@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: theme.palette.primary.main,
   },
   wrapper: {
-    color: '#fff',
+    color: '#E8D4B2',
   },
 }))
 
