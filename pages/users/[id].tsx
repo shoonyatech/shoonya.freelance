@@ -12,20 +12,19 @@ import { getUserId } from '../../src/lib/user-helper'
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 function UserPage({ data, isOwner }) {
-  return <div style={{ marginLeft: "57px" }}>
+  return (
+    <div style={{ marginLeft: '57px' }}>
+      <div className="max-w-5xl mx-auto w-full py-4">
+        {isOwner ? null : (
+          <Button color="primary" variant="contained">
+            Message
+          </Button>
+        )}
+      </div>
 
-    <div className='max-w-5xl mx-auto w-full py-4'>
-      {isOwner ?
-        null :
-        <Button color='primary' variant="contained">
-          Message
-        </Button>
-      }
-
+      <Profile data={data} isReadOnly />
     </div>
-
-    <Profile data={data} isReadOnly />
-  </div>
+  )
 }
 
 export default UserPage
@@ -48,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       data: data.user,
-      isOwner
+      isOwner,
     },
   }
 }

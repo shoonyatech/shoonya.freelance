@@ -6,7 +6,7 @@ const MaterialUiTheme = createMuiTheme({
       main: '#282828',
     },
     secondary: {
-      main: '#FFF',
+      main: '#E8D4B2',
     },
   },
   overrides: {

@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     list: {
-      color: '#fff',
+      color: '#E8D4B2',
     },
   })
 )
