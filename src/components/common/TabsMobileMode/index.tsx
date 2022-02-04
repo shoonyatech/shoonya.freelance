@@ -2,13 +2,13 @@
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
-import DescriptionIcon from '@material-ui/icons/Description'
-import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp'
-import HomeIcon from '@material-ui/icons/Home'
-import SettingsIcon from '@material-ui/icons/Settings'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { BsPersonBoundingBox } from 'react-icons/bs'
+import { FaBriefcase } from 'react-icons/fa'
+import { FiLogOut } from 'react-icons/fi'
+import { IoBarChart } from 'react-icons/io5'
+import { RiSettings3Fill } from 'react-icons/ri'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -41,7 +41,7 @@ export default function ScrollableTabsButtonForce() {
           showLabel
           value="Dashboard"
           label="Dashboard"
-          icon={<HomeIcon />}
+          icon={<IoBarChart color="#E8D4B2" />}
         />
       </Link>
 
@@ -51,7 +51,7 @@ export default function ScrollableTabsButtonForce() {
           showLabel
           value="Projects"
           label="Projects"
-          icon={<DescriptionIcon />}
+          icon={<FaBriefcase color="#E8D4B2" />}
         />
       </Link>
       <Link href="/freelancers" passHref>
@@ -60,7 +60,7 @@ export default function ScrollableTabsButtonForce() {
           showLabel
           label="Freelancers"
           value="Freelancers"
-          icon={<BusinessCenterIcon />}
+          icon={<BsPersonBoundingBox color="E8D4B2" />}
         />
       </Link>
       <Link href="/" passHref>
@@ -69,7 +69,7 @@ export default function ScrollableTabsButtonForce() {
           showLabel
           value="Settings"
           label="Settings"
-          icon={<SettingsIcon />}
+          icon={<RiSettings3Fill color="#E8D4B2" />}
         />
       </Link>
       <Link href="/api/auth/logout" passHref>
@@ -78,7 +78,7 @@ export default function ScrollableTabsButtonForce() {
           showLabel
           value="Sign out"
           label="Sign out"
-          icon={<ExitToAppSharpIcon />}
+          icon={<FiLogOut color="#E8D4B2" />}
         />
       </Link>
     </BottomNavigation>
