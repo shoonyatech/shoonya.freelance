@@ -52,14 +52,22 @@ export const GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID = gql`
 `
 
 export const GET_USER_PROPOSALS = gql`
-  query GetUserProposals($_id: ID!) {
-    getUserProposals(_id: $_id) {
-      proposedRate
-      coverLetter
-      projectId
-      projectTitle
+  query GetUserProposals {
+    getUserProposals {
       _id
+      coverLetter
+      proposedRate
+      projectTitle
       currency
+      projectId
+      verdict
+      proposser {
+        _id
+        name
+        picture
+        skills
+        location
+      }
     }
   }
 `

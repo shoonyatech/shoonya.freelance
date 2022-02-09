@@ -14,7 +14,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ProjectStrip = ({ href, title, skills, budgetLevel }) => {
+const ProjectStrip = ({ data: { title, skills, budgetLevel }, href }) => {
   const classes = useStyles()
 
   return (
@@ -23,7 +23,7 @@ const ProjectStrip = ({ href, title, skills, budgetLevel }) => {
         <div className="h-16 text-xl font-medium">{title}</div>
         <div className="flex justify-between w-full">
           <div>
-            {skills.map((skill) => (
+            {skills?.map((skill) => (
               <Chip className={classes.chip} key={skill} label={skill} icon={icons[`${skill}`]} />
             ))}
           </div>

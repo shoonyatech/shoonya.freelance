@@ -154,3 +154,22 @@ export const UPDATE_PROJECT_TITLE = gql`
     }
   }
 `
+
+// used in /dashboard to render projects in which user has made a proposal to.
+export const GET_PROJECTS_BY_USER_PROPOSALS = gql`
+  query GetProjectsByUserProposals {
+    getProjectsByUserProposals {
+      _id
+      title
+      skills
+      budget {
+        amount
+        currency
+        type
+      }
+    }
+    getUserProposals {
+      _id
+    }
+  }
+`
