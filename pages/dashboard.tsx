@@ -9,19 +9,33 @@ import { GET_PROJECTS_BY_USER_PROPOSALS } from '../src/gql/project'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-export default function Dashboard({ proposals }) {
+export default function Dashboard({ proposals, activeProjects }) {
   return (
     <div style={{ marginLeft: '57px' }} className="px-4">
       <section>
         <h2 className="text-3xl my-6">As a freelancer:</h2>
 
-        <div className="grid grid-cols-3">
-          <div>
-            <h3 className="text-xl">Proposals</h3>
-            {proposals?.getProjectsByUserProposals.map((proposal, index) => (
-              <ProjectStrip data={proposal} href={`/proposals/${proposals.getUserProposals[index]._id}`} />
-            ))}
-          </div>
+        <div className="grid grid-cols-3 gap-x-4">
+          {activeProjects.length ? (
+            <div>
+              <h3 className="text-xl">Active Projects</h3>
+              {activeProjects.map((activeProject) => (
+                <ProjectStrip key={activeProject._id} data={activeProject} href={`/projects/${activeProject._id}`} />
+              ))}
+            </div>
+          ) : null}
+          {proposals?.getProjectsByUserProposals ? (
+            <div>
+              <h3 className="text-xl">Proposals</h3>
+              {proposals.getProjectsByUserProposals.map((proposal, index) => (
+                <ProjectStrip
+                  key={proposal._id}
+                  data={proposal}
+                  href={`/proposals/${proposals.getUserProposals[index]._id}`}
+                />
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
       <section>
@@ -37,9 +51,10 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       query: GET_PROJECTS_BY_USER_PROPOSALS,
     })
 
-    const { getProjectsByUserProposals, getUserProposals } = data
+    const { getProjectsByUserProposals, getUserProposals, getUserActiveProjects } = data
     return {
       props: {
+        activeProjects: getUserActiveProjects,
         proposals: { getProjectsByUserProposals, getUserProposals },
       },
     }
