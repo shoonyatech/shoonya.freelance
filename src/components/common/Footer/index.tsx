@@ -14,39 +14,6 @@ export default function Footer() {
             <a target="_blank">Privacy Policy</a>
           </Link>
         </span>
-        <span className="flex flex-row">
-          <div className="bg-sprite-background bg-no-repeat" style={{ width: 60, height: 60 }} />
-          <a href="https://www.facebook.com/wallora/" target="_blank" rel="noreferrer">
-            <div
-              className="bg-sprite-background bg-no-repeat"
-              style={{ width: 56, height: 55, backgroundPositionX: -60 }}
-            />
-          </a>
-          <a href="https://twitter.com/WalloraInc" target="_blank" rel="noreferrer">
-            <div
-              className="bg-sprite-background bg-no-repeat"
-              style={{ width: 56, height: 55, backgroundPositionX: -118 }}
-            />
-          </a>
-          <a href="https://plus.google.com/115182973503232931446" target="_blank" rel="noreferrer">
-            <div
-              className="bg-sprite-background bg-no-repeat"
-              style={{ width: 56, height: 55, backgroundPositionX: -176 }}
-            />
-          </a>
-          <a href="https://www.linkedin.com/company/wallora/about/" target="_blank" rel="noreferrer">
-            <div
-              className="bg-sprite-background bg-no-repeat"
-              style={{ width: 56, height: 55, backgroundPositionX: -234 }}
-            />
-          </a>
-          <a href="https://in.pinterest.com/WalloraInc/" target="_blank" rel="noreferrer">
-            <div
-              className="bg-sprite-background bg-no-repeat"
-              style={{ width: 56, height: 55, backgroundPositionX: -292 }}
-            />
-          </a>
-        </span>
       </div>
     </footer>
   )
