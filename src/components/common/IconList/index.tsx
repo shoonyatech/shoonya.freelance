@@ -3,6 +3,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import React from 'react'
 
 import { icons } from '../../../lib/icon'
+import { isArrayEmpty } from '../../../lib/utils'
 
 interface Props {
   iconArr: any
@@ -30,6 +31,8 @@ const useStyles = makeStyles(() =>
 
 const IconList = ({ iconArr, displayIcon }: Props) => {
   const classes = useStyles()
+
+  if (isArrayEmpty(iconArr)) return null
 
   return (
     <div className="flex flex-wrap">
