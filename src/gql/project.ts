@@ -171,7 +171,18 @@ export const GET_PROJECTS_BY_USER_PROPOSALS = gql`
       _id
       coverLetter
     }
+    getUserCurrentProjects {
+      title
+      _id
+      skills
+      budget {
+        currency
+        amount
+      }
+      isPublished
+    }
     getUserActiveProjects {
+      _id
       title
       _id
       skills
