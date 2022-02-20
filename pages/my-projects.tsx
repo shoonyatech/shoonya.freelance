@@ -34,14 +34,12 @@ export default function MyProjects({
     setIsRefreshing(false)
   }, [initialData])
   return (
-    <div style={{ marginLeft: '57px' }}>
-      <MyProjectsWrapper
-        data={data}
-        refreshData={refreshData}
-        isRefreshing={isRefreshing}
-        initialUserHasNoProjects={initialUserHasNoProjects}
-      />
-    </div>
+    <MyProjectsWrapper
+      data={data}
+      refreshData={refreshData}
+      isRefreshing={isRefreshing}
+      initialUserHasNoProjects={initialUserHasNoProjects}
+    />
   )
 }
 

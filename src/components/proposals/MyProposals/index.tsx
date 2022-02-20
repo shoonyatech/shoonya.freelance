@@ -54,7 +54,7 @@ const MyProposals = ({ data, refreshData, isRefreshing, initialIsUserHasNoPropos
   }
 
   if (loading || error || isRefreshing) return <Loader open={loading} error={error} />
-  if (isUserHasNoProposals) return <div style={{ marginLeft: '57px' }}>You have no proposals</div>
+  if (isUserHasNoProposals) return <div  >You have no proposals</div>
 
   return (
     <MasterDetailsLayout>

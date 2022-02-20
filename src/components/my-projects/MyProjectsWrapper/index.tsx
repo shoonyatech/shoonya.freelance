@@ -49,7 +49,7 @@ const MyProjectsWrapper = ({ data, initialUserHasNoProjects, refreshData, isRefr
     } else setIsUserHasNoProjects(true)
   }
   if (loading || error || isRefreshing) return <Loader open={loading} error={error} />
-  if (isUserHasNoProjects) return <div style={{ marginLeft: '57px' }}>You have no projects</div>
+  if (isUserHasNoProjects) return <div  >You have no projects</div>
 
   return (
     <div>

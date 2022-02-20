@@ -11,7 +11,7 @@ const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 export default function MyProposal({ initialData }) {
   return (
-    <div style={{ marginLeft: '57px' }}>
+    <div>
       <h1 className="text-2xl md:text-4xl p-3">Proposals for project: {initialData[0].projectTitle}</h1>
       <Proposals initialData={initialData} />
     </div>

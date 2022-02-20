@@ -8,9 +8,7 @@ export default function Home() {
   const { error, isLoading } = useUser()
   if (isLoading || error)
     return (
-      <div>
-        <Loader open={isLoading} error={error} />
-      </div>
+      <Loader open={isLoading} error={error} />
     )
   return <div />
 }
