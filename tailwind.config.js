@@ -18,7 +18,7 @@ module.exports = {
         skillbarfilled: '#A7BB80',
         skillbarempty: '#CADDA5',
         primary: '#282828',
-        secondary: '#FFF',
+        secondary: '#E8D4B2',
       },
       fontFamily: {
         sans: [
