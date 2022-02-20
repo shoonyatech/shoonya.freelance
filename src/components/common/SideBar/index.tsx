@@ -44,22 +44,24 @@ export default function MiniDrawer() {
   const { user } = useUser()
 
   return (
-    <header className="bg-primary text-secondary w-16 h-screen">
-      <nav className="h-full">
+    <header className="hidden sm:block bg-primary text-secondary w-16 h-screen">
+      <div className='m-4 absolute'>
+        <Image src="/logo.png" alt="logo" width="64" height="64" />
+      </div>
+      <nav className='h-full'>
         <ul className="py-2 h-full flex flex-col justify-between">
-          <div>
+          <div className='mt-20'>
             {primaryTabs.map((tab) => (
               <li className="p-2">
                 <Link href={tab.href}>
                   <a className="flex flex-col items-center">
                     {tab.icon}
-                    <span className="text-xs"> {tab.name}</span>{' '}
+                    <span className="text-xs mt-1"> {tab.name}</span>{' '}
                   </a>
                 </Link>
               </li>
             ))}
           </div>
-
           <div>
             <li className="p-2">
               <Link href="/me">
