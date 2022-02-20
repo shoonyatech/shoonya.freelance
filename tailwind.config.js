@@ -57,7 +57,8 @@ module.exports = {
         masterDetailsLayout: '36rem 1fr',
       },
       gridTemplateRows: {
-        wizardFlow: '1fr max-content',
+        wizardFlow: '1fr auto',
+        pancake: "auto 1fr auto",
       },
       width: {
         '1/4': '25%',
