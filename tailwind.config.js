@@ -13,7 +13,6 @@ module.exports = {
       },
       // compiled the css with the below primary and secondary colors and linked with _app.tsx.
       colors: {
-        orange: '#ff5a42',
         resume: '#dfe5cb',
         skillbarfilled: '#A7BB80',
         skillbarempty: '#CADDA5',
