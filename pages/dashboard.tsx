@@ -12,9 +12,9 @@ const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 export default function Dashboard({ proposals, currentProjects, activeProjects }) {
   return (
-    <div style={{ marginLeft: '57px' }} className="px-4">
-      <section className="py-4">
-        <h2 className="text-3xl my-6">As a freelancer:</h2>
+    <>
+      <section>
+        <h2 className="text-3xl my-4">As a freelancer:</h2>
 
         <div className="grid grid-cols-3 gap-x-4">
           <div>
@@ -59,7 +59,7 @@ export default function Dashboard({ proposals, currentProjects, activeProjects }
           </div>
         </div>
       </section>
-    </div>
+    </>
   )
 }
 

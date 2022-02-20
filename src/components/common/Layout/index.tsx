@@ -17,7 +17,7 @@ function Layout({ children }: any): React.ReactElement {
     )
 
   return (
-    <div className="container min-w-full grid-cols-1 grid-rows-3 overflow-x-hidden">
+    <>
       <Head>
         <title>Shoonya</title>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -32,10 +32,12 @@ function Layout({ children }: any): React.ReactElement {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%26display=swap" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       </Head>
-      <Top user={user} />
-      <main> {children} </main>
-      <Bottom user={user} />
-    </div>
+      <div className={`min-w-full ${user && "grid-cols-1 grid-rows-3"}`}>
+        <Top user={user} />
+        <main className={`p-2 sm:p-4 lg:p-6 xl:p-8 ${user && "ml-16"}`}> {children} </main>
+        <Bottom user={user} />
+      </div>
+    </>
   )
 }
 

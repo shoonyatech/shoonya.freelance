@@ -102,7 +102,7 @@ const Project = ({
   if (delLoad) return <Loader open={delLoad} error={delErr} />
 
   return (
-    <div style={{ marginLeft: '57px' }}>
+    <div>
       <div className="my-4 px-6 py-2">
         {isOwner && !edit ? (
           // todo : add margin bottom on see proposals btn

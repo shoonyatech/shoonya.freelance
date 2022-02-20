@@ -17,14 +17,12 @@ export default function ProjectsPage({ initialData, userId }: { initialData: Pro
   const updateActiveProjectId = (newId) => setActiveProjectId(newId)
 
   return (
-    <div style={{ marginLeft: '57px' }}>
-      <ProjectsPageWrapper
-        initialData={initialData}
-        activeProjectId={activeProjectId}
-        updateActiveProjectId={updateActiveProjectId}
-        userId={userId}
-      />
-    </div>
+    <ProjectsPageWrapper
+      initialData={initialData}
+      activeProjectId={activeProjectId}
+      updateActiveProjectId={updateActiveProjectId}
+      userId={userId}
+    />
   )
 }
 

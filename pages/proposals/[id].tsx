@@ -7,14 +7,9 @@ import { GET_PROPOSAL_BY_ID } from '../../src/gql/proposal'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-// eslint-disable-next-line arrow-body-style
-const ProposalPage = ({ initialData }) => {
-  return (
-    <div style={{ marginLeft: '57px' }}>
-      <UserProposal initialData={initialData} />
-    </div>
-  )
-}
+const ProposalPage = ({ initialData }) => (
+  <UserProposal initialData={initialData} />
+)
 
 export default ProposalPage
 

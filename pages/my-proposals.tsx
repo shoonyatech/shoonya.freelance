@@ -28,7 +28,7 @@ export default function MyProposal({ initialData, initialIsUserHasNoProposals })
   }, [initialData])
 
   return (
-    <div style={{ marginLeft: '57px' }}>
+    <div  >
       <MyProposals
         data={data}
         refreshData={refreshData}

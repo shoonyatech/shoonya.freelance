@@ -13,7 +13,7 @@ const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
 function UserPage({ data, isOwner }) {
   return (
-    <div style={{ marginLeft: '57px' }}>
+    <div>
       <div className="max-w-5xl mx-auto w-full py-4">
         {isOwner ? null : (
           <Button color="primary" variant="contained">
