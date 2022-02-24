@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Avatar from '../Avatar'
+import DisplayPicture from '../DisplayPicture'
 import UserNameTitle from '../UserNameTitle'
 
 const Heading = ({ data }) => {
@@ -11,7 +11,7 @@ const Heading = ({ data }) => {
   return (
     <div className="lg:grid lg:grid-cols-profile">
       <UserNameTitle data={userNametitle} />
-      <Avatar data={data.picture} />
+      <DisplayPicture data={data.picture} />
     </div>
   )
 }
