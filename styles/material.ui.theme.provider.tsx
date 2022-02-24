@@ -10,26 +10,9 @@ const MaterialUiTheme = createMuiTheme({
     },
   },
   overrides: {
-    MuiFilledInput: {
-      root: {
-        backgroundColor: '#FFF',
-        '&:hover': {
-          backgroundColor: '#FFF',
-          // Reset on touch devices, it doesn't add specificity
-          '@media (hover: none)': {
-            backgroundColor: '#FFF',
-          },
-        },
-        '&.Mui-focused': {
-          backgroundColor: '#FFF',
-        },
-      },
-    },
-    MuiListItem: {
-      root: {
-        '&$selected': {
-          backgroundColor: 'F4DCF4',
-        },
+    MuiButton: {
+      label: {
+        color: '#E8D4B2',
       },
     },
   },
