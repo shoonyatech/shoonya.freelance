@@ -12,7 +12,7 @@ const NavBar = () => (
         </a>
       </Link>
       <div className="m-2">
-        <Button variant="contained" color="secondary" className="block" href="/api/auth/login">
+        <Button variant="contained" color="primary" className="block" href="/api/auth/login">
           Sign in
         </Button>
       </div>
