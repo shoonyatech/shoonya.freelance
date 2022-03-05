@@ -7,9 +7,7 @@ import { GET_PROPOSAL_BY_ID } from '../../src/gql/proposal'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-const ProposalPage = ({ initialData }) => (
-  <UserProposal initialData={initialData} />
-)
+const ProposalPage = ({ initialData }) => <UserProposal initialData={initialData} />
 
 export default ProposalPage
 

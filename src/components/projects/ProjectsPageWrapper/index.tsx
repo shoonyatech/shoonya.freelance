@@ -113,16 +113,16 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
   const updateFilter = (filterType, value) => {
     const newFilter = Array.isArray(value)
       ? {
-        ...filters,
-        [filterType]: {
-          ...filters[filterType],
-          [value[1]]: Number.isInteger(Number(value[0])) && value[1] !== 'checked' ? +value[0] : value[0],
-        },
-      }
+          ...filters,
+          [filterType]: {
+            ...filters[filterType],
+            [value[1]]: Number.isInteger(Number(value[0])) && value[1] !== 'checked' ? +value[0] : value[0],
+          },
+        }
       : {
-        ...filters,
-        [filterType]: value,
-      }
+          ...filters,
+          [filterType]: value,
+        }
     refetchProjects({
       variables: {
         input: newFilter,
@@ -207,7 +207,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       </div>
 
       {isArrayEmpty(data) ? (
-        <div  >Nothing to show , come back when there are active projects!</div>
+        <div>Nothing to show , come back when there are active projects!</div>
       ) : (
         <ProjectsMain
           data={data}
