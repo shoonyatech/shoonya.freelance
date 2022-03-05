@@ -1,12 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import InputBase from '@material-ui/core/InputBase'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import { useRouter } from 'next/router'
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
+import React, { useReducer, useState } from 'react'
 
 import { GET_PROJECT, GET_PROJECTS } from '../../../gql/project'
 import { ADD_NEW_PROPOSAL } from '../../../gql/proposal'
@@ -21,14 +22,12 @@ import ProjectsMain from '../ProjectsMain'
 
 const useStyles = makeStyles(() =>
   createStyles({
-    root: {
-      display: 'flex',
-      margin: '1em 0',
-      border: 'solid 1px #E5E7EB',
-      borderRadius: '8px',
-    },
     input: {
       padding: '0 1em',
+      display: 'flex',
+      border: 'solid 1px #E5E7EB',
+      borderRadius: '8px',
+      flex: 1,
     },
     iconBtn: {
       alignSelf: 'self-start',
@@ -36,17 +35,39 @@ const useStyles = makeStyles(() =>
   })
 )
 
+const reducer = (filters, action) => {
+  switch (action.type) {
+    case 'searchBar':
+    case 'skillPickor':
+      return {
+        ...filters,
+        [action.payload.key]: action.payload.value,
+      }
+    case 'hourly':
+    case 'fixed':
+      return {
+        ...filters,
+        [action.payload.key]: {
+          ...filters[action.payload.key],
+          [action.payload.nestedkey]: Number.isInteger(Number(action.payload.value)) && action.payload.nestedkey !== 'checked' ? +action.payload.value : action.payload.value,
+        },
+      }
+    default:
+      throw new Error();
+  }
+}
+
+
 const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId, userId }) => {
   const classes = useStyles()
   const router = useRouter()
   const [data, setData] = useState(initialData)
   const [isIconPickorActive, setIsIconPickorActive] = useState<boolean>(false)
-  const toggleIconPickor = () => {
-    setIsIconPickorActive((state) => !state)
-  }
-  const [filters, setFilter] = useState<any>({
+  const [slider, setSlider] = useState(false)
+
+  const initialFilter = {
     skills: [],
-    title: undefined,
+    title: "",
     owner: userId,
     fixed: {
       max: null,
@@ -60,11 +81,13 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       currency: null,
       checked: false,
     },
-  })
+  };
+  const [filters, dispatch] = useReducer(reducer, initialFilter)
 
-  const [slider, setSlider] = useState(false)
   const toggleSlider = () => setSlider((state) => !state)
-
+  const toggleIconPickor = () => {
+    setIsIconPickorActive((state) => !state)
+  }
   const [proposal, setProposal] = useState({
     coverLetter: '',
     proposedRate: 0,
@@ -110,36 +133,26 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
     })
   }
 
-  const updateFilter = (filterType, value) => {
-    const newFilter = Array.isArray(value)
-      ? {
-          ...filters,
-          [filterType]: {
-            ...filters[filterType],
-            [value[1]]: Number.isInteger(Number(value[0])) && value[1] !== 'checked' ? +value[0] : value[0],
-          },
-        }
-      : {
-          ...filters,
-          [filterType]: value,
-        }
+  const updateHourlyOrFixedFilter = (filterType, val) => {
+    dispatch({
+      type: filterType,
+      payload: { key: filterType, nestedkey: val[1], value: val[0] },
+    })
     refetchProjects({
       variables: {
-        input: newFilter,
+        input: filters,
       },
     })
-    setFilter(newFilter)
   }
 
   const updateSkillFilter = (icon) => {
-    const newFilter = {
-      ...filters,
-      skills: icon,
-    }
-    setFilter(newFilter)
+    dispatch({
+      type: 'searchBar',
+      payload: { key: "skills", value: icon },
+    })
     refetchProjects({
       variables: {
-        input: newFilter,
+        input: filters,
       },
     })
   }
@@ -163,13 +176,29 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   return (
     <div className="px-4">
-      <InputBase
-        onChange={(e) => updateFilter('title', e.target.value)}
-        className={`${classes.root} ${classes.input}`}
-        placeholder="Search Projects"
-        value={filters.title}
-        inputProps={{ 'aria-label': 'search projects' }}
-      />
+      <div className='flex my-4'>
+        <InputBase
+          onChange={(e) => dispatch({
+            type: 'searchBar',
+            payload: { key: "title", value: e.target.value },
+          })}
+          className={`${classes.input}`}
+          placeholder="Search Projects"
+          value={filters.title}
+          inputProps={{ 'aria-label': 'search projects' }}
+        />
+        <Button
+          onClick={() => refetchProjects({
+            variables: {
+              input: filters,
+            },
+          })}
+          type='button'
+          variant="contained"
+          color="primary">
+          Search
+        </Button>
+      </div>
 
       <div className="flex flex-wrap gap-x-16">
         <div className="flex flex-col">
@@ -193,13 +222,13 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
           <IconList iconArr={filters.skills} displayIcon />
         </div>
         <BudgetFilter
-          updateFilter={(val) => updateFilter('hourly', val)}
+          updateFilter={(val) => updateHourlyOrFixedFilter('hourly', val)}
           label="Hourly rate"
           name="checked"
           state={filters.hourly}
         />
         <BudgetFilter
-          updateFilter={(val) => updateFilter('fixed', val)}
+          updateFilter={(val) => updateHourlyOrFixedFilter('fixed', val)}
           label="Fixed rate"
           name="checked"
           state={filters.fixed}
