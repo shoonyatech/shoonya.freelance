@@ -21,6 +21,7 @@ module.exports = {
       },
       fontFamily: {
         sans: [
+          'Didact Gothic',
           'Source Sans Pro',
           'sans-serif',
           'ui-sans-serif',
@@ -58,7 +59,7 @@ module.exports = {
       },
       gridTemplateRows: {
         wizardFlow: '1fr auto',
-        pancake: "auto 1fr auto",
+        pancake: 'auto 1fr auto',
       },
       width: {
         '1/4': '25%',
