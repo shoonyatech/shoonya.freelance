@@ -43,23 +43,23 @@ const secondaryTabs = [
 
 export default function MiniDrawer() {
   const { user } = useUser()
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <header className="sm:fixed sm:block sm:z-10  h-screen hidden  bg-primary text-secondary w-16">
-      <div className='mt-4 -right-4 absolute'>
+      <div className="mt-4 -right-4 absolute">
         <Image src="/logo.png" alt="logo" width="64" height="64" />
       </div>
-      <nav className='h-full'>
+      <nav className="h-full">
         <ul className="py-2 h-full flex flex-col justify-between">
-          <div className='mt-24'>
+          <div className="mt-24">
             {primaryTabs.map((tab) => {
-              const isCurrent = router.asPath === tab.href;
+              const isCurrent = router.asPath === tab.href
               return (
-                <li className={`p-2 ${isCurrent && "bg-secondary text-primary"}`}>
+                <li className={`p-2 ${isCurrent && 'bg-secondary text-primary'}`}>
                   <Link href={tab.href}>
-                    <a className="flex flex-col items-center" aria-current={isCurrent ? "page" : undefined}>
-                      <tab.icon size="1.25em" color={isCurrent ? "#282828" : "#E8D4B2"} />
+                    <a className="flex flex-col items-center" aria-current={isCurrent ? 'page' : undefined}>
+                      <tab.icon size="1.25em" color={isCurrent ? '#282828' : '#E8D4B2'} />
                       <span className="text-xs mt-1">{tab.name}</span>{' '}
                     </a>
                   </Link>
@@ -68,7 +68,7 @@ export default function MiniDrawer() {
             })}
           </div>
           <div>
-            <li className={`p-2 ${router.asPath === '/me' && "bg-secondary text-primary"}`}>
+            <li className={`p-2 ${router.asPath === '/me' && 'bg-secondary text-primary'}`}>
               <Link href="/me">
                 <a className="flex flex-col items-center">
                   {user?.picture ? (
@@ -80,13 +80,13 @@ export default function MiniDrawer() {
             </li>
 
             {secondaryTabs.map((tab) => {
-              const isCurrent = router.asPath === tab.href;
+              const isCurrent = router.asPath === tab.href
 
               return (
-                <li className={`p-2 ${isCurrent && "bg-secondary text-primary"}`}>
+                <li className={`p-2 ${isCurrent && 'bg-secondary text-primary'}`}>
                   <Link href={tab.href}>
                     <a className="flex flex-col items-center">
-                      <tab.icon size="1.25em" color={isCurrent ? "#282828" : "#E8D4B2"} />
+                      <tab.icon size="1.25em" color={isCurrent ? '#282828' : '#E8D4B2'} />
                       <span className="text-xs"> {tab.name}</span>
                     </a>
                   </Link>

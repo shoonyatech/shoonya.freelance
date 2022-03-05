@@ -6,9 +6,6 @@ import Loader from '../src/components/common/Loader'
 export default function Home() {
   // user
   const { error, isLoading } = useUser()
-  if (isLoading || error)
-    return (
-      <Loader open={isLoading} error={error} />
-    )
+  if (isLoading || error) return <Loader open={isLoading} error={error} />
   return <div />
 }
