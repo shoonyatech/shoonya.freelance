@@ -1,7 +1,8 @@
-import Chip from '@material-ui/core/Chip'
-import IconButton from '@material-ui/core/IconButton'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import CancelIcon from '@material-ui/icons/Cancel'
+import CancelIcon from '@mui/icons-material/Cancel'
+import Chip from '@mui/material/Chip'
+import IconButton from '@mui/material/IconButton'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { useState } from 'react'
 
 import { icons, iconsList } from '../../../lib/icon'
@@ -49,10 +50,10 @@ const SkilliconPickor = ({ isActive, displayIcon, closeIconPickor, selectedIcons
     <>
       {isActive ? (
         <div className="relative max-h-80 w-96">
-          <div className="flex flex-col overflow-y-auto  max-w-full bg-white shadow-lg rounded absolute z-20">
+          <div className="absolute z-20 flex flex-col max-w-full overflow-y-auto bg-white rounded shadow-lg">
             <div className="flex pb-2">
               <SearchBar list={iconsList} label="search icons" handleFilter={handleSkillsFilter} />
-              <IconButton onClick={() => closeIconPickor()} className={classes.btn}>
+              <IconButton onClick={() => closeIconPickor()} className={classes.btn} size="large">
                 <CancelIcon />
               </IconButton>
             </div>
@@ -65,7 +66,7 @@ const SkilliconPickor = ({ isActive, displayIcon, closeIconPickor, selectedIcons
                     icon={displayIcon ? icons[`${icon}`] : undefined}
                     label={icon}
                     color="primary"
-                    variant={selectedIcons.includes(icon) ? 'default' : 'outlined'}
+                    // variant={selectedIcons.includes(icon) ? 'default' : 'outlined'}
                   />
                 </li>
               ))}

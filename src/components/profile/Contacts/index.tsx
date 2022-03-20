@@ -1,14 +1,15 @@
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import EditIcon from '@material-ui/icons/Edit'
-import GitHubIcon from '@material-ui/icons/GitHub'
-import LinkedInIcon from '@material-ui/icons/LinkedIn'
-import MailIcon from '@material-ui/icons/Mail'
-import PhoneIcon from '@material-ui/icons/Phone'
-import RoomIcon from '@material-ui/icons/Room'
-import TwitterIcon from '@material-ui/icons/Twitter'
+import EditIcon from '@mui/icons-material/Edit'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import MailIcon from '@mui/icons-material/Mail'
+import PhoneIcon from '@mui/icons-material/Phone'
+import RoomIcon from '@mui/icons-material/Room'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -83,7 +84,7 @@ const Contacts = ({ data }) => {
           <EditIcon />
         </button>
       ) : null}
-      <h3 className="text-xl md:text-2xl  uppercase pb-3">contacts</h3>
+      <h3 className="pb-3 text-xl uppercase md:text-2xl">contacts</h3>
 
       {edit && !isReadOnly ? (
         <form onSubmit={updateUser} className="flex flex-col w-max">
@@ -150,7 +151,7 @@ const Contacts = ({ data }) => {
             margin="dense"
             variant="outlined"
           />
-          <div className="pt-1 self-end">
+          <div className="self-end pt-1">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>

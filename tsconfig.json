@@ -22,7 +22,8 @@
     "**/*.tsx",
     "src/lib/client-side-rendering/index.js",
     "pages/api/graphql.js",
-    "src/components/project/Project"
+    "src/components/project/Project",
+    "next.config.js"
   ],
   "exclude": ["node_modules"]
 }

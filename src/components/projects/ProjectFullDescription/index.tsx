@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import Chip from '@material-ui/core/Chip'
+import Chip from '@mui/material/Chip'
 import React from 'react'
 
 import { icons } from '../../../lib/icon'

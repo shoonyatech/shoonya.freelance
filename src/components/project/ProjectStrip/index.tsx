@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import Chip from '@material-ui/core/Chip'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import Chip from '@mui/material/Chip'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import Link from 'next/link'
 import React from 'react'
 

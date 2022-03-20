@@ -1,7 +1,8 @@
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -69,7 +70,7 @@ const ProjectScope = ({ data, userId, projectId }) => {
   return (
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
-        <h3 className="text-xl md:text-2xl uppercase">scope</h3>
+        <h3 className="text-xl uppercase md:text-2xl">scope</h3>
         {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />

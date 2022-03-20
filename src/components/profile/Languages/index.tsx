@@ -1,9 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/button-has-type */
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -82,9 +83,9 @@ const Language = ({ data }) => {
   if (loading) return <Loader open={loading} error={error} />
 
   return (
-    <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
+    <div className="flex flex-col justify-center p-4 bg-resume md:p-6">
       <div className="flex justify-between pb-3">
-        <h3 className="text-xl md:text-2xl uppercase">Languages</h3>
+        <h3 className="text-xl uppercase md:text-2xl">Languages</h3>
         {!edit && !isReadOnly ? (
           <button onClick={() => setEdit(true)}>
             <EditIcon />
@@ -108,7 +109,7 @@ const Language = ({ data }) => {
           <Button className={classes.btn} onClick={() => addLanguage()}>
             Add Language
           </Button>
-          <div className="pt-1 self-end">
+          <div className="self-end pt-1">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>

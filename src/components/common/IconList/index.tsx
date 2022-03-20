@@ -1,5 +1,6 @@
-import Chip from '@material-ui/core/Chip'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import Chip from '@mui/material/Chip'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 
 import { icons } from '../../../lib/icon'

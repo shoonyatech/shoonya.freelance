@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import BottomNavigation from '@material-ui/core/BottomNavigation'
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import BottomNavigation from '@mui/material/BottomNavigation'
+import BottomNavigationAction from '@mui/material/BottomNavigationAction'
+import { Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { BsPersonBoundingBox } from 'react-icons/bs'

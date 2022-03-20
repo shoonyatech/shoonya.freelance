@@ -2,8 +2,9 @@
 /* eslint-disable no-underscore-dangle */
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { getSession } from '@auth0/nextjs-auth0'
-import Button from '@material-ui/core/Button'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import Button from '@mui/material/Button'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

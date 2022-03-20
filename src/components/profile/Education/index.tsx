@@ -3,12 +3,13 @@
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
@@ -118,7 +119,7 @@ const Education = ({ data }) => {
   return (
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
-        <h3 className="text-xl md:text-2xl uppercase">education</h3>
+        <h3 className="text-xl uppercase md:text-2xl">education</h3>
         {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
@@ -130,7 +131,7 @@ const Education = ({ data }) => {
           <div className="self-end pt-2">
             {education.map((edu, i: number) => (
               <div className="flex flex-col" key={i}>
-                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn} size="large">
                   <DeleteIcon color="error" />
                 </IconButton>
                 <TextField

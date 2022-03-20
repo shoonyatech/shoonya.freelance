@@ -1,10 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import InputBase from '@material-ui/core/InputBase'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import InputBase from '@mui/material/InputBase'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import { useRouter } from 'next/router'
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useReducer, useState } from 'react'
@@ -49,14 +50,16 @@ const reducer = (filters, action) => {
         ...filters,
         [action.payload.key]: {
           ...filters[action.payload.key],
-          [action.payload.nestedkey]: Number.isInteger(Number(action.payload.value)) && action.payload.nestedkey !== 'checked' ? +action.payload.value : action.payload.value,
+          [action.payload.nestedkey]:
+            Number.isInteger(Number(action.payload.value)) && action.payload.nestedkey !== 'checked'
+              ? +action.payload.value
+              : action.payload.value,
         },
       }
     default:
-      throw new Error();
+      throw new Error()
   }
 }
-
 
 const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId, userId }) => {
   const classes = useStyles()
@@ -67,7 +70,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   const initialFilter = {
     skills: [],
-    title: "",
+    title: '',
     owner: userId,
     fixed: {
       max: null,
@@ -81,7 +84,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       currency: null,
       checked: false,
     },
-  };
+  }
   const [filters, dispatch] = useReducer(reducer, initialFilter)
 
   const toggleSlider = () => setSlider((state) => !state)
@@ -148,7 +151,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
   const updateSkillFilter = (icon) => {
     dispatch({
       type: 'searchBar',
-      payload: { key: "skills", value: icon },
+      payload: { key: 'skills', value: icon },
     })
     refetchProjects({
       variables: {
@@ -176,26 +179,31 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
 
   return (
     <div className="px-4">
-      <div className='flex my-4'>
+      <div className="flex my-4">
         <InputBase
-          onChange={(e) => dispatch({
-            type: 'searchBar',
-            payload: { key: "title", value: e.target.value },
-          })}
+          onChange={(e) =>
+            dispatch({
+              type: 'searchBar',
+              payload: { key: 'title', value: e.target.value },
+            })
+          }
           className={`${classes.input}`}
           placeholder="Search Projects"
           value={filters.title}
           inputProps={{ 'aria-label': 'search projects' }}
         />
         <Button
-          onClick={() => refetchProjects({
-            variables: {
-              input: filters,
-            },
-          })}
-          type='button'
+          onClick={() =>
+            refetchProjects({
+              variables: {
+                input: filters,
+              },
+            })
+          }
+          type="button"
           variant="contained"
-          color="primary">
+          color="primary"
+        >
           Search
         </Button>
       </div>

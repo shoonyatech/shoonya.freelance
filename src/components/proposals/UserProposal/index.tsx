@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
