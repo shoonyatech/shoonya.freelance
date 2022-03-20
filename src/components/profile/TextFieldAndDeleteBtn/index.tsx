@@ -1,7 +1,8 @@
-import IconButton from '@material-ui/core/IconButton'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 
 const useStyles = makeStyles(() =>
@@ -27,7 +28,7 @@ const TextFieldAndDeleteBtn = ({ handleChange, index, label, value, openPopup })
         variant="outlined"
         required
       />
-      <IconButton onClick={() => openPopup(index)} className={classes.btn}>
+      <IconButton onClick={() => openPopup(index)} className={classes.btn} size="large">
         <DeleteIcon color="error" />
       </IconButton>
     </div>

@@ -1,12 +1,13 @@
 import { useMutation } from '@apollo/client'
-import { InputLabel } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import { InputLabel } from '@mui/material'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -86,9 +87,9 @@ const CountriesICanWork = ({ data, countries }) => {
   if (loading) return <Loader open={loading} error={error} />
 
   return (
-    <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
+    <div className="flex flex-col justify-center p-4 bg-resume md:p-6">
       <div className="flex justify-between pb-3">
-        <h3 className="text-xl md:text-2xl uppercase">Countries I Can Work</h3>
+        <h3 className="text-xl uppercase md:text-2xl">Countries I Can Work</h3>
         {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
@@ -118,7 +119,7 @@ const CountriesICanWork = ({ data, countries }) => {
                     ))}
                   </Select>
                 </div>
-                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn} size="large">
                   <DeleteIcon color="error" />
                 </IconButton>
               </div>
@@ -128,7 +129,7 @@ const CountriesICanWork = ({ data, countries }) => {
           <Button className={classes.btn} onClick={() => addCountry()}>
             Add Country
           </Button>
-          <div className="pt-1 self-end">
+          <div className="self-end pt-1">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>

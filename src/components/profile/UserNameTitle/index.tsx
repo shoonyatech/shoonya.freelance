@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -66,7 +67,7 @@ const UserNameTitle = ({ data }) => {
   if (loading) return <Loader open={loading} error={error} />
 
   return (
-    <div className="bg-resume flex flex-col justify-center p-4 md:p-6">
+    <div className="flex flex-col justify-center p-4 bg-resume md:p-6">
       {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <TextField
@@ -88,7 +89,7 @@ const UserNameTitle = ({ data }) => {
             margin="dense"
             variant="outlined"
           />
-          <div className="pt-1 self-end">
+          <div className="self-end pt-1">
             <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
               Save
             </Button>
@@ -105,7 +106,7 @@ const UserNameTitle = ({ data }) => {
       ) : (
         <div className="flex flex-col whitespace-nowrap">
           <div className="flex justify-between">
-            <h1 className="text-black text-5xl">{nameTitle.name}</h1>
+            <h1 className="text-5xl text-black">{nameTitle.name}</h1>
             {!isReadOnly ? (
               <button type="button" onClick={() => setEdit(!edit)}>
                 <EditIcon />

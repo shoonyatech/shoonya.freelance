@@ -3,14 +3,15 @@
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import IconButton from '@material-ui/core/IconButton'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
@@ -157,7 +158,7 @@ const ProfessionalExperience = ({ data }) => {
   return (
     <div className="flex flex-col p-4 md:p-6">
       <div className="flex justify-between pb-3">
-        <h3 className="text-xl md:text-2xl uppercase">professional experience</h3>
+        <h3 className="text-xl uppercase md:text-2xl">professional experience</h3>
         {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />
@@ -169,7 +170,7 @@ const ProfessionalExperience = ({ data }) => {
           <div>
             {professionalExp.map((details, i: number) => (
               <div key={i} className="flex flex-col pb-28">
-                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn} size="large">
                   <DeleteIcon color="error" />
                 </IconButton>
                 <TextField
@@ -278,7 +279,7 @@ const ProfessionalExperience = ({ data }) => {
           {professionalExp.map((details, i): any => (
             <div className="pb-10" key={i}>
               <div className="flex items-center">
-                <div className="font-bold mr-2">{details.jobTitle}</div>
+                <div className="mr-2 font-bold">{details.jobTitle}</div>
                 {details.techStack.map((icon) => (
                   <span key={icon} className="px-px">
                     {icons[`${icon}`]}

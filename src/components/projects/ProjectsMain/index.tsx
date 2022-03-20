@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 import Link from 'next/link'
 import React from 'react'
 

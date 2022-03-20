@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useMutation, useQuery } from '@apollo/client'
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 import React, { useState } from 'react'
 
 import { DELETE_PROPOSAL, GET_PROJECT_BY_ID_AND_PROPOSAL_BY_ID } from '../../../gql/proposal'

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import TextField from '@mui/material/TextField'
 import React, { useReducer } from 'react'
 
 import GET_CURRENCIES from '../../../gql/country'

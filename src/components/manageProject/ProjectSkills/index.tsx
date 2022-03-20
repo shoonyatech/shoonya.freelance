@@ -1,7 +1,8 @@
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -76,7 +77,7 @@ const ProjectSkills = ({ data, userId, projectId }) => {
           <EditIcon />
         </button>
       ) : null}
-      <h3 className="text-xl md:text-2xl uppercase pb-3">Skills</h3>
+      <h3 className="pb-3 text-xl uppercase md:text-2xl">Skills</h3>
 
       {edit && !isReadOnly ? (
         <form onSubmit={updateSkills} className="flex flex-col ">

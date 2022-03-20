@@ -1,7 +1,8 @@
 /* eslint-disable consistent-return */
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import Button from '@mui/material/Button'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import { useRouter } from 'next/router'
 import React, { useReducer } from 'react'
 

@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -74,7 +75,7 @@ const ProjectBudget = ({ data, userId, projectId }) => {
   return (
     <div className="flex flex-col px-6">
       <div className="flex justify-between pb-3">
-        <h3 className="text-xl md:text-2xl uppercase">Budget</h3>
+        <h3 className="text-xl uppercase md:text-2xl">Budget</h3>
         {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>
             <EditIcon />

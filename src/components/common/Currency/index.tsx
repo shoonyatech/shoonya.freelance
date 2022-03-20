@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 import React from 'react'
 
 import Loader from '../Loader'

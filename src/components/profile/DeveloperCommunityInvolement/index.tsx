@@ -1,11 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 import { useMutation } from '@apollo/client'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -121,13 +122,13 @@ const DeveloperCommunityInvolement = ({ data }) => {
           <EditIcon />
         </button>
       ) : null}
-      <h3 className="text-xl md:text-2xl uppercase pb-3">developer community involement</h3>
+      <h3 className="pb-3 text-xl uppercase md:text-2xl">developer community involement</h3>
       {edit && !isReadOnly ? (
         <form className="flex flex-col" onSubmit={updateUser}>
           <div>
             {developerCommunityInvolement.map((dev, i: number) => (
               <div key={i} className="flex flex-col pb-28">
-                <IconButton onClick={() => openPopup(i)} className={classes.btn}>
+                <IconButton onClick={() => openPopup(i)} className={classes.btn} size="large">
                   <DeleteIcon color="error" />
                 </IconButton>
                 <TextField

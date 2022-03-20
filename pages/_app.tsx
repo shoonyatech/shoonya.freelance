@@ -5,7 +5,7 @@ import '../styles/global.css'
 
 import { ApolloProvider } from '@apollo/client'
 import { UserProvider } from '@auth0/nextjs-auth0'
-import { ThemeProvider } from '@material-ui/styles'
+import { StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
@@ -43,13 +43,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={client}>
-      <ThemeProvider theme={MaterialUiTheme}>
-        <UserProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </UserProvider>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={MaterialUiTheme}>
+          <UserProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </UserProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </ApolloProvider>
   )
 }

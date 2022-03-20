@@ -1,9 +1,10 @@
-import Button from '@material-ui/core/Button'
-import Input from '@material-ui/core/Input'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import InputLabel from '@material-ui/core/InputLabel'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
+import Button from '@mui/material/Button'
+import Input from '@mui/material/Input'
+import InputAdornment from '@mui/material/InputAdornment'
+import InputLabel from '@mui/material/InputLabel'
+import TextField from '@mui/material/TextField'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 
 const useStyles = makeStyles(() =>
@@ -28,7 +29,7 @@ const ProjectProposal = ({ currency, submitProposal, cancelProposal, data, handl
 
   return (
     <div className="p-2 md:p-3">
-      <h3 className="text-black text-2xl">Project proposal</h3>
+      <h3 className="text-2xl text-black">Project proposal</h3>
       <form onSubmit={handleSubmit} className="py-8">
         <TextField
           className={classes.textField}

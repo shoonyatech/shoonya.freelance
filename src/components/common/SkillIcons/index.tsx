@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
-import Button from '@material-ui/core/Button'
-import Chip from '@material-ui/core/Chip'
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon from '@mui/icons-material/Add'
+import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
 import React, { useState } from 'react'
 
 import { icons } from '../../../lib/icon'
@@ -25,7 +25,7 @@ const SkillIcons = ({ techStack, handleSkillChange, isIconName }: Props) => {
   }
 
   return (
-    <div className="pb-4  min-h-10">
+    <div className="pb-4 min-h-10">
       <div className="flex items-center">
         <div className="flex flex-col ">
           <div className="flex">

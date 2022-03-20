@@ -1,7 +1,7 @@
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 import React from 'react'
 
 export interface FeatureCardProps {
