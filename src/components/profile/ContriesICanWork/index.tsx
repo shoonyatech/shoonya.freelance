@@ -6,8 +6,6 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -15,20 +13,7 @@ import { UPDATE_USER_COUNTRIESICANWORK } from '../../../gql/user'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-  })
-)
-
 const CountriesICanWork = ({ data, countries }) => {
-  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -119,22 +104,44 @@ const CountriesICanWork = ({ data, countries }) => {
                     ))}
                   </Select>
                 </div>
-                <IconButton onClick={() => openPopup(i)} className={classes.btn} size="large">
+                <IconButton
+                  onClick={() => openPopup(i)}
+                  sx={{
+                    alignSelf: 'flex-end',
+                    borderRadius: '999px',
+                  }}
+                  size="large"
+                >
                   <DeleteIcon color="error" />
                 </IconButton>
               </div>
             </>
           ))}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
-          <Button className={classes.btn} onClick={() => addCountry()}>
+          <Button
+            sx={{
+              alignSelf: 'flex-end',
+              borderRadius: '999px',
+            }}
+            onClick={() => addCountry()}
+          >
             Add Country
           </Button>
           <div className="self-end pt-1">
-            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
+            <Button
+              sx={{
+                marginRight: '.5rem',
+              }}
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
             <Button
-              className={classes.savecancelbtn}
+              sx={{
+                marginRight: '.5rem',
+              }}
               onClick={() => cancelUpdateUser()}
               variant="contained"
               color="secondary"

@@ -1,8 +1,6 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -11,28 +9,7 @@ import { icons } from '../../../lib/icon'
 import Loader from '../../common/Loader'
 import SkillIcons from '../../common/SkillIcons'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-    iconbtn: {
-      margin: '0.5rem',
-      borderRadius: '1rem',
-    },
-    active: {
-      border: '1px solid',
-    },
-  })
-)
-
 const ProjectSkills = ({ data, userId, projectId }) => {
-  const classes = useStyles()
-
   const [projectSkills, setProjectSkills] = useState<any>(data)
   const [updatedSkills, setUpdatedSkills] = useState<any | null>(null)
   const [edit, setEdit] = useState<boolean>(!data)
@@ -83,10 +60,24 @@ const ProjectSkills = ({ data, userId, projectId }) => {
         <form onSubmit={updateSkills} className="flex flex-col ">
           <SkillIcons techStack={projectSkills} handleSkillChange={(icon) => handleSkillChange(icon)} isIconName />
           <div className="self-end pt-2">
-            <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
+            <Button
+              type="submit"
+              sx={{
+                marginRight: '.5rem',
+              }}
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
-            <Button onClick={() => cancel()} className={classes.savecancelbtn} variant="contained" color="secondary">
+            <Button
+              onClick={() => cancel()}
+              sx={{
+                marginRight: '.5rem',
+              }}
+              variant="contained"
+              color="secondary"
+            >
               Cancel
             </Button>
           </div>

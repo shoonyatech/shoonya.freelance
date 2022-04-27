@@ -2,8 +2,6 @@
 import { useMutation } from '@apollo/client'
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import Axios from 'axios'
 import React, { useContext, useState } from 'react'
 
@@ -13,16 +11,7 @@ import Avatar from '../../common/Avatar'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-start',
-    },
-  })
-)
-
 const DisplayPicture = ({ data }) => {
-  const classes = useStyles()
   const [popUp, setPopup] = useState<boolean>(false)
   const [picture, setPicture] = useState<URL | null>(data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -62,7 +51,13 @@ const DisplayPicture = ({ data }) => {
         <>
           <Avatar src={picture} tailwindSizeClass="h-40 w-40" />
           {isReadOnly ? null : (
-            <IconButton className={classes.btn} onClick={() => openPopup()} size="large">
+            <IconButton
+              sx={{
+                alignSelf: 'flex-start',
+              }}
+              onClick={() => openPopup()}
+              size="large"
+            >
               <DeleteIcon color="error" />
             </IconButton>
           )}

@@ -1,24 +1,11 @@
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 
 import Currency from '../Currency'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    input: {
-      marginRight: '1em',
-      maxWidth: '4em',
-    },
-  })
-)
-
 const BudegtFilter = ({ label, name, state, updateFilter }) => {
-  const classes = useStyles()
-
   const handleChange = (e) => {
     if (e.target.name === 'checked') updateFilter([e.target.checked, e.target.name])
     else updateFilter([e.target.value, e.target.name])
@@ -40,7 +27,7 @@ const BudegtFilter = ({ label, name, state, updateFilter }) => {
           label="min"
           value={state.min}
           type="number"
-          className={classes.input}
+          sx={{ marginRight: '1em', maxWidth: '4em' }}
         />
         <TextField
           onChange={handleChange}
@@ -48,7 +35,7 @@ const BudegtFilter = ({ label, name, state, updateFilter }) => {
           label="max"
           value={state.max}
           type="number"
-          className={classes.input}
+          sx={{ marginRight: '1em', maxWidth: '4em' }}
         />
       </div>
     </div>

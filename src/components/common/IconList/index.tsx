@@ -1,6 +1,4 @@
 import Chip from '@mui/material/Chip'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 
 import { icons } from '../../../lib/icon'
@@ -15,24 +13,7 @@ const defaultProps = {
   displayIcon: false,
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-    },
-    iconbtn: {
-      margin: '0.25rem 0.5rem ',
-      borderRadius: '1rem',
-    },
-    active: {
-      border: '1px solid',
-    },
-  })
-)
-
 const IconList = ({ iconArr, displayIcon }: Props) => {
-  const classes = useStyles()
-
   if (isArrayEmpty(iconArr)) return null
 
   return (
@@ -42,7 +23,7 @@ const IconList = ({ iconArr, displayIcon }: Props) => {
           label={icon}
           variant="outlined"
           icon={displayIcon ? icons[`${icon}`] : undefined}
-          className={`${classes.iconbtn} `}
+          sx={{ margin: '0.25rem 0.5rem ', borderRadius: '1rem' }}
         />
       ))}
     </div>

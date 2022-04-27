@@ -3,8 +3,6 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { getSession } from '@auth0/nextjs-auth0'
 import Button from '@mui/material/Button'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -24,14 +22,6 @@ import { getUserId } from '../../../src/lib/user-helper'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      marginBottom: '1em',
-    },
-  })
-)
-
 const Project = ({
   initialData,
   isOwner,
@@ -41,7 +31,6 @@ const Project = ({
   isOwner: boolean
   hasUserAppliedForProject: boolean
 }) => {
-  const classes = useStyles()
   const router = useRouter()
   const [edit, setEdit] = useState(false)
   const [slider, setSlider] = useState(false)
@@ -104,10 +93,10 @@ const Project = ({
 
   return (
     <div>
-      <div className="my-4 px-6 py-2">
+      <div className="px-6 py-2 my-4">
         {isOwner && !edit ? (
           // todo : add margin bottom on see proposals btn
-          <div className="flex gap-x-4 ">
+          <div className="flex pb-4 gap-x-4">
             <Button onClick={() => setEdit(true)} variant="contained" color="primary">
               Edit
             </Button>
@@ -119,12 +108,12 @@ const Project = ({
         ) : null}
         {!isOwner &&
           (!hasUserAppliedForProject ? (
-            <Button onClick={() => setSlider(true)} className={classes.btn} variant="contained" color="primary">
+            <Button onClick={() => setSlider(true)} sx={{ marginBottom: '1em' }} variant="contained" color="primary">
               Apply
             </Button>
           ) : (
             <Link href={`/proposals/${hasUserAppliedForProject}`} passHref>
-              <Button className={classes.btn} variant="contained" color="primary">
+              <Button variant="contained" color="primary">
                 See My Proposal
               </Button>
             </Link>

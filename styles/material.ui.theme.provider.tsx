@@ -6,7 +6,7 @@ const MaterialUiTheme = createTheme({
       main: '#282828',
     },
     secondary: {
-      main: '#E8D4B2',
+      main: '#e8d4b2',
     },
   },
 })

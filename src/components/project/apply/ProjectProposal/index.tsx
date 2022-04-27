@@ -3,21 +3,9 @@ import Input from '@mui/material/Input'
 import InputAdornment from '@mui/material/InputAdornment'
 import InputLabel from '@mui/material/InputLabel'
 import TextField from '@mui/material/TextField'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    textField: {
-      marginBottom: '1.5rem',
-    },
-  })
-)
-
 const ProjectProposal = ({ currency, submitProposal, cancelProposal, data, handleChange }) => {
-  const classes = useStyles()
-
   const handleProposalChange = (e) => {
     handleChange(e.target.name, e.target.value)
   }
@@ -32,7 +20,7 @@ const ProjectProposal = ({ currency, submitProposal, cancelProposal, data, handl
       <h3 className="text-2xl text-black">Project proposal</h3>
       <form onSubmit={handleSubmit} className="py-8">
         <TextField
-          className={classes.textField}
+          sx={{ marginBottom: '1.5rem' }}
           value={data.coverLetter}
           onChange={handleProposalChange}
           name="coverLetter"
@@ -45,7 +33,7 @@ const ProjectProposal = ({ currency, submitProposal, cancelProposal, data, handl
         />
         <InputLabel>proposedRate</InputLabel>
         <Input
-          className={classes.textField}
+          sx={{ marginBottom: '1.5rem' }}
           type="number"
           name="proposedRate"
           onChange={handleProposalChange}

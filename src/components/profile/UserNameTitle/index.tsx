@@ -2,8 +2,6 @@ import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -15,20 +13,7 @@ interface UserObj {
   title: string
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-  })
-)
-
 const UserNameTitle = ({ data }) => {
-  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
 
@@ -90,11 +75,11 @@ const UserNameTitle = ({ data }) => {
             variant="outlined"
           />
           <div className="self-end pt-1">
-            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
+            <Button sx={{ marginRight: '0.5rem' }} type="submit" variant="contained" color="primary">
               Save
             </Button>
             <Button
-              className={classes.savecancelbtn}
+              sx={{ marginRight: '0.5rem' }}
               onClick={() => cancelUpdateUser()}
               variant="contained"
               color="secondary"
