@@ -2,28 +2,13 @@ import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_BIO } from '../../../gql/user'
 import Loader from '../../common/Loader'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-  })
-)
-
 const Bio = ({ data }) => {
-  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
 
@@ -81,11 +66,20 @@ const Bio = ({ data }) => {
             fullWidth
           />
           <div className="self-end pt-2">
-            <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
+            <Button
+              type="submit"
+              sx={{
+                marginRight: '.5rem',
+              }}
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
             <Button
-              className={classes.savecancelbtn}
+              sx={{
+                marginRight: '.5rem',
+              }}
               onClick={() => cancelUpdateUser()}
               variant="contained"
               color="secondary"

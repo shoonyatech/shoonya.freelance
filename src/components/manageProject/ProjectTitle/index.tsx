@@ -2,28 +2,13 @@ import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_PROJECT_TITLE } from '../../../gql/project'
 import Loader from '../../common/Loader'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-  })
-)
-
 const ProjectTitle = ({ data, userId, projectId }) => {
-  const classes = useStyles()
   const [projectTitle, setProjectTitle] = useState<string>(data)
   const [updatedTitle, setUpdatedTitle] = useState<string | null>(null)
   const [edit, setEdit] = useState<boolean>(!data)
@@ -76,10 +61,24 @@ const ProjectTitle = ({ data, userId, projectId }) => {
             required
           />
           <div className="self-end pt-1">
-            <Button type="submit" className={classes.savecancelbtn} variant="contained" color="primary">
+            <Button
+              type="submit"
+              sx={{
+                marginRight: '.5rem',
+              }}
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
-            <Button onClick={() => cancel()} className={classes.savecancelbtn} variant="contained" color="secondary">
+            <Button
+              onClick={() => cancel()}
+              sx={{
+                marginRight: '.5rem',
+              }}
+              variant="contained"
+              color="secondary"
+            >
               Cancel
             </Button>
           </div>

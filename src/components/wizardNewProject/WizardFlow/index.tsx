@@ -1,8 +1,6 @@
 /* eslint-disable consistent-return */
 import { useMutation } from '@apollo/client'
 import Button from '@mui/material/Button'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import { useRouter } from 'next/router'
 import React, { useReducer } from 'react'
 
@@ -12,14 +10,6 @@ import WizardBudgetFlow from '../wizardBudget/WizardBudgetFlow'
 import WizardHeadlineFlow from '../wizardHeadline/WizardHeadlineFlow'
 import WizardScopeFlow from '../wizardScope/WizardScopeFlow'
 import WizardSkillsFlow from '../wizardskills/WizardSkillsFlow'
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      marginRight: '0.5rem',
-    },
-  })
-)
 
 const initialValue = {
   title: '',
@@ -65,7 +55,6 @@ const reducer = (state, action) => {
 
 const WizardFlow = ({ step, incrStep, decrStep }) => {
   const router = useRouter()
-  const classes = useStyles()
   const [addNewProject, { loading, error }] = useMutation(ADD_PROJECT, {
     onCompleted(data) {
       const { _id } = data.addProject
@@ -146,21 +135,21 @@ const WizardFlow = ({ step, incrStep, decrStep }) => {
     }
   }
   return (
-    <div onSubmit={reviewJobPost} className="flex-1 grid grid-rows-wizardFlow px-4">
+    <div onSubmit={reviewJobPost} className="grid flex-1 px-4 grid-rows-wizardFlow">
       <div className="pt-40">{wizardFlow}</div>
 
       <div className="flex justify-end p-4">
         {step > 1 ? (
-          <Button className={classes.btn} variant="contained" color="secondary" onClick={() => decrStep()}>
+          <Button sx={{ marginRight: '0.5rem' }} variant="contained" color="secondary" onClick={() => decrStep()}>
             Previous
           </Button>
         ) : null}
         {step === 4 ? (
-          <Button className={classes.btn} variant="contained" color="primary" onClick={() => reviewJobPost()}>
+          <Button sx={{ marginRight: '0.5rem' }} variant="contained" color="primary" onClick={() => reviewJobPost()}>
             Review job post
           </Button>
         ) : (
-          <Button className={classes.btn} variant="contained" color="primary" onClick={() => next()}>
+          <Button sx={{ marginRight: '0.5rem' }} variant="contained" color="primary" onClick={() => next()}>
             Next
           </Button>
         )}

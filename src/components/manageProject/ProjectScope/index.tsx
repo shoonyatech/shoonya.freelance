@@ -1,8 +1,6 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -11,20 +9,7 @@ import { removeKey } from '../../../lib/utils'
 import Loader from '../../common/Loader'
 import RadioButtonsGroup from '../../common/RadioButtonsGroup'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-  })
-)
-
 const ProjectScope = ({ data, userId, projectId }) => {
-  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(ProjectIsReadOnlyContext)
 
@@ -106,10 +91,10 @@ const ProjectScope = ({ data, userId, projectId }) => {
           />
           <div className="self-end pt-2">
             <div className="self-end pt-2">
-              <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
+              <Button sx={{ marginRight: '0.5em' }} type="submit" variant="contained" color="primary">
                 Save
               </Button>
-              <Button className={classes.savecancelbtn} onClick={() => cancel()} variant="contained" color="secondary">
+              <Button sx={{ marginRight: '0.5em' }} onClick={() => cancel()} variant="contained" color="secondary">
                 Cancel
               </Button>
             </div>

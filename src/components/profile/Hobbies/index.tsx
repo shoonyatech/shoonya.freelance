@@ -2,8 +2,6 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -12,20 +10,7 @@ import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-  })
-)
-
 const Hobbies = ({ data }) => {
-  const classes = useStyles()
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -104,16 +89,31 @@ const Hobbies = ({ data }) => {
               ))
             : null}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
-          <Button className={classes.btn} onClick={() => addHobby()}>
+          <Button
+            sx={{
+              alignSelf: 'flex-end',
+              borderRadius: '999px',
+            }}
+            onClick={() => addHobby()}
+          >
             Add Hobby
           </Button>
 
           <div className="self-end pt-1">
-            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
+            <Button
+              sx={{
+                marginRight: '.5rem',
+              }}
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
             <Button
-              className={classes.savecancelbtn}
+              sx={{
+                marginRight: '.5rem',
+              }}
               onClick={() => cancelUpdateUser()}
               variant="contained"
               color="secondary"

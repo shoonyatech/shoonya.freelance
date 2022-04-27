@@ -4,8 +4,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import InputBase from '@mui/material/InputBase'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import { useRouter } from 'next/router'
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useReducer, useState } from 'react'
@@ -20,21 +18,6 @@ import SkilliconPickor from '../../common/SkillIconPickor'
 import SliderContainer from '../../common/Slider'
 import ProjectProposal from '../../project/apply/ProjectProposal'
 import ProjectsMain from '../ProjectsMain'
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    input: {
-      padding: '0 1em',
-      display: 'flex',
-      border: 'solid 1px #E5E7EB',
-      borderRadius: '8px',
-      flex: 1,
-    },
-    iconBtn: {
-      alignSelf: 'self-start',
-    },
-  })
-)
 
 const reducer = (filters, action) => {
   switch (action.type) {
@@ -62,7 +45,6 @@ const reducer = (filters, action) => {
 }
 
 const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProjectId, userId }) => {
-  const classes = useStyles()
   const router = useRouter()
   const [data, setData] = useState(initialData)
   const [isIconPickorActive, setIsIconPickorActive] = useState<boolean>(false)
@@ -187,7 +169,7 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
               payload: { key: 'title', value: e.target.value },
             })
           }
-          className={`${classes.input}`}
+          sx={{ padding: '0 1em', display: 'flex', border: 'solid 1px #E5E7EB', borderRadius: '8px', flex: 1 }}
           placeholder="Search Projects"
           value={filters.title}
           inputProps={{ 'aria-label': 'search projects' }}
@@ -209,16 +191,19 @@ const ProjectsPageWrapper = ({ initialData, activeProjectId, updateActiveProject
       </div>
 
       <div className="flex flex-wrap gap-x-16">
-        <div className="flex flex-col">
-          <div>Skills </div>
-          <IconButton
-            className={classes.iconBtn}
-            onClick={() => toggleIconPickor()}
-            aria-label="add skill filter"
-            size="small"
-          >
-            <ArrowDropDownIcon />
-          </IconButton>
+        <div>
+          <div className="flex">
+            <div>Skills </div>
+            <IconButton
+              // className={classes.iconBtn}
+              onClick={() => toggleIconPickor()}
+              aria-label="add skill filter"
+              size="small"
+            >
+              <ArrowDropDownIcon />
+            </IconButton>
+          </div>
+
           <SkilliconPickor
             isActive={isIconPickorActive}
             displayIcon

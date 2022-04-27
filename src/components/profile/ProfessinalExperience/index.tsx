@@ -10,8 +10,6 @@ import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
@@ -36,27 +34,7 @@ interface professionalExperienceObj {
   techStack: any
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-    iconbtn: {
-      margin: '0.5rem',
-      borderRadius: '1rem',
-    },
-    active: {
-      border: '1px solid',
-    },
-  })
-)
-
 const ProfessionalExperience = ({ data }) => {
-  const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(!data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -170,7 +148,11 @@ const ProfessionalExperience = ({ data }) => {
           <div>
             {professionalExp.map((details, i: number) => (
               <div key={i} className="flex flex-col pb-28">
-                <IconButton onClick={() => openPopup(i)} className={classes.btn} size="large">
+                <IconButton
+                  onClick={() => openPopup(i)}
+                  sx={{ alignSelf: 'flex-end', borderRadius: '999px' }}
+                  size="large"
+                >
                   <DeleteIcon color="error" />
                 </IconButton>
                 <TextField
@@ -257,15 +239,15 @@ const ProfessionalExperience = ({ data }) => {
             ))}
             {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
           </div>
-          <Button className={classes.btn} onClick={() => addProfessionalExperience()}>
+          <Button sx={{ alignSelf: 'flex-end', borderRadius: '999px' }} onClick={() => addProfessionalExperience()}>
             Add Professional Experience
           </Button>
           <div className="self-end pt-2">
-            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
+            <Button sx={{ marginRight: '.5rem' }} type="submit" variant="contained" color="primary">
               Save
             </Button>
             <Button
-              className={classes.savecancelbtn}
+              sx={{ marginRight: '.5rem' }}
               onClick={() => cancelUpdateUser()}
               variant="contained"
               color="secondary"

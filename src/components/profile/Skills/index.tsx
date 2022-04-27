@@ -6,8 +6,6 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
 
 import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
@@ -21,20 +19,7 @@ interface SkillsObj {
   scale: number
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    btn: {
-      alignSelf: 'flex-end',
-      borderRadius: '999px',
-    },
-    savecancelbtn: {
-      marginRight: '.5rem',
-    },
-  })
-)
-
 const Skills = ({ data }) => {
-  const classes = useStyles()
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(!data)
   const isReadOnly = useContext(UserIsReadOnlyContext)
@@ -127,7 +112,14 @@ const Skills = ({ data }) => {
                   variant="outlined"
                   required
                 />
-                <IconButton onClick={() => openPopup(i)} className={classes.btn} size="large">
+                <IconButton
+                  onClick={() => openPopup(i)}
+                  sx={{
+                    alignSelf: 'flex-end',
+                    borderRadius: '999px',
+                  }}
+                  size="large"
+                >
                   <DeleteIcon color="error" />
                 </IconButton>
               </div>
@@ -145,15 +137,30 @@ const Skills = ({ data }) => {
             </div>
           ))}
           {popUp.show ? <DeleteAlert closePopUp={closePopUp} handleDelete={handleDelete} /> : null}
-          <Button className={classes.btn} onClick={() => addSkills()}>
+          <Button
+            sx={{
+              alignSelf: 'flex-end',
+              borderRadius: '999px',
+            }}
+            onClick={() => addSkills()}
+          >
             Add Skills
           </Button>
           <div className="self-end pt-2">
-            <Button className={classes.savecancelbtn} type="submit" variant="contained" color="primary">
+            <Button
+              sx={{
+                marginRight: '.5rem',
+              }}
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
             <Button
-              className={classes.savecancelbtn}
+              sx={{
+                marginRight: '.5rem',
+              }}
               onClick={() => cancelUpdateUser()}
               variant="contained"
               color="secondary"
