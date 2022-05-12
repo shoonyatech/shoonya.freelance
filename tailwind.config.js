@@ -1,6 +1,5 @@
 module.exports = {
-  purge: ['./pages/**/*.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
-  darkMode: false,
+  content: ['./pages/**/*.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       backgroundImage: () => ({
@@ -71,9 +70,6 @@ module.exports = {
         10: '2.5rem',
       },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [],
 }
