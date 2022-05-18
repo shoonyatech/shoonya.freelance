@@ -1,7 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0'
 import React from 'react'
 
-import isReadOnlyContext from '../../../context/isReadOnlyContext'
+import { isReadOnlyContext } from '../../../hooks/useIsReadOnlyContext'
 import Loader from '../../common/Loader'
 import ProjectHeading from '../ProjectHeading'
 import ProjectMain from '../ProjectMain'

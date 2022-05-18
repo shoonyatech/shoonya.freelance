@@ -1,6 +1,6 @@
-import { useContext } from 'react'
+import { createContext, useContext } from 'react'
 
-import isReadOnlyContext from '../context/isReadOnlyContext'
+export const isReadOnlyContext = createContext(true)
 
 function useIsReadOnlyContext() {
   const isReadOnly = useContext(isReadOnlyContext)

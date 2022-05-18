@@ -1,6 +1,6 @@
 import React from 'react'
 
-import isReadOnlyContext from '../../../context/isReadOnlyContext'
+import { isReadOnlyContext } from '../../../hooks/useIsReadOnlyContext'
 import Heading from '../Heading'
 import ProfileMain from '../ProfileMain'
 import ProfileSidebar from '../ProfileSidebar'
