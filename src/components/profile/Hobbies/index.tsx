@@ -2,10 +2,10 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
-import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_HOBBIES } from '../../../gql/user'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
@@ -13,7 +13,7 @@ import TextFieldAndDeleteBtn from '../TextFieldAndDeleteBtn'
 const Hobbies = ({ data }) => {
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   const [hobbies, setHobbies] = useState<any>(data || [])
   const [updatedHobbies, setUpdatedHobbies] = useState(null)

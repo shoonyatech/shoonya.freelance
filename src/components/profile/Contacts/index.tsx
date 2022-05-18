@@ -8,10 +8,10 @@ import RoomIcon from '@mui/icons-material/Room'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_CONTACT } from '../../../gql/user'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import { removeKey } from '../../../lib/utils'
 import Loader from '../../common/Loader'
 
@@ -26,7 +26,7 @@ interface ContactObj {
 
 const Contacts = ({ data }) => {
   const [edit, setEdit] = useState<boolean>(!data)
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   const [contact, setContact] = useState<ContactObj>(data)
   const [updatedContact, setUpdatedContact] = useState(null)

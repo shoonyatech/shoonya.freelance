@@ -10,11 +10,11 @@ import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
-import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import DatePicker from 'react-datepicker'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_PROFESSIONALEXPERIENCE } from '../../../gql/user'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import { icons } from '../../../lib/icon'
 import { removeKey } from '../../../lib/utils'
 import Loader from '../../common/Loader'
@@ -37,7 +37,7 @@ interface professionalExperienceObj {
 const ProfessionalExperience = ({ data }) => {
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean | number>(!data)
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   const [professionalExp, setProfessionalExp] = useState<professionalExperienceObj[]>(data)
   const [updatedProfessionalExp, setupdatedProfessionalExp] = useState(null)

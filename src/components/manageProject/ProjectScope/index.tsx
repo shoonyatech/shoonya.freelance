@@ -1,17 +1,17 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_PROJECT_SCOPE } from '../../../gql/project'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import { removeKey } from '../../../lib/utils'
 import Loader from '../../common/Loader'
 import RadioButtonsGroup from '../../common/RadioButtonsGroup'
 
 const ProjectScope = ({ data, userId, projectId }) => {
   const [edit, setEdit] = useState<boolean>(!data)
-  const isReadOnly = useContext(ProjectIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   const [projectScope, setProjectScope] = useState(data)
   const [updatedScope, setUpdatedScope] = useState<string | null>(null)

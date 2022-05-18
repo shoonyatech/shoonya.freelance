@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
+import isReadOnlyContext from '../../../context/isReadOnlyContext'
 import Heading from '../Heading'
 import ProfileMain from '../ProfileMain'
 import ProfileSidebar from '../ProfileSidebar'
@@ -17,7 +17,7 @@ const defaultProps = {
 }
 
 const Profile = ({ countries, data, isReadOnly }: Props) => (
-  <UserIsReadOnlyContext.Provider value={isReadOnly}>
+  <isReadOnlyContext.Provider value={isReadOnly}>
     <div className="max-w-5xl mx-auto w-full">
       <Heading data={data} />
       <div className="flex flex-col-reverse lg:grid lg:grid-cols-profile   lg:min-h-screen ">
@@ -29,7 +29,7 @@ const Profile = ({ countries, data, isReadOnly }: Props) => (
         <ProfileMain data={data} page={2} />
       </div>
     </div>
-  </UserIsReadOnlyContext.Provider>
+  </isReadOnlyContext.Provider>
 )
 export default Profile
 

@@ -2,15 +2,15 @@ import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import React, { ChangeEvent, useContext, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_BIO } from '../../../gql/user'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import Loader from '../../common/Loader'
 
 const Bio = ({ data }) => {
   const [edit, setEdit] = useState<boolean>(!data)
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   const [bio, setBio] = useState<null | String>(data)
   const [updatedBio, setUpdatedBio] = useState(null)

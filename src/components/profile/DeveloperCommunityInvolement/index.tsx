@@ -5,10 +5,10 @@ import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
-import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_DEVELOPERCOMUNITYINVOLVEMENT } from '../../../gql/user'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import { removeKey } from '../../../lib/utils'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
@@ -23,7 +23,7 @@ interface developerCommunityInvolementObj {
 const DeveloperCommunityInvolement = ({ data }) => {
   const [popUp, setPopup] = useState({ show: false, index: null })
   const [edit, setEdit] = useState<boolean>(!data)
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   const [developerCommunityInvolement, setDeveloperCommunityInvolement] =
     useState<developerCommunityInvolementObj[]>(data)

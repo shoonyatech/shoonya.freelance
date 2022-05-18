@@ -2,10 +2,10 @@ import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import React, { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_NAMETITLE } from '../../../gql/user'
+import useIsReadonlyContext from '../../../hooks/useIsReadOnlyContext'
 import Loader from '../../common/Loader'
 
 interface UserObj {
@@ -15,7 +15,7 @@ interface UserObj {
 
 const UserNameTitle = ({ data }) => {
   const [edit, setEdit] = useState<boolean>(!data)
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadonlyContext()
 
   const [nameTitle, setNameTitle] = useState<UserObj>(data)
   const [updatedNameTitle, setUpdatedNameTitle] = useState<string | null>(null)
