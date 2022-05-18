@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
 import Link from 'next/link'
 import React from 'react'
 
