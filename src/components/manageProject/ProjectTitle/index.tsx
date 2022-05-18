@@ -2,17 +2,17 @@ import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_PROJECT_TITLE } from '../../../gql/project'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import Loader from '../../common/Loader'
 
 const ProjectTitle = ({ data, userId, projectId }) => {
   const [projectTitle, setProjectTitle] = useState<string>(data)
   const [updatedTitle, setUpdatedTitle] = useState<string | null>(null)
   const [edit, setEdit] = useState<boolean>(!data)
-  const isReadOnly = useContext(ProjectIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   useEffect(() => {
     setProjectTitle(data)

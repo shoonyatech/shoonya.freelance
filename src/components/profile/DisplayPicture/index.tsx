@@ -3,10 +3,10 @@ import { useMutation } from '@apollo/client'
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
 import Axios from 'axios'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_AVATAR } from '../../../gql/user'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import Avatar from '../../common/Avatar'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
@@ -14,7 +14,7 @@ import DeleteAlert from '../DeleteAlert'
 const DisplayPicture = ({ data }) => {
   const [popUp, setPopup] = useState<boolean>(false)
   const [picture, setPicture] = useState<URL | null>(data)
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
 
   const [updateUserPicture, { loading, error }] = useMutation(UPDATE_USER_AVATAR)
 

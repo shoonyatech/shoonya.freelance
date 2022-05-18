@@ -6,17 +6,17 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
-import React, { FormEvent, useContext, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 
-import { UserIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import { UPDATE_USER_COUNTRIESICANWORK } from '../../../gql/user'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import Loader from '../../common/Loader'
 import DeleteAlert from '../DeleteAlert'
 
 const CountriesICanWork = ({ data, countries }) => {
   const [edit, setEdit] = useState<boolean>(!data)
   const [popUp, setPopup] = useState({ show: false, index: null })
-  const isReadOnly = useContext(UserIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
   const [countriesICanWork, setCountriesICanWork] = useState<any[]>(data)
   const [updatedCountriesICanWork, setupdatedCountriesICanWork] = useState(null)
 

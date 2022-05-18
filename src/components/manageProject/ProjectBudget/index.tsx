@@ -4,11 +4,11 @@ import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { ProjectIsReadOnlyContext } from '../../../context/isReadOnlyContext'
 import GET_CURRENCIES from '../../../gql/country'
 import { UPDATE_PROJECT_BUDGET } from '../../../gql/project'
+import useIsReadOnlyContext from '../../../hooks/useIsReadOnlyContext'
 import { removeKey } from '../../../lib/utils'
 import Loader from '../../common/Loader'
 import RadioButtonsGroup from '../../common/RadioButtonsGroup'
@@ -16,7 +16,7 @@ import RadioButtonsGroup from '../../common/RadioButtonsGroup'
 const ProjectBudget = ({ data, userId, projectId }) => {
   const { error, loading, data: countryData } = useQuery(GET_CURRENCIES)
   const [edit, setEdit] = useState<boolean>(!data)
-  const isReadOnly = useContext(ProjectIsReadOnlyContext)
+  const isReadOnly = useIsReadOnlyContext()
   const [projectBudget, setProjectBudget] = useState(data)
   const [updatedBudget, setUpdatedBudget] = useState<string | null>(null)
 
