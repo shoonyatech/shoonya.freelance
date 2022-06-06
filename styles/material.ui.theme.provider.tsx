@@ -9,6 +9,17 @@ const MaterialUiTheme = createTheme({
       main: '#e8d4b2',
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          ...(ownerState.color === 'primary' && {
+            color: '#e8d4b2',
+          }),
+        }),
+      },
+    },
+  },
 })
 
 export default MaterialUiTheme
