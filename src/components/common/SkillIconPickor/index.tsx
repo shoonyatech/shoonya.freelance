@@ -47,12 +47,10 @@ const SkilliconPickor = ({ isActive, displayIcon, closeIconPickor, selectedIcons
                     sx={{
                       margin: '0.25rem 0.5rem ',
                       borderRadius: '1rem',
-                      border: selectedIcons.includes(icon) ? '1px solid' : '',
                     }}
                     icon={displayIcon ? icons[`${icon}`] : undefined}
                     label={icon}
-                    color="primary"
-                    // variant={selectedIcons.includes(icon) ? 'default' : 'outlined'}
+                    variant={selectedIcons.includes(icon) ? undefined : 'outlined'}
                   />
                 </li>
               ))}
