@@ -21,7 +21,6 @@ const IconList = ({ iconArr, displayIcon }: Props) => {
       {iconArr?.map((icon) => (
         <Chip
           label={icon}
-          variant="outlined"
           icon={displayIcon ? icons[`${icon}`] : undefined}
           sx={{ margin: '0.25rem 0.5rem ', borderRadius: '1rem' }}
         />
