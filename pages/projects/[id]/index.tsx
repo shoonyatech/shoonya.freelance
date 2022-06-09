@@ -14,7 +14,7 @@ import SliderContainer from '../../../src/components/common/Slider'
 import SeeProposals from '../../../src/components/project/actionBtns/SeeProposals'
 import ProjectProposal from '../../../src/components/project/apply/ProjectProposal'
 import EditProject from '../../../src/components/project/EditProject'
-import ProjectFullDescription from '../../../src/components/projects/ProjectFullDescription'
+import Project from '../../../src/components/project/Project'
 import { DELETE_PROJECT, GET_PROJECT } from '../../../src/gql/project'
 import { ADD_NEW_PROPOSAL, HAS_USER_APPLIED_FOR_PROJECT } from '../../../src/gql/proposal'
 import { Project as ProjectProps } from '../../../src/interfaces/project'
@@ -22,7 +22,7 @@ import { getUserId } from '../../../src/lib/user-helper'
 
 const client = GetApolloClient(process.env.GRAPHQL_SERVER)
 
-const Project = ({
+const ProjectPage = ({
   initialData,
   isOwner,
   hasUserAppliedForProject,
@@ -122,7 +122,7 @@ const Project = ({
         {edit ? (
           <EditProject data={data} cancelEdit={cancelEdit} getUpdatedProjectDetails={getUpdatedProjectDetails} />
         ) : (
-          <ProjectFullDescription data={data} />
+          <Project data={data} />
         )}
       </div>
       {slider ? (
@@ -139,7 +139,7 @@ const Project = ({
     </div>
   )
 }
-export default Project
+export default ProjectPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = getSession(context.req, context.res)

@@ -7,15 +7,17 @@ import Currency from '../Currency'
 
 const BudegtFilter = ({ label, name, state, updateFilter }) => {
   const handleChange = (e) => {
-    if (e.target.name === 'checked') updateFilter([e.target.checked, e.target.name])
-    else updateFilter([e.target.value, e.target.name])
+    updateFilter({
+      value: e.target.name === 'checked' ? e.target.checked : e.target.value,
+      name: e.target.name,
+    })
   }
 
   return (
     <div>
       <div className="flex">
         <FormControlLabel
-          control={<Checkbox checked={state.checked} onChange={handleChange} name={name} color="primary" />}
+          control={<Checkbox checked={state.checked || false} onChange={handleChange} name={name} color="primary" />}
           label={label}
         />
         <Currency handleChange={handleChange} currency={state.currency} />

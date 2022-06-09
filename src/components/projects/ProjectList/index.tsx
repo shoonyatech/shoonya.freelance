@@ -7,10 +7,10 @@ import { icons } from '../../../lib/icon'
 
 const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
   <div className="flex flex-col overflow-y-auto max-h-screen">
-    {data?.map((project: any, i: number) => (
+    {data?.map((project: any) => (
       <button
         key={project._id}
-        onClick={() => updateActiveProjectId(project._id, i)}
+        onClick={() => updateActiveProjectId(project._id)}
         type="button"
         className={`bg-white flex flex-col border-solid border-gray-200 my-4 p-4 border-2 rounded-lg ${
           project._id === activeProjectId && 'shadow-lg'
