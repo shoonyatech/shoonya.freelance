@@ -4,7 +4,7 @@ import React from 'react'
 
 import { icons } from '../../../lib/icon'
 
-const ProjectFullDescription = ({ data }) => (
+const Project = ({ data }) => (
   <>
     <h2 className="text-2xl font-medium">{data.title}</h2>
     {data.skills.map((skill) => (
@@ -25,4 +25,4 @@ const ProjectFullDescription = ({ data }) => (
     <p>{data?.description}</p>
   </>
 )
-export default ProjectFullDescription
+export default Project
