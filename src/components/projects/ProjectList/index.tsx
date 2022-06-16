@@ -4,7 +4,7 @@ import React from 'react'
 import { getBudgetLevel } from '../../../lib/currency'
 import { icons } from '../../../lib/icon'
 
-const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
+const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
   <div className="flex flex-col overflow-y-auto max-h-screen">
     {data?.map((project: any) => (
       <button
@@ -22,10 +22,10 @@ const ProjectsList = ({ data, updateActiveProjectId, activeProjectId }: any) => 
               <Chip key={skill} variant="outlined" label={skill} icon={icons[`${skill}`]} />
             ))}
           </div>
-          <div>{getBudgetLevel('$', 3, project.budget.amount, 50)}</div>
+          <div>hey{getBudgetLevel('$', 3, project.budget.amount, 50)}</div>
         </div>
       </button>
     ))}
   </div>
 )
-export default ProjectsList
+export default ProjectList

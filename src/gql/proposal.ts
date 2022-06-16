@@ -150,8 +150,8 @@ export const ADD_NEW_PROPOSAL = gql`
 `
 
 export const DELETE_PROPOSAL = gql`
-  mutation DeleteProposal($id: ID!, $projectId: ID!) {
-    deleteProposal(_id: $id, projectId: $projectId) {
+  mutation DeleteProposal($_id: ID!, $projectId: ID!) {
+    deleteProposal(_id: $_id, projectId: $projectId) {
       _id
     }
   }
