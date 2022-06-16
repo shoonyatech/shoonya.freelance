@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable no-underscore-dangle */
 import { useLazyQuery, useMutation } from '@apollo/client'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import Button from '@mui/material/Button'
@@ -21,7 +20,7 @@ import SkilliconPickor from '../../common/SkillIconPickor'
 import SliderContainer from '../../common/Slider'
 import ProjectProposal from '../../project/apply/ProjectProposal'
 import Project from '../../project/Project'
-import ProjectList from '../ProjectList'
+import ProjectList from '../../project/ProjectList'
 
 const initialFilter = {
   skills: [],
@@ -40,7 +39,7 @@ const initialFilter = {
   },
 }
 
-const ProjectsPageWrapper = () => {
+export const ProjectsPage = () => {
   const [filters, dispatch, getState] = useFilters(initialFilter)
   const [loadActiveProject, { loading, error, data: activeProject }] = useLazyQuery(GET_PROJECT)
 
@@ -177,8 +176,6 @@ const ProjectsPageWrapper = () => {
     </div>
   )
 }
-
-export default ProjectsPageWrapper
 
 const ApplyForProject = ({ project }) => {
   const router = useRouter()

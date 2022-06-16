@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import Chip from '@mui/material/Chip'
 import React from 'react'
 

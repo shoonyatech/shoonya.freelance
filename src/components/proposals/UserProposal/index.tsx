@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useMutation } from '@apollo/client'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'

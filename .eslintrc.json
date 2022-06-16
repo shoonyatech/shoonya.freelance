@@ -23,6 +23,7 @@
   "plugins": ["react", "@typescript-eslint", "simple-import-sort"],
   "rules": {
     "import/prefer-default-export": "off",
+    "no-underscore-dangle": "off",
     "no-console": "error",
     "react/jsx-filename-extension": [
       1,

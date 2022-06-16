@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import Button from '@mui/material/Button'
 import Link from 'next/link'
 import React, { useState } from 'react'

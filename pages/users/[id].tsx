@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { getSession } from '@auth0/nextjs-auth0'
 import Button from '@mui/material/Button'
 import { GetServerSideProps } from 'next'
