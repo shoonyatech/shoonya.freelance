@@ -20,7 +20,7 @@ import SkilliconPickor from '../../common/SkillIconPickor'
 import SliderContainer from '../../common/Slider'
 import ProjectProposal from '../../project/apply/ProjectProposal'
 import Project from '../../project/Project'
-import ProjectList from '../../project/ProjectList'
+import ProjectList from '../../projects/ProjectList'
 
 const initialFilter = {
   skills: [],
