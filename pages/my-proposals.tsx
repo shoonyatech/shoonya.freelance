@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'

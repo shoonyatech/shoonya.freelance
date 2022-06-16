@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-underscore-dangle */
+
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { getSession } from '@auth0/nextjs-auth0'
 import Button from '@mui/material/Button'

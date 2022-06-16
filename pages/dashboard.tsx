@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { GetServerSideProps } from 'next'
 import React from 'react'

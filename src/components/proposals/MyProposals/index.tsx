@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useMutation, useQuery } from '@apollo/client'
 import Button from '@mui/material/Button'
 import React, { useState } from 'react'
