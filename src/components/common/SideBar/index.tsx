@@ -56,7 +56,7 @@ export default function MiniDrawer() {
             {primaryTabs.map((tab) => {
               const isCurrent = router.asPath === tab.href
               return (
-                <li className={`p-2 ${isCurrent && 'bg-secondary text-primary'}`}>
+                <li key={tab.name} className={`p-2 ${isCurrent && 'bg-secondary text-primary'}`}>
                   <Link href={tab.href}>
                     <a className="flex flex-col items-center" aria-current={isCurrent ? 'page' : undefined}>
                       <tab.icon size="1.25em" color={isCurrent ? '#282828' : '#E8D4B2'} />
@@ -83,7 +83,7 @@ export default function MiniDrawer() {
               const isCurrent = router.asPath === tab.href
 
               return (
-                <li className={`p-2 ${isCurrent && 'bg-secondary text-primary'}`}>
+                <li key={tab.name} className={`p-2 ${isCurrent && 'bg-secondary text-primary'}`}>
                   <Link href={tab.href}>
                     <a className="flex flex-col items-center">
                       <tab.icon size="1.25em" color={isCurrent ? '#282828' : '#E8D4B2'} />
