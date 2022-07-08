@@ -91,9 +91,9 @@ const Skills = ({ data }) => {
   return (
     <div className="px-6">
       {!edit && !isReadOnly ? (
-        <button type="button" className="float-right" onClick={() => setEdit(true)}>
+        <IconButton aria-label="edit Skills" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
-        </button>
+        </IconButton>
       ) : null}
       <h3 className="pb-3 text-xl uppercase md:text-2xl">skills</h3>
       {edit && !isReadOnly ? (

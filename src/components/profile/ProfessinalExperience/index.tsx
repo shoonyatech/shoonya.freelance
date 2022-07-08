@@ -135,12 +135,12 @@ const ProfessionalExperience = ({ data }) => {
 
   return (
     <div className="flex flex-col p-4 md:p-6">
-      <div className="flex justify-between pb-3">
+      <div className="flex justify-between pb-3 items-start">
         <h3 className="text-xl uppercase md:text-2xl">professional experience</h3>
         {!edit && !isReadOnly ? (
-          <button type="button" onClick={() => setEdit(true)}>
+          <IconButton aria-label="edit professional experience" onClick={() => setEdit(true)}>
             <EditIcon />
-          </button>
+          </IconButton>
         ) : null}
       </div>
       {edit && !isReadOnly ? (

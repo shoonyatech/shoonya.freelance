@@ -7,6 +7,7 @@ import PhoneIcon from '@mui/icons-material/Phone'
 import RoomIcon from '@mui/icons-material/Room'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 
@@ -65,9 +66,9 @@ const Contacts = ({ data }) => {
   return (
     <div className="px-6">
       {!edit && !isReadOnly ? (
-        <button type="button" className="float-right" onClick={() => setEdit(true)}>
+        <IconButton aria-label="edit contacts" className="float-right" onClick={() => setEdit(true)}>
           <EditIcon />
-        </button>
+        </IconButton>
       ) : null}
       <h3 className="pb-3 text-xl uppercase md:text-2xl">contacts</h3>
 

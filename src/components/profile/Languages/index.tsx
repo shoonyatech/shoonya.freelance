@@ -3,6 +3,7 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 
 import { UPDATE_USER_LANGUAGES } from '../../../gql/user'
@@ -69,12 +70,12 @@ const Language = ({ data }) => {
 
   return (
     <div className="flex flex-col justify-center p-4 bg-resume md:p-6">
-      <div className="flex justify-between pb-3">
+      <div className="flex justify-between pb-3 items-start">
         <h3 className="text-xl uppercase md:text-2xl">Languages</h3>
         {!edit && !isReadOnly ? (
-          <button onClick={() => setEdit(true)}>
+          <IconButton aria-label="edit langauages" onClick={() => setEdit(true)}>
             <EditIcon />
-          </button>
+          </IconButton>
         ) : null}
       </div>
       {edit && !isReadOnly ? (
