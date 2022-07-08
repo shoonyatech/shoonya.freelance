@@ -54,7 +54,7 @@ const ProjectScope = ({ data, userId, projectId }) => {
 
   return (
     <div className="flex flex-col px-6">
-      <div className="flex justify-between pb-3">
+      <div className="flex justify-between pb-3 items-start">
         <h3 className="text-xl uppercase md:text-2xl">scope</h3>
         {!edit && !isReadOnly ? (
           <button type="button" onClick={() => setEdit(true)}>

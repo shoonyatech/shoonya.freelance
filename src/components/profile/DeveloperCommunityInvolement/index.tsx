@@ -103,9 +103,13 @@ const DeveloperCommunityInvolement = ({ data }) => {
   return (
     <div className="p-4 md:p-6">
       {!edit && !isReadOnly ? (
-        <button type="button" className="float-right" onClick={() => setEdit(true)}>
+        <IconButton
+          aria-label="edit developer community involvement"
+          className="float-right"
+          onClick={() => setEdit(true)}
+        >
           <EditIcon />
-        </button>
+        </IconButton>
       ) : null}
       <h3 className="pb-3 text-xl uppercase md:text-2xl">developer community involement</h3>
       {edit && !isReadOnly ? (

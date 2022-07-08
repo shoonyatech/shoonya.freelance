@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 
@@ -93,9 +94,9 @@ const UserNameTitle = ({ data }) => {
           <div className="flex justify-between">
             <h1 className="text-5xl text-black">{nameTitle.name}</h1>
             {!isReadOnly ? (
-              <button type="button" onClick={() => setEdit(!edit)}>
+              <IconButton aria-label="edit username or/and title" onClick={() => setEdit(!edit)}>
                 <EditIcon />
-              </button>
+              </IconButton>
             ) : null}
           </div>
           <h3>{nameTitle.title} </h3>

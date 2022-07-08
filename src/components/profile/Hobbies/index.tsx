@@ -2,6 +2,7 @@
 import { useMutation } from '@apollo/client'
 import EditIcon from '@mui/icons-material/Edit'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 
 import { UPDATE_USER_HOBBIES } from '../../../gql/user'
@@ -66,12 +67,12 @@ const Hobbies = ({ data }) => {
   if (loading) return <Loader open={loading} error={error} />
   return (
     <div className="flex flex-col justify-center p-4 bg-resume md:p-6">
-      <div className="flex justify-between pb-3">
+      <div className="flex justify-between pb-3 items-start">
         <h3 className="text-xl uppercase md:text-2xl">Hobbies</h3>
         {!edit && !isReadOnly ? (
-          <button type="button" onClick={() => setEdit(true)}>
+          <IconButton aria-label="edit hobbies" onClick={() => setEdit(true)}>
             <EditIcon />
-          </button>
+          </IconButton>
         ) : null}
       </div>
       {edit && !isReadOnly ? (
