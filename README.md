@@ -34,7 +34,7 @@ git remote add upstream git@github.com:shoonyatech/shoonya.freelance.git
 - For the first time install npm packages
 
 ```
-cd wallora.com
+cd shoonya.freelance
 npm install
 ```
 
