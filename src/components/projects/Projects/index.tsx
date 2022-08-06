@@ -4,11 +4,13 @@ import MasterDetailsLayout from '../../common/MasterDetailsLayout'
 import ManageProject from '../../manageProject/ManageProject'
 import ProjectList from '../ProjectList'
 
-const Projects = ({ data, activeProjectId, updateActiveProjectId, projectData }) => (
-  <MasterDetailsLayout>
-    <ProjectList activeProjectId={activeProjectId} updateActiveProjectId={updateActiveProjectId} data={data} />
-    <ManageProject data={projectData} isReadOnly />
-  </MasterDetailsLayout>
-)
+const Projects = ({ data, updateActiveProjectId, activeProject }) => {
+  return (
+    <MasterDetailsLayout>
+      <ProjectList activeProjectId={activeProject._id} updateActiveProjectId={updateActiveProjectId} data={data} />
+      <ManageProject data={activeProject} isReadOnly />
+    </MasterDetailsLayout>
+  )
+}
 
 export default Projects
