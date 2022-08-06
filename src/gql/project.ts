@@ -40,8 +40,8 @@ export const UPDATE_PROJECT = gql`
 `
 
 export const GET_USER_PROJECTS = gql`
-  query GetUserProjects($_id: ID!) {
-    getUserProjects(_id: $_id) {
+  query GetUserProjects {
+    getUserProjects {
       _id
       budget {
         amount

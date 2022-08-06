@@ -8,7 +8,7 @@ export default {
   component: SkillIconPickor,
   title: 'SkillIconPickor',
 } as Meta
-
+// @ts-ignore
 const Template: Story = (args) => <SkillIconPickor {...args} />
 export const Default = Template.bind({})
 

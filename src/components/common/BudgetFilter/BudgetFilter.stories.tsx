@@ -8,7 +8,7 @@ export default {
   title: 'BudegtFilter',
   component: BudegtFilter,
 } as Meta
-
+// @ts-ignore
 const Template: Story = (args) => <BudegtFilter {...args} />
 
 export const Default = Template.bind({})

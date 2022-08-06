@@ -9,6 +9,7 @@ export default {
   component: ProjectStrip,
 } as Meta
 
+// @ts-ignore
 const Template: Story = (args) => <ProjectStrip {...args} />
 
 export const Default = Template.bind({})
