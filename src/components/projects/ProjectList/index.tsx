@@ -22,7 +22,7 @@ const ProjectList = ({ data, updateActiveProjectId, activeProjectId }: any) => (
               <Chip key={skill} variant="outlined" label={skill} icon={icons[`${skill}`]} />
             ))}
           </div>
-          <div>hey{getBudgetLevel('$', 3, project.budget.amount, 50)}</div>
+          <div>{getBudgetLevel('$', 3, project.budget.amount, 50)}</div>
         </div>
       </button>
     ))}

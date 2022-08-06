@@ -1,10 +1,12 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import Button from '@mui/material/Button'
+import React from 'react'
+
+import { DELETE_PROJECT, GET_PROJECT, GET_USER_PROJECTS } from '../../gql/project'
+import { isArrayEmpty } from '../../lib/utils'
+import Loader from '../common/Loader'
 import SeeProposals from '../project/actionBtns/SeeProposals'
 import Projects from '../projects/Projects'
-import { DELETE_PROJECT, GET_PROJECT, GET_USER_PROJECTS } from '../../gql/project'
-import Loader from '../common/Loader'
-import { isArrayEmpty } from '../../lib/utils'
 
 export const MyProjects = () => {
   const [loadActiveProject, activeProject] = useLazyQuery(GET_PROJECT)
@@ -34,7 +36,7 @@ export const MyProjects = () => {
   }
 
   const deleteProjectHandler = () => {
-    const _id = activeProject.data.project._id
+    const { _id } = activeProject.data.project
     deleteProject({ variables: { _id } })
   }
 

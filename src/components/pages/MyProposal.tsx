@@ -34,11 +34,10 @@ export const MyProposal = () => {
     },
   })
   const deleteProposalHandle = () => {
+    const { projectId } = activeData.getProposalsById
+    const { _id } = activeData.getProposalsById
     deleteProposal({
-      variables: {
-        projectId: activeData.getProposalsById.projectId,
-        _id: activeData.getProposalsById._id,
-      },
+      variables: { projectId, _id },
     })
   }
 
