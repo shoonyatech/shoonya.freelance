@@ -8,7 +8,7 @@ export default {
   component: IconList,
   title: 'IconList',
 } as Meta
-
+// @ts-ignore
 const Template: Story = (args) => <IconList {...args} />
 export const DefaultOutlined = Template.bind({})
 
